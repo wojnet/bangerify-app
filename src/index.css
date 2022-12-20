@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400&display=swap');
+
+/* THE STANDARD THEME IS WHITE */
+:root {
+	--black: #000;
+	--white: #FFF;
+	--gray: #888;
+}
+
+* {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	font-family: 'Londrina Solid', cursive;
+}
+
+body {
+	background: var(--white);
+}
+
+.App {
+	width: 100%;
+	min-height: 100vh;
+	display: flex;
+	justify-content: space-between;
+	align-items: stretch;
+}
+
+.Navbar {
+	height: 100vh;
+	width: 250px;
+	background: var(--white);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	flex-grow: 0;
+	flex-shrink: 0;
+	padding: 40px 30px;
+	position: sticky;
+	top: 0;
+}
+
+.Navbar > img {
+	width: 100%;
+}
+
+.Navbar > ul {
+	height: 100%;
+	margin-top: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 5px;
+}
+
+.Navbar a {
+	font-size: 22px;
+	color: var(--black);
+	text-decoration: none;
+	padding: 3px;
+	border-radius: 5px;
+}
+
+.Navbar a:hover {
+	color: var(--gray);
+}
+
+.Navbar--Bottom > p {
+	color: var(--gray);
+	font-size: 12px;
+	margin-top: 15px;
+}
+
+.Mainboard {
+	height: 100%;
+	width: 100%;
+	max-width: 900px;
+	background: var(--white);
+	color: var(--black);
+	padding: 50px;
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+}
+
+.Wrapper {
+	width: 100%;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	flex-grow: 1;
+}
