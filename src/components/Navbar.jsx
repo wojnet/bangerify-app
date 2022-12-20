@@ -24,8 +24,8 @@ const Navbar = () => {
             <img src={Logo} />
             <ul>
                 <Link to="/" style={ path === "/" ? selectedStyle : {} }>Mainboard</Link>
-                <Link to="/explore" style={ path === "/explore" ? selectedStyle : {} }>Explore</Link>
-                <Link to="/friends" style={ path === "/friends" ? selectedStyle : {} }>Friends</Link>
+                {/* <Link to="/explore" style={ path === "/explore" ? selectedStyle : {} }>Explore</Link> */}
+                {/* <Link to="/friends" style={ path === "/friends" ? selectedStyle : {} }>Friends</Link> */}
                 <Link to="/profile" style={ path === "/profile" ? selectedStyle : {} }>Profile</Link>
             </ul>
             <div className="Navbar--Bottom">
