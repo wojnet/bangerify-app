@@ -27,6 +27,7 @@ const Navbar = () => {
                 {/* <Link to="/explore" style={ path === "/explore" ? selectedStyle : {} }>Explore</Link> */}
                 {/* <Link to="/friends" style={ path === "/friends" ? selectedStyle : {} }>Friends</Link> */}
                 <Link to="/profile" style={ path === "/profile" ? selectedStyle : {} }>Profile</Link>
+                <Link to="/authenticate" style={ path === "/authenticate" ? selectedStyle : {} }>Login</Link>
             </ul>
             <div className="Navbar--Bottom">
                 <Link to="/options" style={ path === "/options" ? selectedStyle : {} }>Options</Link>
