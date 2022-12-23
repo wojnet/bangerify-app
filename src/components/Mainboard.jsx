@@ -4,14 +4,19 @@ import Article from "./Article";
 
 const Mainboard = () => {
 
-    useEffect(() => {
-        axios.get("http://192.168.1.100:5000/api/test")
-            .then(data => console.log(data.data));
-    }, []);
+    const [tajneDane, setTajneDane] = useState();
+
+    const getTajneDane = () => {
+        axios.get("http://192.168.1.100:5000/api/getData")
+            .then(res => setTajneDane(res.data.message))
+            .catch(err => console.error(err));
+    }
 
     return (
         <div className="Mainboard">
             <Article />
+            <button onClick={getTajneDane}>Dostań tajne dane</button>
+            { tajneDane ? tajneDane : "" }
         </div>
     );
 }
