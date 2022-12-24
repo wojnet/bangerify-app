@@ -68,6 +68,13 @@ body {
 	color: var(--gray);
 }
 
+.Navbar--Bottom {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 5px;
+}
+
 .Navbar--Bottom > p {
 	color: var(--gray);
 	font-size: 12px;
@@ -111,4 +118,11 @@ body {
 	flex-direction: column;
 	align-items: center;
 	gap: 10px;
+}
+
+.Authentication > form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
 }

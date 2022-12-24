@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import axios from "axios";
+import { axiosJWT } from "../Helpers";
 
 const Authentication = () => {
 
@@ -13,15 +14,9 @@ const Authentication = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const submit = () => {
+    const submit = (e) => {
 
-        const setAuthToken = (_token) => {
-            if (_token) {
-                axios.defaults.headers.common["Authorization"] = `Bearer ${_token}`;
-            } else {
-                delete axios.defaults.headers.common["Authorization"];
-            }
-        }
+        e.preventDefault();
 
         if(!authType) {
             //* LOGIN
@@ -29,8 +24,9 @@ const Authentication = () => {
                 .then(res => {
                     if(res.data.validData !== false) {
                         const accessToken = res.data.accessToken;
-                        localStorage.setItem("token", accessToken);
-                        setAuthToken(accessToken);
+                        const refreshToken = res.data.refreshToken;
+                        localStorage.setItem("accessToken", accessToken);
+                        localStorage.setItem("refreshToken", refreshToken);;
                         navigate("/");
                     } else {
                         switch(res.data.type) {
@@ -40,12 +36,15 @@ const Authentication = () => {
                             case "wrong password":
                                 alert("Złe hasło");
                                 break;
+                            case "confirm your email first":
+                                console.log(1)
+                                alert("Confirm your email first");
+                                break;
                         }
                         
                     }
                 })
                 .catch(err => console.log(err));
-
 
         } else {
             //* REGISTER
@@ -59,11 +58,14 @@ const Authentication = () => {
 
     return (
         <div className="Authentication">
-            <h2>{authType ? "Register" : "Login"}</h2>
-            <input type="text" placeholder={!authType ? "Username or Email" : "Username"} value={username} onChange={(e) => setUsername(e.target.value)} />
-            { authType && <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} /> }
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button onClick={submit}>SUBMIT</button><br />
+            <form onSubmit={submit}>
+                <h2>{authType ? "Register" : "Login"}</h2>
+                <input type="text" placeholder={!authType ? "Username or Email" : "Username"} value={username} onChange={(e) => setUsername(e.target.value)} />
+                { authType && <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} /> }
+                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <button onClick={submit}>{authType ? "Register" : "Login"}</button><br />
+            </form>
+
             <p style={{ fontSize: 12, color: "var(--gray)", cursor: "pointer" }} onClick={() => setAuthType(prev => !prev)}>{!authType ? "Register" : "Login"} instead</p>
         </div>
     );
