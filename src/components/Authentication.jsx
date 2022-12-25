@@ -49,11 +49,29 @@ const Authentication = () => {
         } else {
             //* REGISTER
             axios.post("http://192.168.1.100:5000/api/auth/register", { username: username, email: email, password: password })
-                .then(res => console.log(res))
+                .then(res => {
+                    switch(res.data.message) {
+                        case "validation error":
+                            let validationErrors = [];
+                            if(!res.data.isUsernameValid) validationErrors.push("nazwa użytkownika");  
+                            if(!res.data.isEmailValid) validationErrors.push("email");  
+                            if(!res.data.isPasswordValid) validationErrors.push("hasło");  
+                            alert("Błąd walidacji w " + validationErrors.join(", "));
+                            break;
+                        case "account created":
+                            alert("Konto stworzone(nie do końca), potwierdź maila");
+                            break;
+                        case "username or email exist":
+                            let existErrors = [];
+                            if(res.data.usernameExist) existErrors.push("użytkownik");
+                            if(res.data.emailExist) existErrors.push("adres email");
+                            alert("Niestety, ale " + existErrors.join(", ") + " istnieje");
+                            break;
+                    }
+                })
                 .catch(err => console.log(err));
 
         }
-
     }
 
     return (
