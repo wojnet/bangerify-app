@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { axiosJWT } from "../Helpers";
-import Logo from "../assets/logo.png"
+import Logo from "../assets/bangerifyLogo.svg"
 
-const Navbar = ({ isLogged, setIsLogged, updateIsLogged }) => {
+const Navbar = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, username }) => {
 
-    const [path, setPath] = useState();
     const location = useLocation();
 
     const handleLogout = () => {
@@ -32,15 +31,16 @@ const Navbar = ({ isLogged, setIsLogged, updateIsLogged }) => {
 
     const selectedStyle = {
         background: "var(--black)",
-        color: "var(--white)"
+        color: "var(--white)",
+        boxShadow: "0 5px 10px #0003"
     }
 
     return (
         <nav className="Navbar">
-            <img src={Logo} />
+            <img src={Logo} className="Navbar--Logo" />
             <ul>
                 <Link to="/" style={ path === "/" ? selectedStyle : {} }>Mainboard</Link>
-                { isLogged && <Link to="/profile" style={ path === "/profile" ? selectedStyle : {} }>Profile</Link> }
+                { isLogged && <Link to={`/profile/${username}`} style={ path === "/profile/"+username ? selectedStyle : {} }>Profile</Link> }
                 { !isLogged && <Link to="/authenticate" style={ path === "/authenticate" ? selectedStyle : {} }>Login</Link> }
             </ul>
             <div className="Navbar--Bottom">

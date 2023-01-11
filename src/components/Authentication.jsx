@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import axios from "axios";
 import { axiosJWT } from "../Helpers";
+import ConfirmEmail from "./Modal/ConfirmEmail"
 
 const Authentication = () => {
 
@@ -9,7 +10,7 @@ const Authentication = () => {
 
     // 0 - Login; 1 - Register
     const [authType, setAuthType] = useState(false);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -59,7 +60,9 @@ const Authentication = () => {
                             alert("Błąd walidacji w " + validationErrors.join(", "));
                             break;
                         case "account created":
-                            alert("Konto stworzone(nie do końca), potwierdź maila");
+                            setAuthType(false); // LOGIN
+                            setUsername("");
+                            setIsModalOpen(true);
                             break;
                         case "username or email exist":
                             let existErrors = [];
@@ -76,6 +79,7 @@ const Authentication = () => {
 
     return (
         <div className="Authentication">
+            <ConfirmEmail isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
             <form onSubmit={submit}>
                 <h2>{authType ? "Register" : "Login"}</h2>
                 <input type="text" placeholder={!authType ? "Username or Email" : "Username"} value={username} onChange={(e) => setUsername(e.target.value)} />

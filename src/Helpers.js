@@ -13,4 +13,8 @@ export async function refreshToken(_config) {
     }
 }
 
-export const axiosJWT = axios.create();
+export const axiosJWT = axios.create({
+    headers: {
+        
+    }
+});
