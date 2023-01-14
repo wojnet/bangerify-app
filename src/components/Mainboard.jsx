@@ -44,7 +44,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts }) => {
         loadPosts();
     }, []);
 
-    const posts = loadedPosts.posts.map(e => <Article visibleName={e.visible_name} date={e.date} text={e.text} />);
+    const posts = loadedPosts.posts.map(e => <Article key={e.id} visibleName={e.visible_name} utcDate={e.date} text={e.text} />);
 
     return (
         <div className="Mainboard">

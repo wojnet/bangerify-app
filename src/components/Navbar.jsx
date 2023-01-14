@@ -40,12 +40,13 @@ const Navbar = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, username
             <img src={Logo} className="Navbar--Logo" />
             <ul>
                 <Link to="/" style={ path === "/" ? selectedStyle : {} }>Mainboard</Link>
-                { isLogged && <Link to={`/profile/${username}`} style={ path === "/profile/"+username ? selectedStyle : {} }>Profile</Link> }
+                { isLogged && <a href={`/profile/${username}`} style={ path === "/profile/"+username ? selectedStyle : {} }>Profile</a> }
                 { !isLogged && <Link to="/authenticate" style={ path === "/authenticate" ? selectedStyle : {} }>Login</Link> }
             </ul>
             <div className="Navbar--Bottom">
                 { isLogged && <Link to="/options" style={ path === "/options" ? selectedStyle : {} }>Options</Link> }
-                { isLogged && <Link to="/" onClick={handleLogout}>Logout</Link> }
+                { isLogged && <Link to="/" onClick={handleLogout} style={{ marginBottom: "20px" }}>Logout</Link> }
+                { isLogged && <p>Logged in as {username}</p> }
                 <p>© 2022 Bangerify. All rights reserved.</p>
             </div>
         </nav>

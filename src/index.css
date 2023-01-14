@@ -84,7 +84,6 @@ body {
 .Navbar--Bottom > p {
 	color: var(--gray);
 	font-size: 12px;
-	margin-top: 15px;
 	font-family: 'Londrina Solid', cursive;
 }
 
@@ -184,6 +183,7 @@ body {
 .Article--Date {
 	margin-bottom: 10px;
 	color: var(--gray);
+	font-size: 14px;
 }
 
 .Article > article p {
@@ -223,4 +223,22 @@ body {
 	padding-left: 100px;
 	align-items: center;
 	gap: 10px;
+}
+
+.Profile--Header > img {
+	width: 100px;
+	border-radius: 50px;
+}
+
+.Profile--Posts {
+	width: 100%;
+	padding: 0 50px;
+}
+
+.BadUrl {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 200px;
 }

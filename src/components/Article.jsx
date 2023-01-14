@@ -1,17 +1,16 @@
 import { Link } from "react-router-dom";
 
-const Article = ({ visibleName, date, text }) => {
+const Article = ({ visibleName, utcDate, text }) => {
 
-    const dateObj = new Date(date);
-    console.log(text);
+    const localDate = new Date(utcDate);
+    console.log(utcDate)
     const lines = text.split("\n");
 
     return (
         <article className="Article">
-            <Link to="/profile" className="Article--Link">{visibleName}</Link>
-            <p className="Article--Date">{dateObj.toString()}</p>
+            <Link to={`/profile/${visibleName}`} className="Article--Link">{visibleName}</Link>
+            <p className="Article--Date">{localDate.toLocaleDateString() + " * " + localDate.toLocaleTimeString()}</p>
             <article className="Article--Content">
-                {/* <p>I don't like Loveless by MBV, but heard that people love it so much. Why I can't hear anything interesting in their music? Maybe except one song...</p> */}
                 { lines.map(e => <p>{e}</p>) }
             </article>
         </article>
