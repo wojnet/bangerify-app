@@ -24,7 +24,7 @@ export const App = () => {
 
 	const updateIsLogged = () => {
 		console.log("Update is logged");
-		axiosJWT.get("http://192.168.1.100:5000/api/auth/isLogged", {
+		axiosJWT.get(`${process.env.BACKEND_URL}/api/auth/isLogged`, {
             headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
         })
 		.then(res => {

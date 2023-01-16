@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 import axios from "axios";
 import Article from "./Article";
 import UserSample from "../assets/userSample.png"
@@ -24,9 +25,20 @@ const Profile = ({ username }) => {
 		]
     });
 
+    const getGradeIcon = () => {
+        switch(grade) {
+            case 0:
+                return;
+            case 1:
+                return <span className="MOD">MOD</span>;
+            case 2:
+                return <span className="ADMIN">ADMIN</span>;
+        }
+    }
+
     // 0. latest; 1. hottest; 2. most popular
     function loadPosts() {
-        axios.post("http://192.168.1.100:5000/api/getUserPosts", { lastPostId: profilePosts.lastPostId, order: 0, author: profileUsername })
+        axios.post(`${process.env.BACKEND_URL}/api/getUserPosts`, { lastPostId: profilePosts.lastPostId, order: 0, author: profileUsername })
             .then(res => {
                 let postsArray = res.data;
                 console.log(res);
@@ -43,7 +55,7 @@ const Profile = ({ username }) => {
     }
 
     const setProfileInfo = () => {
-        axios.post(`http://192.168.1.100:5000/api/userData/${usernameParam}`)
+        axios.post(`${process.env.BACKEND_URL}/api/userData/${usernameParam}`)
             .then(res => {
                 if(res.data.length != 0) {
                     return res.data[0];
@@ -88,11 +100,18 @@ const Profile = ({ username }) => {
             <section className="Profile--Header">
                 <img src={profilePictureUrl ? profilePictureUrl : UserSample} />
                 <section>
-                    { visibleName && <h3>{visibleName}</h3> } { !visibleName && <h3 style={{ color: "var(--gray)" }}>loading... </h3> }
+                    { visibleName && <h3>{visibleName} {getGradeIcon(grade)}</h3> } { !visibleName && <h3 style={{ color: "var(--gray)" }}>loading... </h3> }
                     <p>@{profileUsername}</p>
                 </section>
-                {  }
             </section>
+            <ReactMarkdown className="Profile--Bio">
+                {/* { bio } */}
+                To świat nie ja ma się zmieniać, to świat nie ja ma się zmieniać, do widzenia, do widzenia, proszę pani do widzenia. ***~ Syndrom Paryski***
+            </ReactMarkdown>
+
+            
+            
+                { profileUsername === username && <button className="Button1" style={{ marginBlock: "15px 50px", marginLeft: "50px", alignSelf: "flex-start" }}>Change BIO</button> }
             <div className="Profile--Posts">
                 { posts }
             </div>

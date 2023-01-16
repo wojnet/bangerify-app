@@ -14,7 +14,7 @@ const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostDa
     }
 
     const createPost = () => {
-        axiosJWT.post("http://192.168.1.100:5000/api/createPost", { postData: postData })
+        axiosJWT.post(`${process.env.BACKEND_URL}/api/createPost`, { postData: postData })
             .then(res => {
                 setIsCreatePostOpen(false);
                 setPostData({ 

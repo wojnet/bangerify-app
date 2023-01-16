@@ -21,7 +21,7 @@ const Authentication = () => {
 
         if(!authType) {
             //* LOGIN
-            axios.post("http://192.168.1.100:5000/api/auth/login", { username: username, password: password })
+            axios.post(`${process.env.BACKEND_URL}/api/auth/login`, { username: username, password: password })
                 .then(res => {
                     if(res.data.validData !== false) {
                         const accessToken = res.data.accessToken;
@@ -49,7 +49,7 @@ const Authentication = () => {
 
         } else {
             //* REGISTER
-            axios.post("http://192.168.1.100:5000/api/auth/register", { username: username, email: email, password: password })
+            axios.post(`${process.env.BACKEND_URL}/api/auth/register`, { username: username, email: email, password: password })
                 .then(res => {
                     switch(res.data.message) {
                         case "validation error":

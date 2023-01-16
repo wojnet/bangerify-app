@@ -15,7 +15,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts }) => {
     const date = new Date();
 
     const getTajneDane = () => {
-        axiosJWT.get("http://192.168.1.100:5000/api/test", {
+        axiosJWT.get(`${process.env.BACKEND_URL}/api/test`, {
             headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
         })
             .then(res => setTajneDane(res.data))
@@ -24,7 +24,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts }) => {
 
     // 0. latest; 1. hottest; 2. most popular
     function loadPosts() {
-        axios.post("http://192.168.1.100:5000/api/getPosts", { lastPostId: loadedPosts.lastPostId, order: 0 })
+        axios.post(`${process.env.BACKEND_URL}/api/getPosts`, { lastPostId: loadedPosts.lastPostId, order: 0 })
             .then(res => {
                 let postsArray = res.data;
 

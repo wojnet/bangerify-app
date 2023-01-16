@@ -8,7 +8,7 @@ const Navbar = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, username
     const location = useLocation();
 
     const handleLogout = () => {
-        axiosJWT.post("http://192.168.1.100:5000/api/auth/logout", { token: localStorage.getItem("refreshToken") }, {
+        axiosJWT.post(`${process.env.BACKEND_URL}/api/auth/logout`, { token: localStorage.getItem("refreshToken") }, {
             headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
         })
         .then(res => {
