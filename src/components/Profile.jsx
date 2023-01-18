@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
 import axios from "axios";
+import { axiosJWT } from "../Helpers";
 import Article from "./Article";
 import UserSample from "../assets/userSample.png"
+import Bio from "./Bio";
 
 const Profile = ({ username }) => {
 
@@ -17,13 +18,27 @@ const Profile = ({ username }) => {
     const [grade, setGrade] = useState("");
     const [creationDate, setCreationDate] = useState("");
     const [profilePictureUrl, setProfilePictureUrl] = useState("");
+
+    const [isChangingBio, setIsChangingBio] = useState(false);
+    const [changedBio , setChangedBio] = useState("");
     
+    const [isChangingProfilePicture, setIsChangingProfilePicture] = useState(false);
+    const [changedProfilePicture , setChangedProfilePicture] = useState("");
+
     const [profilePosts, setProfilePosts] = useState({
         lastPostId: 99999999,
 		posts: [
 
 		]
     });
+
+    const changeProfilePicture = () => {
+        if (changedProfilePicture != profilePictureUrl) {
+            axiosJWT.post(`${process.env.BACKEND_URL}/api/changeProfilePictureUrl`, { newURL: changedProfilePicture })
+                .then(() => document.location.reload())
+                .catch(err => console.log(err));
+        } else setIsChangingProfilePicture(prev => !prev);
+    }
 
     const getGradeIcon = () => {
         switch(grade) {
@@ -33,6 +48,8 @@ const Profile = ({ username }) => {
                 return <span className="MOD">MOD</span>;
             case 2:
                 return <span className="ADMIN">ADMIN</span>;
+            case 3:
+                return <span className="GOD">CREATOR</span>;
         }
     }
 
@@ -93,25 +110,40 @@ const Profile = ({ username }) => {
         loadPosts();
     }, []);
 
+    useEffect(() => {
+        if (isChangingProfilePicture) {
+            setChangedProfilePicture(profilePictureUrl);
+        }
+    }, [isChangingProfilePicture]);
+
     const posts = profilePosts.posts.map(e => <Article key={e.id} visibleName={e.visible_name} utcDate={e.date} text={e.text} />);
+
+    const ProfilePictureInput = () => {
+        return(
+            <>
+                <input type="text" value={changedProfilePicture} onChange={(e) => setChangedProfilePicture(e.target.value)} />
+                <button onClick={() => setIsChangingProfilePicture(prev => !prev)}>close</button>
+                <button className="Button1" onClick={changeProfilePicture}>CHANGE PROFILE PICTURE</button>
+            </>
+        );
+    }
 
     return (
         <div className="Profile">
             <section className="Profile--Header">
-                <img src={profilePictureUrl ? profilePictureUrl : UserSample} />
+                <img onClick={() => setIsChangingProfilePicture(true)} src={profilePictureUrl ? profilePictureUrl : UserSample} />
+                { isChangingProfilePicture && <ProfilePictureInput /> }
                 <section>
                     { visibleName && <h3>{visibleName} {getGradeIcon(grade)}</h3> } { !visibleName && <h3 style={{ color: "var(--gray)" }}>loading... </h3> }
                     <p>@{profileUsername}</p>
                 </section>
             </section>
-            <ReactMarkdown className="Profile--Bio">
-                {/* { bio } */}
-                To świat nie ja ma się zmieniać, to świat nie ja ma się zmieniać, do widzenia, do widzenia, proszę pani do widzenia. ***~ Syndrom Paryski***
-            </ReactMarkdown>
 
+            <Bio isChangingBio={isChangingBio} setIsChangingBio={setIsChangingBio} bio={bio} changedBio={changedBio} setChangedBio={setChangedBio} />
             
-            
-                { profileUsername === username && <button className="Button1" style={{ marginBlock: "15px 50px", marginLeft: "50px", alignSelf: "flex-start" }}>Change BIO</button> }
+            { profileUsername === username && <button className="Button1" style={{ marginBlock: "15px 50px", marginLeft: "50px", alignSelf: "flex-start" }} onClick={() => {
+                setIsChangingBio(prev => !prev);
+            }}>{ !isChangingBio ? "Change BIO" : "Exit changing BIO" }</button> }
             <div className="Profile--Posts">
                 { posts }
             </div>

@@ -4,7 +4,6 @@ import ReactMarkdown from "react-markdown";
 const Article = ({ visibleName, utcDate, text }) => {
 
     const localDate = new Date(utcDate);
-    console.log(utcDate)
     const lines = text.split("\n");
 
     return (

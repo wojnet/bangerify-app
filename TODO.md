@@ -1,8 +1,8 @@
 ### MUSTHAVES
-- Bio change [1/2]
-- Profile picture change
+- Bio change [✓]
+- Profile picture change [✓]
 - Refresh after adding post
-- Markdown for posts
+- Markdown for posts [✓]
 - Post delete button
 - Post edit button
 - Dark theme
@@ -13,3 +13,6 @@
 
 ### ADDITONALS
 - Badges
+
+### ERRORS
+- Logs out on mom pc (after around 1 minute after login)
