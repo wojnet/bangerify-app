@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import Envelope from "../../assets/envelope.svg"
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const ConfirmEmail = ({ isModalOpen, setIsModalOpen }) => {
+const ResendEmail = ({ isModalOpen, setIsModalOpen }) => {
+
+    const navigate = useNavigate();
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -10,6 +13,14 @@ const ConfirmEmail = ({ isModalOpen, setIsModalOpen }) => {
 
     const handleClick = (e) => {
         setIsModalOpen(false);
+    }
+    
+    const [email, setEmail] = useState("");
+
+    const resendEmail = () => {
+        axios.post(`${process.env.BACKEND_URL}/api/confirmation/resendVerificationToken`, { email: email })
+            .then(() => navigate("/"))
+            .catch(err => console.error(err));
     }
 
     const modalStyle = {
@@ -59,12 +70,12 @@ const ConfirmEmail = ({ isModalOpen, setIsModalOpen }) => {
 
     return createPortal(
         <>
-            <div className="ConfirmEmail--Overlay" onClick={handleClick} style={overlayStyle}></div>
-            <div className="ConfirmEmail" style={modalStyle}>
+            <div onClick={handleClick} style={overlayStyle}></div>
+            <div style={modalStyle}>
                 <button onClick={closeModal} style={closeButtonStyle}>x</button>
-                <img src={Envelope} alt="envelope icon" style={{ width: "110px", marginBottom: "15px" }} />
-                <h3>Email Confirmation</h3>
-                <p style={{ color: "var(--gray)" }}>We have sent you email to confirm the validity of your email address. If you cannot see your mail, check spam folder.</p>
+                <h3>YOUR EMAIL IS NOT CONFIRMED</h3>
+                <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <button onClick={resendEmail}>RESEND EMAIL</button>
             </div>
         </>
         ,
@@ -72,4 +83,4 @@ const ConfirmEmail = ({ isModalOpen, setIsModalOpen }) => {
     );
 }
 
-export default ConfirmEmail;
+export default ResendEmail;

@@ -5,6 +5,7 @@ import { axiosJWT } from "../Helpers";
 import Article from "./Article";
 import UserSample from "../assets/userSample.png"
 import Bio from "./Bio";
+import BadgeAlpha from "../assets/BadgeAlpha.png";
 
 const Profile = ({ username }) => {
 
@@ -116,7 +117,7 @@ const Profile = ({ username }) => {
         }
     }, [isChangingProfilePicture]);
 
-    const posts = profilePosts.posts.map(e => <Article key={e.id} visibleName={e.visible_name} utcDate={e.date} text={e.text} />);
+    const posts = profilePosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} profilePictureUrl={e.profilePictureUrl} username={username} />);
 
     const ProfilePictureInput = () => {
         return(
@@ -130,14 +131,20 @@ const Profile = ({ username }) => {
 
     return (
         <div className="Profile">
+
             <section className="Profile--Header">
-                <img onClick={() => setIsChangingProfilePicture(true)} src={profilePictureUrl ? profilePictureUrl : UserSample} />
+                <img onClick={() => { if (profileUsername === username) setIsChangingProfilePicture(true) }} src={profilePictureUrl ? profilePictureUrl : UserSample} style={
+                    profileUsername === username ? { cursor: "pointer" } : {}
+                } />
                 { isChangingProfilePicture && <ProfilePictureInput /> }
                 <section>
-                    { visibleName && <h3>{visibleName} {getGradeIcon(grade)}</h3> } { !visibleName && <h3 style={{ color: "var(--gray)" }}>loading... </h3> }
+                    { visibleName && <h3>{visibleName} {getGradeIcon(grade)}</h3> }
+                    { !visibleName && <h3 style={{ color: "var(--gray)" }}>loading... </h3> }
                     <p>@{profileUsername}</p>
                 </section>
             </section>
+
+            {/* <img style={{ marginTop: "5px", alignSelf: "flex-start", marginLeft: "50px", marginBottom: "20px" }} src={BadgeAlpha} alt="altki" /> */}
 
             <Bio isChangingBio={isChangingBio} setIsChangingBio={setIsChangingBio} bio={bio} changedBio={changedBio} setChangedBio={setChangedBio} />
             

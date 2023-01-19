@@ -21,6 +21,7 @@ const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostDa
                     post: ""
                 });
             })
+            .then(() => document.location.reload())
             .catch(err => console.log(err));
     }
 

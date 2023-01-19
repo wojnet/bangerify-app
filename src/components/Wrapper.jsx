@@ -8,7 +8,7 @@ const Wrapper = ({ path, setPath, isLogged, loadedPosts, setLoadedPosts, usernam
     return (
         <div className="Wrapper">
             <Routes>
-                <Route path="/" element={<Mainboard isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} />} />
+                <Route path="/" element={<Mainboard isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} />} />
                 <Route path="/authenticate" element={<Authentication />} />
                 <Route path="/profile/:usernameParam" element={<Profile username={username} />} />
                 <Route path="/badUrl/:url" element={<BadUrl />} />

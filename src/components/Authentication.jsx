@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { axiosJWT } from "../Helpers";
-import ConfirmEmail from "./Modal/ConfirmEmail"
+import ConfirmEmail from "./Modal/ConfirmEmail";
+import ResendEmail from "./Modal/ResendEmail";
 
 const Authentication = () => {
 
@@ -11,6 +12,7 @@ const Authentication = () => {
     // 0 - Login; 1 - Register
     const [authType, setAuthType] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -39,10 +41,9 @@ const Authentication = () => {
                                 break;
                             case "confirm your email first":
                                 console.log(1)
-                                alert("Confirm your email first");
+                                setIsEmailModalOpen(true);
                                 break;
                         }
-                        
                     }
                 })
                 .catch(err => console.log(err));
@@ -80,6 +81,7 @@ const Authentication = () => {
     return (
         <div className="Authentication">
             <ConfirmEmail isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+            <ResendEmail isModalOpen={isEmailModalOpen} setIsModalOpen={setIsEmailModalOpen} />
             <form onSubmit={submit}>
                 <h2>{authType ? "Register" : "Login"}</h2>
                 <input type="text" placeholder={!authType ? "Username or Email" : "Username"} value={username} onChange={(e) => setUsername(e.target.value)} />

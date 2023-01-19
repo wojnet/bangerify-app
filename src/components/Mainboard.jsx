@@ -5,7 +5,7 @@ import Article from "./Article";
 import UpperBar from "./UpperBar";
 import CreatePost from "./Modal/CreatePost";
 
-const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts }) => {
+const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username }) => {
 
     const [tajneDane, setTajneDane] = useState();
     const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
@@ -44,7 +44,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts }) => {
         loadPosts();
     }, []);
 
-    const posts = loadedPosts.posts.map(e => <Article key={e.id} visibleName={e.visible_name} utcDate={e.date} text={e.text} />);
+    const posts = loadedPosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} profilePictureUrl={e.profilePictureUrl} username={username} />);
 
     return (
         <div className="Mainboard">
@@ -58,6 +58,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts }) => {
                 });
                 loadPosts();
             }}>Refresh</button>
+            {  }
             { isLogged && <button onClick={() => setIsCreatePostOpen(true)}>ADD POST</button> }
 
             { posts }

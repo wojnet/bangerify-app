@@ -21,7 +21,7 @@ const Bio = ({ isChangingBio, setIsChangingBio, bio, changedBio, setChangedBio }
     if (!isChangingBio) {
         return ( 
             <ReactMarkdown className="Bio">
-                { bio.replace("\n", "&") }
+                { bio ? bio.replaceAll("\n", "  \n") : "" }
             </ReactMarkdown>
         );
     }

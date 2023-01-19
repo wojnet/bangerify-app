@@ -1,9 +1,12 @@
 ### MUSTHAVES
 - Bio change [✓]
 - Profile picture change [✓]
-- Refresh after adding post
+- Refresh after adding post [✓]
 - Markdown for posts [✓]
-- Post delete button
+- Post profile picture [✓]
+- Delete posts [✓]
+- Bio emojis :C
+- Post loading
 - Post edit button
 - Dark theme
 - Visible name change
