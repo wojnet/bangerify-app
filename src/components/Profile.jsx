@@ -6,6 +6,7 @@ import Article from "./Article";
 import UserSample from "../assets/userSample.png"
 import Bio from "./Bio";
 import BadgeAlpha from "../assets/BadgeAlpha.png";
+import BadgeBeta from "../assets/BadgeBeta.png";
 
 const Profile = ({ username }) => {
 
@@ -51,6 +52,8 @@ const Profile = ({ username }) => {
                 return <span className="ADMIN">ADMIN</span>;
             case 3:
                 return <span className="GOD">CREATOR</span>;
+            case 348:
+                return <span className="GIGACHAD">GIGACHAD</span>;
         }
     }
 
@@ -138,13 +141,16 @@ const Profile = ({ username }) => {
                 } />
                 { isChangingProfilePicture && <ProfilePictureInput /> }
                 <section>
-                    { visibleName && <h3>{visibleName} {getGradeIcon(grade)}</h3> }
+                    { visibleName && <h3 style={{ color: "var(--black)" }}>{visibleName} {getGradeIcon(grade)}</h3> }
                     { !visibleName && <h3 style={{ color: "var(--gray)" }}>loading... </h3> }
-                    <p>@{profileUsername}</p>
+                    <p style={{ color: "var(--black)" }}>@{profileUsername}</p>
                 </section>
             </section>
 
-            {/* <img style={{ marginTop: "5px", alignSelf: "flex-start", marginLeft: "50px", marginBottom: "20px" }} src={BadgeAlpha} alt="altki" /> */}
+            {/* <section style={{ alignSelf: "flex-end", marginRight: "50px", position: "absolute", top: "150px" }}>
+                <img style={{ width: "40px", marginTop: "5px", marginBottom: "10px" }} src={BadgeAlpha} alt="altki" />
+                <img style={{ width: "40px", marginTop: "5px", marginBottom: "10px" }} src={BadgeBeta} alt="altki" />
+            </section> */}
 
             <Bio isChangingBio={isChangingBio} setIsChangingBio={setIsChangingBio} bio={bio} changedBio={changedBio} setChangedBio={setChangedBio} />
             

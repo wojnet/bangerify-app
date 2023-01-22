@@ -12,7 +12,7 @@ const BadUrl = () => {
             <button onClick={() => {
                 navigate("/");
             }}>Return to mainboard</button><br />
-            <p style={{ fontSize: "14px" }}>{url} doesn't exist...</p>
+            <p style={{ fontSize: "14px", textAlign: "center" }}>{url} doesn't exist...<br />It was just a dream...</p>
         </div>
     );
 }

@@ -5,6 +5,7 @@
 :root {
 	--black: #000;
 	--white: #FFF;
+	--white05: #FFF8;
 	--gray: #888;
 	--hoverGray: #DDD;
 	--lightGray: #EEE;
@@ -24,6 +25,13 @@ body {
 
 code {
 	font-family: monospace;
+}
+
+input, textarea {
+	border: 1px solid var(--black);
+	border-radius: 5px;
+	background: var(--lightGray);
+	color: var(--black);
 }
 
 .App {
@@ -75,7 +83,7 @@ code {
 }
 
 .Navbar--Logo {
-	filter: drop-shadow(0 5px 10px #0003);
+	filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
 }
 
 .Navbar--Bottom {
@@ -181,6 +189,7 @@ code {
 	align-items: flex-start;
 	padding: 15px 5px;
 	margin-bottom: 20px;
+	border-bottom: 1px dashed var(--lightGray);
 }
 
 .Article--Link {
@@ -196,8 +205,16 @@ code {
 	margin-left: 15px;
 }
 
+.Article--Content {
+	color: var(--black);
+}
+
 .Article--Content p {
 	text-indent: 0px;
+}
+
+.Article--Content img {
+	max-width: 100%;
 }
 
 .Article--OptionsButton {
@@ -285,9 +302,16 @@ code {
 }
 
 .Bio {
+	color: var(--black);
 	padding-inline: 50px 100px;
 	width: 100%;
 	margin-bottom: 10px;
+}
+
+.Bio a {
+	color: var(--gray);
+	text-decoration: none;
+	font-style: italic;
 }
 
 .Bio--Change {
@@ -355,7 +379,18 @@ code {
     vertical-align: middle;
 }
 
-.Heart {
+.GIGACHAD {
+    color: white;
+    background: linear-gradient(to right, rgb(167, 167, 167) ,rgb(97, 97, 97));
+    font-size: 10px;
+    padding-inline: 5px;
+    border-radius: 5px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.HeartIcon {
+	color: var(--black);
 	margin-top: 15px;
 	display: flex;
 	gap: 10px;
@@ -365,7 +400,8 @@ code {
 	cursor: pointer;
 }
 
-.Comments {
+.CommentsIcon {
+	color: var(--black);
 	margin-top: 15px;
 	display: flex;
 	gap: 10px;
@@ -373,4 +409,59 @@ code {
 	padding: 1px 5px;
 	border-radius: 5px;
 	cursor: pointer;
+}
+
+.Options {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 50px;
+}
+
+.Comment {
+	color: var(--black);
+	width: 95%;
+	padding: 5px;
+	margin-top: 20px;
+	margin-left: 30px;
+	border: 1px solid var(--lightGray);
+	border-radius: 5px;
+}
+
+.Comment--Header {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	gap: 10px;
+	font-size: 14px;
+	padding-right: 5px;
+}
+
+.Comment--Header > a > section img {
+	object-fit: cover;
+	width: 36px;
+	height: 36px;
+	border-radius: 18px;
+}
+
+.Comment--Header span {
+	margin-left: 10px;
+	color: var(--gray);
+}
+
+.Comment--OptionsButton {
+	height: 20px;
+	position: absolute;
+	align-self: flex-end;
+	background: none;
+	border: none;
+	cursor: pointer;
+	transition: opacity 300ms ease;
+}
+
+.Comment--OptionsButton:hover {
+	opacity: 0.7;
 }

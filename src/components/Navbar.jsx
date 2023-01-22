@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { axiosJWT } from "../Helpers";
-import Logo from "../assets/bangerifyLogo.svg"
+import Logo from "../assets/bangerifyLogo.svg";
+import LogoWhite from "../assets/bangerifyLogoWhite.svg";
+import Sun from "../assets/Sun.svg";
+import Moon from "../assets/Moon.svg";
 
-const Navbar = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, username }) => {
+const Navbar = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, username, theme, setTheme, updateTheme }) => {
 
     const location = useLocation();
 
@@ -37,11 +40,17 @@ const Navbar = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, username
 
     return (
         <nav className="Navbar">
-            <img src={Logo} className="Navbar--Logo" />
+            <img src={theme ? LogoWhite : Logo} className="Navbar--Logo" />
             <ul>
                 <Link to="/" style={ path === "/" ? selectedStyle : {} }>Mainboard</Link>
                 { isLogged && <a href={`/profile/${username}`} style={ path === "/profile/"+username ? selectedStyle : {} }>Profile</a> }
                 { !isLogged && <Link to="/authenticate" style={ path === "/authenticate" ? selectedStyle : {} }>Login</Link> }
+                {/* <Link to="/kupGemy" style={ path === "/kupGemy" ? selectedStyle : {} }>Kup gemy</Link>  */}
+                <img style={{ width: "25px", marginTop: "20px", cursor: "pointer" }} src={theme ? Moon : Sun} alt="Theme change button" onClick={() => {
+                    setTheme(prev => !prev);
+                    updateTheme();
+                    document.cookie = `theme=${theme ? 1 : 0}`;
+                }} />
             </ul>
             <div className="Navbar--Bottom">
                 { isLogged && <Link to="/options" style={ path === "/options" ? selectedStyle : {} }>Options</Link> }

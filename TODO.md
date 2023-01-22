@@ -5,14 +5,14 @@
 - Markdown for posts [✓]
 - Post profile picture [✓]
 - Delete posts [✓]
-- Bio emojis :C
+- Post edit button [✓]
+- Likes [✓]
+- Comments [✓]
+- Jan zrobił ciastko hehe uwu [✓]
+- Dark theme [✓]
 - Post loading
-- Post edit button
-- Dark theme
-- Visible name change
 - Mainboard filters
-- Likes
-- Comments
+- Visible name change
 
 ### ADDITONALS
 - Badges

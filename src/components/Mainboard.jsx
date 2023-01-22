@@ -5,10 +5,9 @@ import Article from "./Article";
 import UpperBar from "./UpperBar";
 import CreatePost from "./Modal/CreatePost";
 
-const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username }) => {
+const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePostOpen, setIsCreatePostOpen }) => {
 
     const [tajneDane, setTajneDane] = useState();
-    const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
     const [postData, setPostData] = useState({ 
         post: ""
     });
@@ -49,7 +48,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username }) => {
     return (
         <div className="Mainboard">
             <CreatePost isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} postData={postData} setPostData={setPostData}/>
-            <UpperBar />
+            {/* <UpperBar /> */}
             <button onClick={() => {
                 setLoadedPosts({
                     lastTimeRefreshed: 0,
