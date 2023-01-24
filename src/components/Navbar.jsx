@@ -42,7 +42,11 @@ const Navbar = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, username
         <nav className="Navbar">
             <img src={theme ? LogoWhite : Logo} className="Navbar--Logo" />
             <ul>
-                <Link to="/" style={ path === "/" ? selectedStyle : {} }>Mainboard</Link>
+                <Link to="/" style={ path === "/" ? selectedStyle : {} } onClick={() => {
+                    if (path === "/") {
+                        window.location.reload();
+                    }
+                }}>Mainboard</Link>
                 { isLogged && <a href={`/profile/${username}`} style={ path === "/profile/"+username ? selectedStyle : {} }>Profile</a> }
                 { !isLogged && <Link to="/authenticate" style={ path === "/authenticate" ? selectedStyle : {} }>Login</Link> }
                 {/* <Link to="/kupGemy" style={ path === "/kupGemy" ? selectedStyle : {} }>Kup gemy</Link>  */}

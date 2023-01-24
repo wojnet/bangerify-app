@@ -14,6 +14,7 @@ const Profile = ({ username }) => {
 
     const { usernameParam } = useParams();
     const [profileUsername, setProfileUsername] = useState(usernameParam);
+    const [canLoadPosts, setCanLoadPosts] = useState(false);
 
     const [visibleName, setVisibleName] = useState("");
     const [bio, setBio] = useState("");
@@ -27,19 +28,39 @@ const Profile = ({ username }) => {
     const [isChangingProfilePicture, setIsChangingProfilePicture] = useState(false);
     const [changedProfilePicture , setChangedProfilePicture] = useState("");
 
+    const [isChangingVisibleName, setIsChangingVisibleName] = useState(false);
+    const [changedVisibleName , setChangedVisibleName] = useState("");
+    
     const [profilePosts, setProfilePosts] = useState({
         lastPostId: 99999999,
 		posts: [
 
-		]
+        ]
     });
-
+    
+    const resetLoadedPosts = () => {
+        setProfileInfo({
+            lastPostId: 99999999,
+            posts: [
+                
+            ]
+        });
+    }
+    
     const changeProfilePicture = () => {
         if (changedProfilePicture != profilePictureUrl) {
             axiosJWT.post(`${process.env.BACKEND_URL}/api/changeProfilePictureUrl`, { newURL: changedProfilePicture })
-                .then(() => document.location.reload())
-                .catch(err => console.log(err));
+            .then(() => document.location.reload())
+            .catch(err => console.log(err));
         } else setIsChangingProfilePicture(prev => !prev);
+    }
+    
+    const changeVisibleName = () => {
+        if (changeVisibleName != visibleName) {
+            axiosJWT.post(`${process.env.BACKEND_URL}/api/changeVisibleName`, { newVisibleName: changedVisibleName })
+            .then(() => document.location.reload())
+            .catch(err => console.log(err));
+        } else setIsChangingVisibleName(prev => !prev);
     }
 
     const getGradeIcon = () => {
@@ -57,7 +78,7 @@ const Profile = ({ username }) => {
         }
     }
 
-    // 0. latest; 1. hottest; 2. most popular
+    // 0. latest; 1. most liked
     function loadPosts() {
         axios.post(`${process.env.BACKEND_URL}/api/getUserPosts`, { lastPostId: profilePosts.lastPostId, order: 0, author: profileUsername })
             .then(res => {
@@ -104,6 +125,7 @@ const Profile = ({ username }) => {
     }
 
     useEffect(() => {
+        resetLoadedPosts();
         updateUserData();
         setProfilePosts({
             lastPostId: 99999999,
@@ -112,7 +134,23 @@ const Profile = ({ username }) => {
             ]
         });
         loadPosts();
+        const scrollEventListener = window.addEventListener("scroll", (e) => {
+            e.preventDefault();
+            if (window.innerHeight + document.documentElement.scrollTop >= document.scrollingElement.scrollHeight - 100) {
+                setCanLoadPosts(true);
+            }
+        });
+
+        return () => {
+            window.removeEventListener("scroll", scrollEventListener);
+        }
     }, []);
+
+    useEffect(() => {
+        if(canLoadPosts) {
+            loadPosts();
+        }
+    }, [canLoadPosts]);
 
     useEffect(() => {
         if (isChangingProfilePicture) {
@@ -124,24 +162,31 @@ const Profile = ({ username }) => {
 
     const ProfilePictureInput = () => {
         return(
-            <>
+            <section style={{ display: "flex", gap: "10px" }}>
                 <input type="text" value={changedProfilePicture} onChange={(e) => setChangedProfilePicture(e.target.value)} />
-                <button onClick={() => setIsChangingProfilePicture(prev => !prev)}>close</button>
+                <button className="Button1" onClick={() => setIsChangingProfilePicture(prev => !prev)}>CLOSE</button>
                 <button className="Button1" onClick={changeProfilePicture}>CHANGE PROFILE PICTURE</button>
-            </>
+            </section>
         );
     }
 
     return (
         <div className="Profile">
-
             <section className="Profile--Header">
-                <img onClick={() => { if (profileUsername === username) setIsChangingProfilePicture(true) }} src={profilePictureUrl ? profilePictureUrl : UserSample} style={
+                <img onClick={() => { if (profileUsername === username) setIsChangingProfilePicture(prev => !prev) }} src={profilePictureUrl ? profilePictureUrl : UserSample} style={
                     profileUsername === username ? { cursor: "pointer" } : {}
                 } />
-                { isChangingProfilePicture && <ProfilePictureInput /> }
                 <section>
-                    { visibleName && <h3 style={{ color: "var(--black)" }}>{visibleName} {getGradeIcon(grade)}</h3> }
+                    { isChangingProfilePicture && <ProfilePictureInput /> }
+                    { visibleName && <h3 style={{ color: "var(--black)" }}>
+                        { !isChangingVisibleName && visibleName }
+                        { profileUsername === username && <>
+                            { isChangingVisibleName && <input type="text" value={changedVisibleName} onChange={(e) => setChangedVisibleName(e.target.value)} /> }
+                            { isChangingVisibleName && <button onClick={changeVisibleName} style={{ border: "none", background: "none", cursor: "pointer" }}>✔️</button> }
+                            <button style={{ border: "none", background: "none", cursor: "pointer" }} onClick={() => setIsChangingVisibleName(prev => !prev)}>{ isChangingVisibleName ? "❌" : "🖊️" }</button>
+                        </> }
+                        {getGradeIcon(grade)}
+                    </h3> }
                     { !visibleName && <h3 style={{ color: "var(--gray)" }}>loading... </h3> }
                     <p style={{ color: "var(--black)" }}>@{profileUsername}</p>
                 </section>

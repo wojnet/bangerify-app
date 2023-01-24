@@ -7,64 +7,97 @@ import CreatePost from "./Modal/CreatePost";
 
 const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePostOpen, setIsCreatePostOpen }) => {
 
-    const [tajneDane, setTajneDane] = useState();
+    const [order, setOrder] = useState(0);
+    const [canLoadPosts, setCanLoadPosts] = useState(false);
     const [postData, setPostData] = useState({ 
         post: ""
     });
     const date = new Date();
 
-    const getTajneDane = () => {
-        axiosJWT.get(`${process.env.BACKEND_URL}/api/test`, {
-            headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
-        })
-            .then(res => setTajneDane(res.data))
-            .catch(err => console.error(err));
+    const resetLoadedPosts = () => {
+        setLoadedPosts({
+            lastTimeRefreshed: 0,
+            lastPostId: 99999999,
+            posts: [
+    
+            ]
+        });
     }
 
-    // 0. latest; 1. hottest; 2. most popular
-    function loadPosts() {
-        axios.post(`${process.env.BACKEND_URL}/api/getPosts`, { lastPostId: loadedPosts.lastPostId, order: 0 })
-            .then(res => {
-                let postsArray = res.data;
-
-                setLoadedPosts(prev => {
-                    let newObj = { ...prev };
-                    let ids = Array.from(postsArray ? postsArray : []).map(e => e.id);
-                    newObj.lastPostId = ids.at(-1);
-                    newObj.lastTimeRefreshed = date.getTime();
-                    newObj.posts = [...newObj.posts, ...Array.from(postsArray ? postsArray : [])];
-                    return newObj;
-                });
-            })
-            .catch(err => console.log(err));
+    // 0. latest; 1. most liked
+    const loadPosts = () => {
+        switch(order) {
+            case 0:
+                axios.post(`${process.env.BACKEND_URL}/api/getPosts`, { lastPostId: loadedPosts.lastPostId })
+                    .then(res => {
+                        let postsArray = res.data;
+                        if(postsArray.length !== 0) {
+                            setLoadedPosts(prev => {
+                                let newObj = { ...prev };
+                                let ids = Array.from(postsArray ? postsArray : []).map(e => e.id);
+                                newObj.lastPostId = ids.at(-1);
+                                newObj.lastTimeRefreshed = date.getTime();
+                                newObj.posts = [...newObj.posts, ...Array.from(postsArray ? postsArray : [])];
+                                return newObj;
+                            });
+                        }
+                        setCanLoadPosts(false);
+                    })
+                    .catch(err => console.log(err));
+                break;
+            case 1:
+                axios.post(`${process.env.BACKEND_URL}/api/getPostsMostLiked`, { lastPostId: loadedPosts.lastPostId })
+                    .then(res => {
+                        let postsArray = res.data;
+                        if(postsArray.length !== 0) {
+                            setLoadedPosts(prev => {
+                                let newObj = { ...prev };
+                                let ids = Array.from(postsArray ? postsArray : []).map(e => e.id);
+                                newObj.lastPostId = ids.at(-1);
+                                newObj.lastTimeRefreshed = date.getTime();
+                                newObj.posts = [...newObj.posts, ...Array.from(postsArray ? postsArray : [])];
+                                return newObj;
+                            });
+                        }
+                        setCanLoadPosts(false);
+                    })
+                    .catch(err => console.log(err));
+                break;
+        }
     }
 
     useEffect(() => {
+        resetLoadedPosts();
         loadPosts();
+    }, [order]);
+
+    useEffect(() => {
+        const scrollEventListener = window.addEventListener("scroll", (e) => {
+            e.preventDefault();
+            if (window.innerHeight + document.documentElement.scrollTop >= document.scrollingElement.scrollHeight - 100) {
+                setCanLoadPosts(true);
+            }
+        });
+
+        return () => {
+            window.removeEventListener("scroll", scrollEventListener);
+        }
     }, []);
+
+    useEffect(() => {
+        if(canLoadPosts) {
+            loadPosts();
+        }
+    }, [canLoadPosts]);
 
     const posts = loadedPosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} profilePictureUrl={e.profilePictureUrl} username={username} />);
 
     return (
         <div className="Mainboard">
             <CreatePost isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} postData={postData} setPostData={setPostData}/>
-            {/* <UpperBar /> */}
-            <button onClick={() => {
-                setLoadedPosts({
-                    lastTimeRefreshed: 0,
-                    lastPostId: 99999999,
-                    posts: []
-                });
-                loadPosts();
-            }}>Refresh</button>
-            {  }
-            { isLogged && <button onClick={() => setIsCreatePostOpen(true)}>ADD POST</button> }
-
-            { posts }
-            <h2 style={{ marginTop: 50, color: "var(--gray)" }}>LOADING POSTS...</h2>
-
-            { /* <button onClick={getTajneDane}>Dostań tajne dane</button>
-            { tajneDane ? tajneDane : "" } */ }
+            <UpperBar setOrder={setOrder} />
+            { isLogged && <button className="Button1" onClick={() => setIsCreatePostOpen(true)}>ADD POST</button> }
+            { posts }<br />
         </div>
     );
 }
