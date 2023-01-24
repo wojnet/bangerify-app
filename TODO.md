@@ -12,7 +12,6 @@
 - Dark theme [✓]
 - Post loading [✓]
 - Visible name change [✓]
-- Mainboard filters
 - SQL injection [1/2]
 - DDoS protection
 - AWS RDS
@@ -22,6 +21,7 @@
 - AdSense
 
 ### ADDITONALS
+- Mainboard filters
 - Badges
 - Activity points
 
