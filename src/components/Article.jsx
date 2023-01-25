@@ -8,7 +8,7 @@ import CommentsIcon from "./CommentsIcon";
 import UserSample from "../assets/userSample.png"
 import Comment from "./Comment";
 
-const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePictureUrl, username }) => {
+const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePictureUrl, username, isMobile }) => {
 
     const [areSettingsOpen, setAreSettingsOpen] = useState(false);
     
@@ -122,11 +122,12 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
                     <img src={profilePictureUrl ? profilePictureUrl : UserSample} alt="Profile picture" className="Article--ProfilePicture" />
                 </Link>
                 <section>
-                    <p>
+                    <p className="Article--TopLine">
                         <Link to={`/profile/${postUsername}`} className="Article--Link">{postVisibleName}</Link>
                         <span className="Article--Date">{localDate.toLocaleDateString() + " / " + localDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
                     </p>
-                    <p style={{ fontSize: "14px", marginBottom: "10px" }}>@{postUsername}</p>
+                    <p style={{ fontSize: "14px", color: "var(--black)" }}>@{postUsername}</p>
+                    <p className="Article--DateMobile">{localDate.toLocaleDateString() + " / " + localDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
                 </section>
             </section>
 

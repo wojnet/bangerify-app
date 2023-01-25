@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { axiosJWT } from "../Helpers";
 import Article from "./Article";
-import UpperBar from "./UpperBar";
+// import UpperBar from "./UpperBar";
 import CreatePost from "./Modal/CreatePost";
 
 const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePostOpen, setIsCreatePostOpen }) => {
@@ -69,9 +69,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
     useEffect(() => {
         resetLoadedPosts();
         loadPosts();
-    }, [order]);
 
-    useEffect(() => {
         const scrollEventListener = window.addEventListener("scroll", (e) => {
             e.preventDefault();
             if (window.innerHeight + document.documentElement.scrollTop >= document.scrollingElement.scrollHeight - 100) {
@@ -95,7 +93,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
     return (
         <div className="Mainboard">
             <CreatePost isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} postData={postData} setPostData={setPostData}/>
-            <UpperBar setOrder={setOrder} />
+            {/* <UpperBar setOrder={setOrder} /> */}
             { isLogged && <button className="Button1" onClick={() => setIsCreatePostOpen(true)}>ADD POST</button> }
             { posts }<br />
         </div>

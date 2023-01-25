@@ -86,9 +86,10 @@ const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostDa
                 
                 />
                 <section style={{ display: "flex" }}>
-                    <button>🖼️</button>
+                    {/* <button>🖼️</button> */}
                 </section>
                 <button onClick={createPost}>Create Post</button>
+                <p style={{ textAlign: "center", fontSize: "10px", color: "var(--gray)", fontStyle: "italic" }}>* you can use markdown to format text</p>
             </div>
         </>
         ,

@@ -4,15 +4,19 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { refreshToken, axiosJWT } from "./Helpers";
 import Navbar from "./components/Navbar";
+import NavbarMobile from "./components/NavbarMobile";
 import Wrapper from "./components/Wrapper";
 import CookieAlert from "./components/Modal/CookieAlert";
 
 export const App = () => {
 
 	const r = document.querySelector(':root');
+	const navbarThreshold = 800;
 
 	const [path, setPath] = useState();
 	const date = new Date();
+
+	const [isMobile, setIsMobile] = useState(window.innerWidth > navbarThreshold ? false : true);
 	
 	const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
 	const [theme, setTheme] = useState(false);
@@ -29,7 +33,6 @@ export const App = () => {
 		]
 	});
 	// date.getTime(); ms since 1970
-
 	
 
 	const checkIfCookiesAllowed = () => {
@@ -86,6 +89,13 @@ export const App = () => {
 		}
 		updateIsLogged();
 		updateTheme();
+
+		function updateOnResize() {
+			setIsMobile(window.innerWidth > navbarThreshold ? false : true);
+		}
+
+		window.addEventListener("resize", updateOnResize);
+
 	}, []);
 
 	useEffect(() => {
@@ -112,8 +122,11 @@ export const App = () => {
 		<BrowserRouter>
 			<div className="App">
 				<CookieAlert isModalOpen={isCookiesModalOpen} setIsModalOpen={setIsCookiesModalOpen} allowCookies={allowCookies} />
-				<Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} updateTheme={updateTheme} />
+
+				{ !isMobile ? <Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} updateTheme={updateTheme} /> : <NavbarMobile isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} updateTheme={updateTheme} /> }
+
 				<Wrapper path={path} setPath={setPath} isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} />
+				{ isMobile }
 			</div>
 		</BrowserRouter>
 	);

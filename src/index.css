@@ -99,6 +99,62 @@ input, textarea {
 	font-family: 'Londrina Solid', cursive;
 }
 
+
+/* NAVBAR MOBILE */
+
+.NavbarMobile {
+	height: 100vh;
+	width: 250px;
+	background: var(--white);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
+	flex-grow: 0;
+	flex-shrink: 0;
+	padding: 15px 15px;
+	position: fixed;
+	top: 0;
+	transition: left 500ms ease, box-shadow 500ms ease;
+}
+
+.NavbarMobile--Logo {
+	width: 50%;
+}
+
+.NavbarMobile > ul {
+	height: 100%;
+	margin-top: 100px;
+	align-self: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+}
+
+.NavbarMobile a {
+	font-size: 22px;
+	color: var(--black);
+	text-decoration: none;
+	padding: 3px;
+	border-radius: 5px;
+	font-family: 'Londrina Solid', cursive;
+}
+
+.NavbarMobile--Bottom {
+	display: flex;
+	align-self: center;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+}
+
+.NavbarMobile--Bottom > p {
+	color: var(--gray);
+	font-size: 12px;
+	font-family: 'Londrina Solid', cursive;
+}
+
 .Wrapper {
 	width: 100%;
 	max-width: 750px; /* OPTIONAL */
@@ -169,6 +225,7 @@ input, textarea {
 	flex-direction: column;
 	align-items: center;
 	gap: 25px;
+	margin-top: 50px;
 }
 
 .Article {
@@ -179,7 +236,7 @@ input, textarea {
 	align-items: flex-start;
 	padding: 15px 5px;
 	margin-bottom: 20px;
-	border-bottom: 1px dashed var(--lightGray);
+	/* border-bottom: 1px dashed var(--lightGray); */
 }
 
 .Article--Link {
@@ -193,10 +250,19 @@ input, textarea {
 	font-size: 14px;
 	margin-bottom: 10px;
 	margin-left: 15px;
+	display: inline;
+}
+
+.Article--DateMobile {
+	color: var(--gray);
+	font-size: 12px;
+	margin-bottom: 10px;
+	display: none;
 }
 
 .Article--Content {
 	color: var(--black);
+	margin-top: 10px;
 }
 
 .Article--Content p {
@@ -455,4 +521,35 @@ input, textarea {
 
 .Comment--OptionsButton:hover {
 	opacity: 0.7;
+}
+
+.Burger {
+	width: 50px;
+	height: 50px;
+	/* background: var(--white); */
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 7px;
+	padding: 10px;
+	transition: left 500ms ease;
+	z-index: 1000;
+}
+
+.Burger > div {
+	width: 100%;
+	height: 10%;
+	background: var(--gray);
+	transition: transform 500ms ease, width 200ms ease;
+}
+
+@media only screen and (max-width: 600px) {
+	.Article--Date {
+		display: none;
+	}
+	
+	.Article--DateMobile {
+		display: inline;
+	}
 }

@@ -14,11 +14,13 @@
 - Visible name change [✓]
 - SQL injection [1/2]
 - DDoS protection
-- AWS RDS
-- AWS EC2 Node.js (scalable)
-- Domena
-- Hosting
+- AWS RDS [1/2]
+- AWS EC2 Node.js [✓]
+- Domena [✓]
+- Hosting S3 [✓]
 - AdSense
+- Empty visible name
+- MySQL 1451 error
 
 ### ADDITONALS
 - Mainboard filters

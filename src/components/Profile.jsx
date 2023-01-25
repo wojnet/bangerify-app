@@ -56,7 +56,7 @@ const Profile = ({ username }) => {
     }
     
     const changeVisibleName = () => {
-        if (changeVisibleName != visibleName) {
+        if (changedVisibleName !== visibleName && changedVisibleName !== "") {
             axiosJWT.post(`${process.env.BACKEND_URL}/api/changeVisibleName`, { newVisibleName: changedVisibleName })
             .then(() => document.location.reload())
             .catch(err => console.log(err));
@@ -181,7 +181,7 @@ const Profile = ({ username }) => {
                     { visibleName && <h3 style={{ color: "var(--black)" }}>
                         { !isChangingVisibleName && visibleName }
                         { profileUsername === username && <>
-                            { isChangingVisibleName && <input type="text" value={changedVisibleName} onChange={(e) => setChangedVisibleName(e.target.value)} /> }
+                            { isChangingVisibleName && <input type="text" value={changedVisibleName} required="required" onChange={(e) => setChangedVisibleName(e.target.value)} /> }
                             { isChangingVisibleName && <button onClick={changeVisibleName} style={{ border: "none", background: "none", cursor: "pointer" }}>✔️</button> }
                             <button style={{ border: "none", background: "none", cursor: "pointer" }} onClick={() => setIsChangingVisibleName(prev => !prev)}>{ isChangingVisibleName ? "❌" : "🖊️" }</button>
                         </> }
