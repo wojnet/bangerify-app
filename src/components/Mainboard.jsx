@@ -88,7 +88,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
         }
     }, [canLoadPosts]);
 
-    const posts = loadedPosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} profilePictureUrl={e.profilePictureUrl} username={username} />);
+    const posts = loadedPosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} profilePictureUrl={e.profilePictureUrl} username={username} grade={e.grade} />);
 
     return (
         <div className="Mainboard">

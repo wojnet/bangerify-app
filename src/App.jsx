@@ -60,6 +60,11 @@ export const App = () => {
 			r.style.setProperty("--gray", "#888");
 			r.style.setProperty("--hoverGray", "#DDD");
 			r.style.setProperty("--lightGray", "#EEE");
+			r.style.setProperty("--gradeMod", "rgb(134, 252, 80)");
+			r.style.setProperty("--gradeAdmin", "rgb(14, 126, 201)");
+			r.style.setProperty("--gradeHeadAdmin", "rgb(66, 148, 255)");
+			r.style.setProperty("--gradeCreator", "rgb(30, 34, 255)");
+			r.style.setProperty("--gradeGigachad", "rgb(255, 178, 78)");
 		} else {
 			r.style.setProperty("--black", "#FFF");
 			r.style.setProperty("--white", "#111");
@@ -67,12 +72,22 @@ export const App = () => {
 			r.style.setProperty("--gray", "#888");
 			r.style.setProperty("--hoverGray", "#333");
 			r.style.setProperty("--lightGray", "#222");
+			r.style.setProperty("--gradeMod", "rgb(134, 252, 80)");
+			r.style.setProperty("--gradeAdmin", "rgb(14, 126, 201)");
+			r.style.setProperty("--gradeHeadAdmin", "rgb(115, 191, 250)");
+			r.style.setProperty("--gradeCreator", "rgb(66, 148, 255)");
+			r.style.setProperty("--gradeGigachad", "rgb(255, 178, 78)");
+		}
+
+		if (checkIfCookiesAllowed()) {
+			document.cookie = `theme=${theme ? 1 : 0}`;
 		}
 	}
 
 	const allowCookies = () => {
-		document.cookie = "cookiesAllowed=1;path=/";
-        document.cookie = "theme=0;path=/";
+		console.log("ALLOWED COOKIES");
+		document.cookie = "cookiesAllowed=1";
+        document.cookie = "theme=0";
 	}
 
 	useEffect(() => {
@@ -100,7 +115,6 @@ export const App = () => {
 
 	useEffect(() => {
 		updateTheme();
-		document.cookie = `theme=${theme ? 1 : 0}`;
 	}, [theme]);
 
 	axiosJWT.interceptors.request.use(async (config) => {

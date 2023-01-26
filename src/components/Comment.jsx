@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { axiosJWT } from "../Helpers";
 
-const Comment = ({ id, userId, text, date, profilePictureUrl, commentUsername, visibleName, username, loadComments }) => {
+const Comment = ({ id, userId, text, date, profilePictureUrl, commentUsername, visibleName, username, loadComments, grade }) => {
 
     const [areSettingsOpen, setAreSettingsOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -22,13 +22,22 @@ const Comment = ({ id, userId, text, date, profilePictureUrl, commentUsername, v
             .catch(err => console.error(err));
     }
 
+    const visibleNameStyles = {
+        0: {},
+        1: { color: "var(--gradeMod)" }, // MOD
+        2: { color: "var(--gradeAdmin)" }, // ADMIN
+        3: { color: "var(--gradeHeadAdmin)" }, // HEADADMIN
+        4: { color: "var(--gradeCreator)" }, // CREATOR
+        348: { color: "var(--gradeGigachad)" } // GIGACHAD
+    }
+
     return (
         <div className="Comment">
             <section className="Comment--Header">
                 <Link to={`/profile/${commentUsername}`} style={{ textDecoration: "none", color: "var(--black)" }}>
                     <section style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                         <img src={profilePictureUrl} alt="Profile picture" />
-                        <p>@{commentUsername}<span>{formatedDate.toLocaleDateString()} / {formatedDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></p>
+                        <p style={visibleNameStyles[grade]}>{visibleName}<span>{formatedDate.toLocaleDateString()} / {formatedDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></p>
                     </section>
                 </Link>
 

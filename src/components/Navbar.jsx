@@ -53,7 +53,6 @@ const Navbar = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, username
                 <img style={{ width: "25px", marginTop: "20px", cursor: "pointer" }} src={theme ? Moon : Sun} alt="Theme change button" onClick={() => {
                     setTheme(prev => !prev);
                     updateTheme();
-                    document.cookie = `theme=${theme ? 1 : 0}`;
                 }} />
             </ul>
             <div className="Navbar--Bottom">

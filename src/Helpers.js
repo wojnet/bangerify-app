@@ -2,6 +2,7 @@ import axios from "axios";
 
 export async function refreshToken(_config) {
     try {
+        console.log(localStorage.getItem("refreshToken"));
         const res = await axios.post(`${process.env.BACKEND_URL}/api/token/refresh`, { token: localStorage.getItem("refreshToken") });
         localStorage.setItem("accessToken", res.data.accessToken);
         localStorage.setItem("refreshToken", res.data.refreshToken);

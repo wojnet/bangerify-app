@@ -8,7 +8,7 @@ import CommentsIcon from "./CommentsIcon";
 import UserSample from "../assets/userSample.png"
 import Comment from "./Comment";
 
-const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePictureUrl, username, isMobile }) => {
+const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePictureUrl, username, isMobile, grade }) => {
 
     const [areSettingsOpen, setAreSettingsOpen] = useState(false);
     
@@ -27,11 +27,13 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
 
     const loadLikes = () => {
 
-        axiosJWT.post(`${process.env.BACKEND_URL}/api/checkIfLiked`, { postId: id })
-            .then(res => {
-                setIsLiked(res.data.liked === 0 ? false : true);
-            })
-            .catch(err => console.error(err));
+        if (username !== "") {
+            axiosJWT.post(`${process.env.BACKEND_URL}/api/checkIfLiked`, { postId: id })
+                .then(res => {
+                    setIsLiked(res.data.liked === 0 ? false : true);
+                })
+                .catch(err => console.error(err));
+        }
 
         axios.post(`${process.env.BACKEND_URL}/api/loadLikes`, { postId: id })
             .then(res => {
@@ -105,7 +107,16 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
             .catch(err => console.error(err));
     }
 
-    var comments = commentsData.map((e, i) => <Comment key={i} id={e.id} userId={e.userId} text={e.text} date={e.date} profilePictureUrl={e.profilePictureUrl} commentUsername={e.username} visibleName={e.visible_name} username={username} loadComments={loadComments} />);
+    const visibleNameStyles = {
+        0: {},
+        1: { color: "var(--gradeMod)" }, // MOD
+        2: { color: "var(--gradeAdmin)" }, // ADMIN
+        3: { color: "var(--gradeHeadAdmin)" }, // HEADADMIN
+        4: { color: "var(--gradeCreator)" }, // CREATOR
+        348: { color: "var(--gradeGigachad)" } // GIGACHAD
+    }
+
+    var comments = commentsData.map((e, i) => <Comment key={i} id={e.id} userId={e.userId} text={e.text} date={e.date} profilePictureUrl={e.profilePictureUrl} commentUsername={e.username} visibleName={e.visible_name} username={username} loadComments={loadComments} grade={e.grade} />);
 
     return (
         <article className="Article">
@@ -123,7 +134,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
                 </Link>
                 <section>
                     <p className="Article--TopLine">
-                        <Link to={`/profile/${postUsername}`} className="Article--Link">{postVisibleName}</Link>
+                        <Link to={`/profile/${postUsername}`} className="Article--Link" style={visibleNameStyles[grade]}>{postVisibleName}</Link>
                         <span className="Article--Date">{localDate.toLocaleDateString() + " / " + localDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
                     </p>
                     <p style={{ fontSize: "14px", color: "var(--black)" }}>@{postUsername}</p>

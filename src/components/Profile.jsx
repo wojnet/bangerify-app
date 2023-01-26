@@ -72,7 +72,9 @@ const Profile = ({ username }) => {
             case 2:
                 return <span className="ADMIN">ADMIN</span>;
             case 3:
-                return <span className="GOD">CREATOR</span>;
+                return <span className="HEADADMIN">HEADADMIN</span>;
+            case 4:
+                return <span className="CREATOR">CREATOR</span>;
             case 348:
                 return <span className="GIGACHAD">GIGACHAD</span>;
         }
@@ -158,7 +160,7 @@ const Profile = ({ username }) => {
         }
     }, [isChangingProfilePicture]);
 
-    const posts = profilePosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} profilePictureUrl={e.profilePictureUrl} username={username} />);
+    const posts = profilePosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} profilePictureUrl={e.profilePictureUrl} username={username} grade={e.grade} />);
 
     const ProfilePictureInput = () => {
         return(

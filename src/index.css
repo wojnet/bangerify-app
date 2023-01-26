@@ -9,6 +9,12 @@
 	--gray: #888;
 	--hoverGray: #DDD;
 	--lightGray: #EEE;
+
+	--gradeMod: rgb(134, 252, 80);
+	--gradeAdmin: rgb(14, 126, 201);
+	--gradeHeadAdmin: rgb(66, 148, 255);
+	--gradeCreator: rgb(30, 34, 255);
+	--gradeGigachad: rgb(255, 178, 78);
 }
 
 * {
@@ -17,6 +23,10 @@
 	padding: 0;
 	margin: 0;
 	font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+	color: var(--black);
 }
 
 body {
@@ -426,7 +436,17 @@ input, textarea {
     vertical-align: middle;
 }
 
-.GOD {
+.HEADADMIN {
+    color: white;
+    background: linear-gradient(to right, rgb(161, 53, 165) ,rgb(101, 104, 255));
+    font-size: 10px;
+    padding-inline: 5px;
+    border-radius: 5px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.CREATOR {
     color: white;
     background: linear-gradient(to right, rgb(161, 53, 165) ,rgb(53, 34, 231));
     font-size: 10px;
@@ -473,7 +493,13 @@ input, textarea {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	gap: 20px;
 	padding-top: 50px;
+}
+
+.Options a {
+	text-decoration: none;
+	font-weight: bold;
 }
 
 .Comment {

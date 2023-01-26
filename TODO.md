@@ -19,13 +19,17 @@
 - Domena [✓]
 - Hosting S3 [✓]
 - AdSense
-- Empty visible name
-- MySQL 1451 error
+- Empty visible name [✓]
+- MySQL 1451 error [✓]
 
 ### ADDITONALS
+- [kn1ght] Grade colors on Visible Name [✓]
+- [kn1ght] "Read more" on long posts
+- [kn1ght] User comments & posts counter (last.fm)
 - Mainboard filters
-- Badges
+- [kn1ght] Badges
 - Activity points
 
 ### ERRORS
 - Logs out on mom pc (after around 1 minute after login)
+- SEND EMAILS SERVER IP!!!
