@@ -5,7 +5,8 @@
 	"source": "src/index.html",
 	"scripts": {
 		"start": "parcel",
-		"build": "parcel build --dist-dir ./build --public-url /"
+		"build": "parcel build --dist-dir ./build --public-url /",
+		"sync": "aws s3 sync ./build 's3://bangerify.com/'"
 	},
 	"keywords": [],
 	"author": "",

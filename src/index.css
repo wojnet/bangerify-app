@@ -283,6 +283,12 @@ input, textarea {
 	max-width: 100%;
 }
 
+.Article--Content a {
+	color: var(--gray);
+	text-decoration: none;
+	font-style: italic;
+}
+
 .Article--OptionsButton {
 	height: 20px;
 	position: absolute;
