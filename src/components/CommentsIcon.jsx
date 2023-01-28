@@ -1,6 +1,6 @@
 const CommentsIcon = ({ number, click }) => {
     return(
-        <div className="CommentsIcon" onClick={click}>
+        <div style={{ webkitUserSelect: "none", msUserSelect: "none", userSelect: "none" }} className="CommentsIcon" onClick={click}>
             <span>☲</span>
             <p>{number}</p>
         </div>

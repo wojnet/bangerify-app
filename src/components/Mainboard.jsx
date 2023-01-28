@@ -25,10 +25,10 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
     }
 
     // 0. latest; 1. most liked
-    const loadPosts = () => {
+    const loadPosts = (_reset) => {
         switch(order) {
             case 0:
-                axios.post(`${process.env.BACKEND_URL}/api/getPosts`, { lastPostId: loadedPosts.lastPostId })
+                axios.post(`${process.env.BACKEND_URL}/api/getPosts`, { lastPostId: _reset === "reset" ? 99999999 : loadedPosts.lastPostId })
                     .then(res => {
                         let postsArray = res.data;
                         if(postsArray.length !== 0) {
@@ -46,7 +46,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
                     .catch(err => console.log(err));
                 break;
             case 1:
-                axios.post(`${process.env.BACKEND_URL}/api/getPostsMostLiked`, { lastPostId: loadedPosts.lastPostId })
+                axios.post(`${process.env.BACKEND_URL}/api/getPostsMostLiked`, { lastPostId: _reset === "reset" ? 99999999 : loadedPosts.lastPostId })
                     .then(res => {
                         let postsArray = res.data;
                         if(postsArray.length !== 0) {
@@ -68,7 +68,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
 
     useEffect(() => {
         resetLoadedPosts();
-        loadPosts();
+        loadPosts("reset");
 
         const scrollEventListener = window.addEventListener("scroll", (e) => {
             e.preventDefault();

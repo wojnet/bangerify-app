@@ -81,8 +81,8 @@ const Profile = ({ username }) => {
     }
 
     // 0. latest; 1. most liked
-    function loadPosts() {
-        axios.post(`${process.env.BACKEND_URL}/api/getUserPosts`, { lastPostId: profilePosts.lastPostId, order: 0, author: profileUsername })
+    function loadPosts(_reset) {
+        axios.post(`${process.env.BACKEND_URL}/api/getUserPosts`, { lastPostId: _reset === "reset" ? 99999999 : loadedPosts.lastPostId, order: 0, author: profileUsername })
             .then(res => {
                 let postsArray = res.data;
                 console.log(res);
@@ -135,7 +135,7 @@ const Profile = ({ username }) => {
 
             ]
         });
-        loadPosts();
+        loadPosts("reset");
         const scrollEventListener = window.addEventListener("scroll", (e) => {
             e.preventDefault();
             if (window.innerHeight + document.documentElement.scrollTop >= document.scrollingElement.scrollHeight - 100) {
@@ -172,6 +172,15 @@ const Profile = ({ username }) => {
         );
     }
 
+    const visibleNameStyles = {
+        0: { color: "var(--black)" },
+        1: { color: "var(--gradeMod)" }, // MOD
+        2: { color: "var(--gradeAdmin)" }, // ADMIN
+        3: { color: "var(--gradeHeadAdmin)" }, // HEADADMIN
+        4: { color: "var(--gradeCreator)" }, // CREATOR
+        348: { color: "var(--gradeGigachad)" } // GIGACHAD
+    }
+
     return (
         <div className="Profile">
             <section className="Profile--Header">
@@ -180,7 +189,7 @@ const Profile = ({ username }) => {
                 } />
                 <section>
                     { isChangingProfilePicture && <ProfilePictureInput /> }
-                    { visibleName && <h3 style={{ color: "var(--black)" }}>
+                    { visibleName && <h3 style={visibleNameStyles[grade]}>
                         { !isChangingVisibleName && visibleName }
                         { profileUsername === username && <>
                             { isChangingVisibleName && <input type="text" value={changedVisibleName} required="required" onChange={(e) => setChangedVisibleName(e.target.value)} /> }

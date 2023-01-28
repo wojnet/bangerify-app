@@ -28,18 +28,21 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
     const loadLikes = () => {
 
         if (username !== "") {
-            axiosJWT.post(`${process.env.BACKEND_URL}/api/checkIfLiked`, { postId: id })
+            axiosJWT.post(`${process.env.BACKEND_URL}/api/loadLikesAuth`, { postId: id })
                 .then(res => {
+                    setLikes(res.data.likes);
                     setIsLiked(res.data.liked === 0 ? false : true);
                 })
                 .catch(err => console.error(err));
-        }
-
-        axios.post(`${process.env.BACKEND_URL}/api/loadLikes`, { postId: id })
+        } else {
+            axios.post(`${process.env.BACKEND_URL}/api/loadLikes`, { postId: id })
             .then(res => {
                 setLikes(res.data.likes);
             })
             .catch(err => console.error(err));
+        }
+
+        
     }
 
     const loadComments = () => {
@@ -158,8 +161,8 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
                 <CommentsIcon number={commentsData.length} click={() => setIsCommentInputOpen(true)} />
             </section>
 
-            { (isCommentInputOpen && username !== "") && <section style={{ display: "flex", gap: "10px" }}>
-                <textarea value={commentValue} onChange={(e) => setCommentValue(e.target.value)} />
+            { (isCommentInputOpen && username !== "") && <section style={{ width: "100%", display: "flex", gap: "10px", marginTop: "10px" }}>
+                <textarea style={{ width: "100%" }} value={commentValue} onChange={(e) => setCommentValue(e.target.value)} />
                 <button className="Button1" onClick={sendComment}>COMMENT</button>
                 <button className="Button1" onClick={() => setIsCommentInputOpen(false)}>EXIT COMMENTING</button>
             </section> }
