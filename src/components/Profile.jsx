@@ -82,10 +82,9 @@ const Profile = ({ username }) => {
 
     // 0. latest; 1. most liked
     function loadPosts(_reset) {
-        axios.post(`${process.env.BACKEND_URL}/api/getUserPosts`, { lastPostId: _reset === "reset" ? 99999999 : loadedPosts.lastPostId, order: 0, author: profileUsername })
+        axios.post(`${process.env.BACKEND_URL}/api/getUserPosts`, { lastPostId: _reset === "reset" ? 99999999 : profilePosts.lastPostId, order: 0, author: profileUsername })
             .then(res => {
                 let postsArray = res.data;
-                console.log(res);
 
                 setProfilePosts(prev => {
                     let newObj = { ...prev };

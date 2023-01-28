@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 /* THE STANDARD THEME IS WHITE */
 :root {
@@ -7,7 +8,7 @@
 	--white: #FFF;
 	--white05: #FFF8;
 	--gray: #888;
-	--hoverGray: #DDD;
+	--hoverGray: #E0E0E0;
 	--hoverGray05: #DDD8;
 	--lightGray: #EEE;
 	--lightGray05: #EEE8;
@@ -20,11 +21,12 @@
 }
 
 * {
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	/* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
-	font-family: 'Open Sans', sans-serif;
+	/* font-family: 'Open Sans', sans-serif; */
+	font-family: 'Nunito Sans', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -248,7 +250,7 @@ input, textarea {
 	align-items: flex-start;
 	padding: 15px 15px;
 	margin-bottom: 20px;
-	background: var(--lightGray05);
+	background: var(--lightGray);
 	border-radius: 15px;
 	/* border-bottom: 1px dashed var(--lightGray); */
 }
@@ -288,7 +290,7 @@ input, textarea {
 }
 
 .Article--Content img {
-	max-width: 100%;
+	width: 100%;
 	border-radius: 10px;
 	box-shadow: 0 0 10px #0001;
 	align-self: center;
@@ -316,7 +318,7 @@ input, textarea {
 }
 
 .Article--Options {
-	width: 100px;
+	min-width: 100px;
 	position: absolute;
 	align-self: flex-end;
 	display: flex;
@@ -330,6 +332,7 @@ input, textarea {
 	background: var(--lightGray);
 	border: none;
 	border-radius: 5px;
+	padding-inline: 5px;
 	cursor: pointer;
 	margin-block: 1px;
 }
@@ -520,16 +523,14 @@ input, textarea {
 }
 
 .Comment {
-	background: var(--lightGray05);
+	background: var(--hoverGray);
 	color: var(--black);
 	width: 100%;
-	padding: 5px;
+	padding: 8px;
 	margin-top: 20px;
-	/* margin-left: 20px; */
-	/* border: 1px solid var(--lightGray); */
 	border-radius: 10px;
-	box-shadow: 0 0 10px #00000020;
-	/* box-shadow: -2px -2px 5px var(--white), 2px 2px 5px var(--hoverGray); */
+
+	/* box-shadow: 0 0 10px #00000020; */
 }
 
 .Comment--Header {

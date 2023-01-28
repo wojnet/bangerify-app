@@ -58,7 +58,7 @@ export const App = () => {
 			r.style.setProperty("--white", "#FFF");
 			r.style.setProperty("--white05", "#FFF8");
 			r.style.setProperty("--gray", "#888");
-			r.style.setProperty("--hoverGray", "#DDD");
+			r.style.setProperty("--hoverGray", "#E0E0E0");
 			r.style.setProperty("--hoverGray05", "#DDD8");
 			r.style.setProperty("--lightGray", "#EEE");
 			r.style.setProperty("--lightGray05", "#EEE8");
@@ -72,9 +72,10 @@ export const App = () => {
 			r.style.setProperty("--white", "#111");
 			r.style.setProperty("--white05", "#0008");
 			r.style.setProperty("--gray", "#888");
-			r.style.setProperty("--hoverGray", "#333");
+			r.style.setProperty("--hoverGray", "#2A2A2A");
 			r.style.setProperty("--hoverGray05", "#3338");
-			r.style.setProperty("--lightGray", "#222");
+			// r.style.setProperty("--lightGray", "#222");
+			r.style.setProperty("--lightGray", "#1C1D1F");
 			r.style.setProperty("--lightGray05", "#2228");
 			r.style.setProperty("--gradeMod", "rgb(134, 252, 80)");
 			r.style.setProperty("--gradeAdmin", "rgb(14, 126, 201)");

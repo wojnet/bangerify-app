@@ -18,6 +18,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
     const [isEditingArticle, setIsEditingArticle] = useState(false);
     const [changedArticle, setChangedArticle] = useState("");
     const [likes, setLikes] = useState(0);
+    const [addedLikes, setAddedLikes] = useState(0);
     const [isLiked, setIsLiked] = useState(false);
     const [canLike, setCanLike] = useState(false);
 
@@ -82,32 +83,39 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
 
     const deletePost = () => {
         axiosJWT.post(`${process.env.BACKEND_URL}/api/deletePost`, { postId: id })
-            .then(res => document.location.reload())
+            .then(res => window.reload())
             .catch(err => console.error(err));
     }
 
     const like = () => {
-
-        if(!isLiked) {
-            setIsLiked(true);
-            setLikes(prev => prev + 1);
+        if (username !== "") {
+            if(!isLiked) {
+                setIsLiked(true);
+                setAddedLikes(prev => prev + 1);
+            } else {
+                setIsLiked(false);
+                setAddedLikes(prev => prev - 1);
+            }
+    
+            axiosJWT.post(`${process.env.BACKEND_URL}/api/setLike`, { postId: id })
+                .catch(err=> console.error(err));
         } else {
-            setIsLiked(false);
-            setLikes(prev => prev - 1);
+            alert("You need to be logged in");
         }
-
-		axiosJWT.post(`${process.env.BACKEND_URL}/api/setLike`, { postId: id })
-			.catch(err => console.error(err));
 	}
 
     const sendComment = () => {
-        axiosJWT.post(`${process.env.BACKEND_URL}/api/commentPost`, { postId: id, text: commentValue })
+        if (commentValue !== "") {
+            axiosJWT.post(`${process.env.BACKEND_URL}/api/commentPost`, { postId: id, text: commentValue })
             .then(() => {
                 setIsCommentInputOpen(false);
                 setCommentValue("");
             })
             .then(() => loadComments())
             .catch(err => console.error(err));
+        } else {
+            setIsCommentInputOpen(false);
+        }
     }
 
     const visibleNameStyles = {
@@ -157,14 +165,14 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
 
 
             <section style={{ display: "flex", gap: "10px" }}>
-                <HeartIcon number={likes} click={like} isLiked={isLiked} />
+                <HeartIcon number={likes + addedLikes} click={like} isLiked={isLiked} />
                 <CommentsIcon number={commentsData.length} click={() => setIsCommentInputOpen(true)} />
             </section>
 
-            { (isCommentInputOpen && username !== "") && <section style={{ width: "100%", display: "flex", gap: "10px", marginTop: "10px" }}>
-                <textarea style={{ width: "100%" }} value={commentValue} onChange={(e) => setCommentValue(e.target.value)} />
+            { (isCommentInputOpen && username !== "") && <section style={{ width: "100%", display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "10px" }}>
+                <textarea style={{ width: "100%", flexGrow: 1, resize: "vertical", border: "1px solid var(--gray)", background: "var(--hoverGray05)", padding: "2px" }} value={commentValue} onChange={(e) => setCommentValue(e.target.value)} />
                 <button className="Button1" onClick={sendComment}>COMMENT</button>
-                <button className="Button1" onClick={() => setIsCommentInputOpen(false)}>EXIT COMMENTING</button>
+                <button style={{ width: "20px", height: "20px", background: "none", border: "none", color: "var(--black)", fontSize: "16px", cursor: "pointer" }} onClick={() => setIsCommentInputOpen(false)}>&times;</button>
             </section> }
 
             { comments }
