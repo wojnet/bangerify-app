@@ -41,7 +41,7 @@ export const App = () => {
 	}
 
 	const updateIsLogged = () => {
-		console.log("Update is logged");
+		// console.log("Update is logged");
 		axiosJWT.get(`${process.env.BACKEND_URL}/api/auth/isLogged`, {
             headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
         })
@@ -59,7 +59,9 @@ export const App = () => {
 			r.style.setProperty("--white05", "#FFF8");
 			r.style.setProperty("--gray", "#888");
 			r.style.setProperty("--hoverGray", "#DDD");
+			r.style.setProperty("--hoverGray05", "#DDD8");
 			r.style.setProperty("--lightGray", "#EEE");
+			r.style.setProperty("--lightGray05", "#EEE8");
 			r.style.setProperty("--gradeMod", "rgb(134, 252, 80)");
 			r.style.setProperty("--gradeAdmin", "rgb(14, 126, 201)");
 			r.style.setProperty("--gradeHeadAdmin", "rgb(66, 148, 255)");
@@ -71,7 +73,9 @@ export const App = () => {
 			r.style.setProperty("--white05", "#0008");
 			r.style.setProperty("--gray", "#888");
 			r.style.setProperty("--hoverGray", "#333");
+			r.style.setProperty("--hoverGray05", "#3338");
 			r.style.setProperty("--lightGray", "#222");
+			r.style.setProperty("--lightGray05", "#2228");
 			r.style.setProperty("--gradeMod", "rgb(134, 252, 80)");
 			r.style.setProperty("--gradeAdmin", "rgb(14, 126, 201)");
 			r.style.setProperty("--gradeHeadAdmin", "rgb(115, 191, 250)");

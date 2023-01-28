@@ -8,7 +8,9 @@
 	--white05: #FFF8;
 	--gray: #888;
 	--hoverGray: #DDD;
+	--hoverGray05: #DDD8;
 	--lightGray: #EEE;
+	--lightGray05: #EEE8;
 
 	--gradeMod: rgb(134, 252, 80);
 	--gradeAdmin: rgb(14, 126, 201);
@@ -239,13 +241,15 @@ input, textarea {
 }
 
 .Article {
-	width: 90%;
+	width: 95%;
 	min-height: 10px;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	padding: 15px 5px;
+	padding: 15px 15px;
 	margin-bottom: 20px;
+	background: var(--lightGray05);
+	border-radius: 15px;
 	/* border-bottom: 1px dashed var(--lightGray); */
 }
 
@@ -271,6 +275,10 @@ input, textarea {
 }
 
 .Article--Content {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 	color: var(--black);
 	margin-top: 10px;
 }
@@ -281,6 +289,10 @@ input, textarea {
 
 .Article--Content img {
 	max-width: 100%;
+	border-radius: 10px;
+	box-shadow: 0 0 10px #0001;
+	align-self: center;
+	margin-block: 5px;
 }
 
 .Article--Content a {
@@ -473,11 +485,10 @@ input, textarea {
 }
 
 .HeartIcon {
-	color: var(--black);
 	margin-top: 15px;
 	display: flex;
 	gap: 10px;
-	background: var(--lightGray);
+	/* background: var(--lightGray); */
 	padding: 1px 5px;
 	border-radius: 5px;
 	cursor: pointer;
@@ -488,7 +499,7 @@ input, textarea {
 	margin-top: 15px;
 	display: flex;
 	gap: 10px;
-	background: var(--lightGray);
+	/* background: var(--lightGray); */
 	padding: 1px 5px;
 	border-radius: 5px;
 	cursor: pointer;
@@ -509,13 +520,16 @@ input, textarea {
 }
 
 .Comment {
+	background: var(--lightGray05);
 	color: var(--black);
-	width: 95%;
+	width: 100%;
 	padding: 5px;
 	margin-top: 20px;
-	margin-left: 30px;
-	border: 1px solid var(--lightGray);
-	border-radius: 5px;
+	/* margin-left: 20px; */
+	/* border: 1px solid var(--lightGray); */
+	border-radius: 10px;
+	box-shadow: 0 0 10px #00000020;
+	/* box-shadow: -2px -2px 5px var(--white), 2px 2px 5px var(--hoverGray); */
 }
 
 .Comment--Header {

@@ -1,7 +1,7 @@
 const CommentsIcon = ({ number, click }) => {
     return(
         <div className="CommentsIcon" onClick={click}>
-            <span style={{ color: "red" }}>💬</span>
+            <span>☲</span>
             <p>{number}</p>
         </div>
     );

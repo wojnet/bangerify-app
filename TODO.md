@@ -21,6 +21,7 @@
 - AdSense
 - Empty visible name [✓]
 - MySQL 1451 error [✓]
+- Websocket
 
 ### ADDITONALS
 - [kn1ght] Grade colors on Visible Name [✓]
