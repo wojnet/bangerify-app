@@ -28,7 +28,9 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
 
     const loadLikes = () => {
 
-        if (username !== "") {
+        // ŻEBY NAPRAWIĆ LAJKI TRZEBA ZROBIĆ JEDEN REQUEST ALE AXIOS WYKRYJE CZY JEST LOGGED IN CZY NIE
+
+        if (localStorage.getItem("accessToken")) {
             axiosJWT.post(`${process.env.BACKEND_URL}/api/loadLikesAuth`, { postId: id })
                 .then(res => {
                     setLikes(res.data.likes);
@@ -88,7 +90,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
     }
 
     const like = () => {
-        if (username !== "") {
+        if (localStorage.getItem("accessToken")) {
             if(!isLiked) {
                 setIsLiked(true);
                 setAddedLikes(prev => prev + 1);

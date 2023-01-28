@@ -18,3 +18,9 @@ export const axiosJWT = axios.create({
         
     }
 });
+
+export const axiosSwitch = axios.create({
+    headers: {
+        
+    }
+});
