@@ -508,7 +508,7 @@ input, textarea {
 	cursor: pointer;
 }
 
-.Options {
+.Credits {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -517,7 +517,7 @@ input, textarea {
 	padding-top: 50px;
 }
 
-.Options a {
+.Credits a {
 	text-decoration: none;
 	font-weight: bold;
 }

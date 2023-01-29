@@ -1,6 +1,6 @@
-const Options = () => {
+const Credits = () => {
     return(
-        <div className="Options">
+        <div className="Credits">
             <h1>HELLO!</h1>
             <p style={{ maxWidth: "400px", textAlign: "center" }}>Bangerify is a project by <a style={{ color: "var(--gradeCreator)" }} href="https://github.com/wojnet" target="_blank">@wojnet</a> - junior Front-End (hobbyist Back-End) Developer made with passion. It is updated almost everyday so bugs are being eliminated.</p>
             <p style={{ maxWidth: "400px", textAlign: "center" }}>Big thanks to helping & motivating people: </p>
@@ -10,4 +10,4 @@ const Options = () => {
     )
 }
 
-export default Options;
+export default Credits;

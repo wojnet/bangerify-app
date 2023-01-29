@@ -53,40 +53,40 @@ export const App = () => {
 	}
 
 	const updateTheme = () => {
-		if (!theme) {
-			r.style.setProperty("--black", "#000");
-			r.style.setProperty("--white", "#FFF");
-			r.style.setProperty("--white05", "#FFF8");
-			r.style.setProperty("--gray", "#888");
-			r.style.setProperty("--hoverGray", "#E0E0E0");
-			r.style.setProperty("--hoverGray05", "#DDD8");
-			r.style.setProperty("--lightGray", "#EEE");
-			r.style.setProperty("--lightGray05", "#EEE8");
-			r.style.setProperty("--gradeMod", "rgb(134, 252, 80)");
-			r.style.setProperty("--gradeAdmin", "rgb(14, 126, 201)");
-			r.style.setProperty("--gradeHeadAdmin", "rgb(66, 148, 255)");
-			r.style.setProperty("--gradeCreator", "rgb(30, 34, 255)");
-			r.style.setProperty("--gradeGigachad", "rgb(255, 178, 78)");
-		} else {
-			r.style.setProperty("--black", "#FFF");
-			r.style.setProperty("--white", "#111");
-			r.style.setProperty("--white05", "#0008");
-			r.style.setProperty("--gray", "#888");
-			r.style.setProperty("--hoverGray", "#2A2A2A");
-			r.style.setProperty("--hoverGray05", "#3338");
-			// r.style.setProperty("--lightGray", "#222");
-			r.style.setProperty("--lightGray", "#1C1D1F");
-			r.style.setProperty("--lightGray05", "#2228");
-			r.style.setProperty("--gradeMod", "rgb(134, 252, 80)");
-			r.style.setProperty("--gradeAdmin", "rgb(14, 126, 201)");
-			r.style.setProperty("--gradeHeadAdmin", "rgb(115, 191, 250)");
-			r.style.setProperty("--gradeCreator", "rgb(66, 148, 255)");
-			r.style.setProperty("--gradeGigachad", "rgb(255, 178, 78)");
-		}
+	// 	if (!theme) {
+	// 		r.style.setProperty("--black", "#000");
+	// 		r.style.setProperty("--white", "#FFF");
+	// 		r.style.setProperty("--white05", "#FFF8");
+	// 		r.style.setProperty("--gray", "#888");
+	// 		r.style.setProperty("--hoverGray", "#E0E0E0");
+	// 		r.style.setProperty("--hoverGray05", "#DDD8");
+	// 		r.style.setProperty("--lightGray", "#EEE");
+	// 		r.style.setProperty("--lightGray05", "#EEE8");
+	// 		r.style.setProperty("--gradeMod", "rgb(134, 252, 80)");
+	// 		r.style.setProperty("--gradeAdmin", "rgb(14, 126, 201)");
+	// 		r.style.setProperty("--gradeHeadAdmin", "rgb(66, 148, 255)");
+	// 		r.style.setProperty("--gradeCreator", "rgb(30, 34, 255)");
+	// 		r.style.setProperty("--gradeGigachad", "rgb(255, 178, 78)");
+	// 	} else {
+	// 		r.style.setProperty("--black", "#FFF");
+	// 		r.style.setProperty("--white", "#111");
+	// 		r.style.setProperty("--white05", "#0008");
+	// 		r.style.setProperty("--gray", "#888");
+	// 		r.style.setProperty("--hoverGray", "#2A2A2A");
+	// 		r.style.setProperty("--hoverGray05", "#3338");
+	// 		// r.style.setProperty("--lightGray", "#222");
+	// 		r.style.setProperty("--lightGray", "#1C1D1F");
+	// 		r.style.setProperty("--lightGray05", "#2228");
+	// 		r.style.setProperty("--gradeMod", "rgb(134, 252, 80)");
+	// 		r.style.setProperty("--gradeAdmin", "rgb(14, 126, 201)");
+	// 		r.style.setProperty("--gradeHeadAdmin", "rgb(115, 191, 250)");
+	// 		r.style.setProperty("--gradeCreator", "rgb(66, 148, 255)");
+	// 		r.style.setProperty("--gradeGigachad", "rgb(255, 178, 78)");
+	// 	}
 
-		if (checkIfCookiesAllowed()) {
-			document.cookie = `theme=${theme ? 1 : 0}`;
-		}
+	// 	if (checkIfCookiesAllowed()) {
+	// 		document.cookie = `theme=${theme ? 1 : 0}`;
+	// 	}
 	}
 
 	const allowCookies = () => {
@@ -96,19 +96,19 @@ export const App = () => {
 	}
 
 	useEffect(() => {
-		if (!checkIfCookiesAllowed()) {
-			setIsCookiesModalOpen(true);
-		} else {
-			const a = document.cookie.split(";").filter(e => e.split("=")[0] === " theme" || e.split("=")[0] === "theme");
-			if (a.length > 0) {
-				const value = a[0].split("=")[1];
-				setTheme(value === "0" ? false : true);
-			}
+		// if (!checkIfCookiesAllowed()) {
+		// 	setIsCookiesModalOpen(true);
+		// } else {
+		// 	const a = document.cookie.split(";").filter(e => e.split("=")[0] === " theme" || e.split("=")[0] === "theme");
+		// 	if (a.length > 0) {
+		// 		const value = a[0].split("=")[1];
+		// 		setTheme(value === "0" ? false : true);
+		// 	}
 
-			updateTheme();
-		}
-		updateIsLogged();
-		updateTheme();
+		// 	updateTheme();
+		// }
+		// updateIsLogged();
+		// updateTheme();
 
 		function updateOnResize() {
 			setIsMobile(window.innerWidth > navbarThreshold ? false : true);
@@ -118,9 +118,9 @@ export const App = () => {
 
 	}, []);
 
-	useEffect(() => {
-		updateTheme();
-	}, [theme]);
+	// useEffect(() => {
+	// 	updateTheme();
+	// }, [theme]);
 
 	axiosJWT.interceptors.request.use(async (config) => {
 		if(!localStorage.getItem("accessToken")) {

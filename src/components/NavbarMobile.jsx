@@ -60,15 +60,16 @@ const NavbarMobile = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, us
                     }}>Mainboard</Link>
                     { isLogged && <a href={`/profile/${username}`} style={ path === "/profile/"+username ? selectedStyle : {} }>Profile</a> }
                     { !isLogged && <Link to="/authenticate" style={ path === "/authenticate" ? selectedStyle : {} }>Login</Link> }
-                    {/* <Link to="/kupGemy" style={ path === "/kupGemy" ? selectedStyle : {} }>Kup gemy</Link>  */}
-                    <img style={{ width: "25px", marginTop: "20px", cursor: "pointer" }} src={theme ? Moon : Sun} alt="Theme change button" onClick={() => {
+
+                    {/* <img style={{ width: "25px", marginTop: "20px", cursor: "pointer" }} src={theme ? Moon : Sun} alt="Theme change button" onClick={() => {
                         setTheme(prev => !prev);
                         updateTheme();
                         document.cookie = `theme=${theme ? 1 : 0}`;
-                    }} />
+                    }} /> */}
+
                 </ul>
                 <div className="NavbarMobile--Bottom">
-                    { isLogged && <Link to="/options" style={ path === "/options" ? selectedStyle : {} }>Options</Link> }
+                    <Link to="/credits" style={ path === "/credits" ? selectedStyle : {} }>Credits</Link>
                     { isLogged && <Link to="/" onClick={handleLogout} style={{ marginBottom: "20px" }}>Logout</Link> }
                     { isLogged && <p>Logged in as {username}</p> }
                     <p>© 2022 Bangerify. All rights reserved.</p>

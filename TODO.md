@@ -22,6 +22,10 @@
 - Empty visible name [✓]
 - MySQL 1451 error [✓]
 - Websocket
+- "Add to mainboard?" button when creating post
+- EMBEDING to post (like Instagram post)
+- S3 media bucket (max image size)
+- Pinned posts (2 * ORDER BY)
 
 ### ADDITONALS
 - [kn1ght] Grade colors on Visible Name [✓]

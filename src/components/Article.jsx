@@ -85,7 +85,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
 
     const deletePost = () => {
         axiosJWT.post(`${process.env.BACKEND_URL}/api/deletePost`, { postId: id })
-            .then(res => window.reload())
+            .then(res => document.location.reload())
             .catch(err => console.error(err));
     }
 
