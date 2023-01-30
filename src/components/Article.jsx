@@ -7,6 +7,7 @@ import HeartIcon from "./HeartIcon";
 import CommentsIcon from "./CommentsIcon";
 import UserSample from "../assets/userSample.png"
 import Comment from "./Comment";
+import OptionsList from "./OptionsList";
 
 const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePictureUrl, username, isMobile, grade }) => {
 
@@ -133,14 +134,17 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
 
     return (
         <article className="Article">
-            {/* SETTINGS */}
-            <button className="Article--OptionsButton" onClick={() => setAreSettingsOpen(prev => !prev)} style={{ color: "var(--black)" }}>...</button>
-            { areSettingsOpen && <section className="Article--Options">
-                { postUsername === username && <button onClick={editPost} style={{ color: "var(--black)" }}>EDIT POST</button> }
-                { postUsername === username && <button onClick={deletePost} style={{ color: "red" }}>DELETE POST</button> }
-            </section> }
 
-            {/* POST */}
+            <OptionsList areSettingsOpen={areSettingsOpen} setAreSettingsOpen={setAreSettingsOpen} postUsername={postUsername} username={username} functions={[{
+                text: "Edit Post",
+                callback: editPost,
+                auth: "author"
+            }, {
+                text: "Delete Post",
+                callback: deletePost,
+                auth: "author"
+            }]} />
+
             <section style={{ display: "flex" }}>
                 <Link to={`/profile/${postUsername}`}>
                     <img src={profilePictureUrl ? profilePictureUrl : UserSample} alt="Profile picture" className="Article--ProfilePicture" />
@@ -155,18 +159,18 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
                 </section>
             </section>
 
-            {/* ARTICLE */}
             { !isEditingArticle && <ReactMarkdown className="Article--Content">
                 { text.replaceAll("\n", "  \n") }
             </ReactMarkdown> }
+
             { isEditingArticle && <>
-                <textarea style={{ width: "90%", height: "100px" }} value={changedArticle} onChange={(e) => setChangedArticle(e.target.value)} />
-                <button onClick={savePost}>SAVE</button>
-                <button onClick={() => setIsEditingArticle(false)}>Close editing</button>
+                <textarea className="Article--TextArea" value={changedArticle} onChange={(e) => setChangedArticle(e.target.value)} />
+                <button className="Button1" onClick={savePost}>SAVE</button>
+                <button className="Button1" onClick={() => setIsEditingArticle(false)}>Close editing</button>
             </> }
 
 
-            <section style={{ display: "flex", gap: "10px" }}>
+            <section className="Article--Numbers">
                 <HeartIcon number={likes + addedLikes} click={like} isLiked={isLiked} />
                 <CommentsIcon number={commentsData.length} click={() => setIsCommentInputOpen(true)} />
             </section>

@@ -154,6 +154,10 @@ const Profile = ({ username }) => {
     }, [canLoadPosts]);
 
     useEffect(() => {
+        updateUserData();
+    }, [usernameParam]);
+
+    useEffect(() => {
         if (isChangingProfilePicture) {
             setChangedProfilePicture(profilePictureUrl);
         }
@@ -163,7 +167,7 @@ const Profile = ({ username }) => {
 
     const ProfilePictureInput = () => {
         return(
-            <section style={{ display: "flex", gap: "10px" }}>
+            <section className="ProfilePicture--Input">
                 <input type="text" value={changedProfilePicture} onChange={(e) => setChangedProfilePicture(e.target.value)} />
                 <button className="Button1" onClick={() => setIsChangingProfilePicture(prev => !prev)}>CLOSE</button>
                 <button className="Button1" onClick={changeProfilePicture}>CHANGE PROFILE PICTURE</button>

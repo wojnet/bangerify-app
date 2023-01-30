@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { axiosJWT } from "../Helpers";
+import OptionsList from "./OptionsList";
 
 const Comment = ({ id, userId, text, date, profilePictureUrl, commentUsername, visibleName, username, loadComments, grade }) => {
 
@@ -9,9 +10,10 @@ const Comment = ({ id, userId, text, date, profilePictureUrl, commentUsername, v
 
     const formatedDate = new Date(date);
 
-    const editComment = () => [
-
-    ]
+    const editComment = () => {
+        setAreSettingsOpen(false);
+        alert("Comment editing in development");
+    }
 
     const deleteComment = () => {
         axiosJWT.post(`${process.env.BACKEND_URL}/api/deleteComment`, { commentId: id })
@@ -34,18 +36,26 @@ const Comment = ({ id, userId, text, date, profilePictureUrl, commentUsername, v
     return (
         <div className="Comment">
             <section className="Comment--Header">
-                <Link to={`/profile/${commentUsername}`} style={{ textDecoration: "none", color: "var(--black)" }}>
+                <Link className="Comment--TopLine" to={`/profile/${commentUsername}`}>
                     <section style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                         <img src={profilePictureUrl} alt="Profile picture" />
                         <p style={visibleNameStyles[grade]}>{visibleName}<span>{formatedDate.toLocaleDateString()} / {formatedDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></p>
                     </section>
                 </Link>
 
-                <button className="Comment--OptionsButton" onClick={() => setAreSettingsOpen(prev => !prev)} style={{ color: "var(--black)" }}>...</button>
-                { areSettingsOpen && <section className="Article--Options">
-                    { commentUsername === username && <button style={{ color: "var(--black)" }} onClick={editComment}>EDIT COMMENT</button> }
-                    { commentUsername === username && <button style={{ color: "red" }} onClick={deleteComment}>DELETE COMMENT</button> }
-                </section> }
+                <OptionsList areSettingsOpen={areSettingsOpen} setAreSettingsOpen={setAreSettingsOpen} postUsername={commentUsername} username={username} functions={[{
+                    text: "Edit Comment",
+                    callback: editComment,
+                    auth: "author"
+                }, {
+                    text: "Delete Comment",
+                    callback: deleteComment,
+                    auth: "author"
+                }, {
+                    text: "???",
+                    callback: () => { window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank") },
+                    auth: "notAuthor"
+                }]} />
 
             </section>
             <p style={{ marginTop: "5px" }}>{text}</p>
