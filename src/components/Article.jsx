@@ -8,8 +8,9 @@ import CommentsIcon from "./CommentsIcon";
 import UserSample from "../assets/userSample.png"
 import Comment from "./Comment";
 import OptionsList from "./OptionsList";
+import ImageGrid from "./ImageGrid";
 
-const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePictureUrl, username, isMobile, grade }) => {
+const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, profilePictureUrl, username, isMobile, grade, setImageWindowState }) => {
 
     const [areSettingsOpen, setAreSettingsOpen] = useState(false);
     
@@ -29,24 +30,26 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
 
     const loadLikes = () => {
 
-        // ŻEBY NAPRAWIĆ LAJKI TRZEBA ZROBIĆ JEDEN REQUEST ALE AXIOS WYKRYJE CZY JEST LOGGED IN CZY NIE
-
-        if (localStorage.getItem("accessToken")) {
+        if (localStorage.getItem("accessToken")) { 
+            
+            //! JEŻELI ZALOGOWANO
             axiosJWT.post(`${process.env.BACKEND_URL}/api/loadLikesAuth`, { postId: id })
                 .then(res => {
-                    setLikes(res.data.likes);
-                    setIsLiked(res.data.liked === 0 ? false : true);
+                    setLikes(res.data.likes);                           //? USTAWIENIE LICZBY LAJKÓW 
+                    setIsLiked(res.data.liked === 0 ? false : true);    //? USTAWIENIE "CZY ZALOGOWANY JUŻ POLUBIŁ POST"
                 })
                 .catch(err => console.error(err));
+
         } else {
+
+            //! JEŻELI NIEZALOGOWANO
             axios.post(`${process.env.BACKEND_URL}/api/loadLikes`, { postId: id })
             .then(res => {
-                setLikes(res.data.likes);
+                setLikes(res.data.likes);   //? USTAWIENIE LICZBY LAJKÓW
             })
             .catch(err => console.error(err));
-        }
 
-        
+        }
     }
 
     const loadComments = () => {
@@ -92,17 +95,22 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
 
     const like = () => {
         if (localStorage.getItem("accessToken")) {
+
+            //! JEŻELI ZALOGOWANO
             if(!isLiked) {
                 setIsLiked(true);
-                setAddedLikes(prev => prev + 1);
+                setAddedLikes(prev => prev + 1); //? POWIĘKSZENIE ADDED LIKES O 1
             } else {
                 setIsLiked(false);
-                setAddedLikes(prev => prev - 1);
+                setAddedLikes(prev => prev - 1); //? POMNIEJSZENIE ADDED LIKES O 1
             }
     
+            //? USTAWIENIE LICZBY LAJKÓW W BAZIE DANYCH
             axiosJWT.post(`${process.env.BACKEND_URL}/api/setLike`, { postId: id })
                 .catch(err=> console.error(err));
         } else {
+
+            //! JEŻELI NIEZALOGOWANO
             alert("You need to be logged in");
         }
 	}
@@ -162,6 +170,8 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, profilePict
             { !isEditingArticle && <ReactMarkdown className="Article--Content">
                 { text.replaceAll("\n", "  \n") }
             </ReactMarkdown> }
+
+            { images.length !== 0 && !isEditingArticle && <ImageGrid setImageWindowState={setImageWindowState} images={images}/> }
 
             { isEditingArticle && <>
                 <textarea className="Article--TextArea" value={changedArticle} onChange={(e) => setChangedArticle(e.target.value)} />

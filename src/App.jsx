@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import NavbarMobile from "./components/NavbarMobile";
 import Wrapper from "./components/Wrapper";
 import CookieAlert from "./components/Modal/CookieAlert";
+import ImageWindow from "./components/Modal/ImageWindow";
 
 export const App = () => {
 
@@ -19,6 +20,7 @@ export const App = () => {
 	const [isMobile, setIsMobile] = useState(window.innerWidth > navbarThreshold ? false : true);
 	
 	const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
+	const [imageWindowState, setImageWindowState] = useState({ isOpen: false, images: [], index: 0 });
 	const [theme, setTheme] = useState(false);
 
 	const [isCookiesModalOpen, setIsCookiesModalOpen] = useState(false);
@@ -141,10 +143,11 @@ export const App = () => {
 		<BrowserRouter>
 			<div className="App">
 				<CookieAlert isModalOpen={isCookiesModalOpen} setIsModalOpen={setIsCookiesModalOpen} allowCookies={allowCookies} />
+				<ImageWindow imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />
 
 				{ !isMobile ? <Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} updateTheme={updateTheme} /> : <NavbarMobile isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} updateTheme={updateTheme} /> }
 
-				<Wrapper path={path} setPath={setPath} isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} />
+				<Wrapper path={path} setPath={setPath} isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />
 				{ isMobile }
 			</div>
 		</BrowserRouter>

@@ -5,7 +5,7 @@ import Article from "./Article";
 // import UpperBar from "./UpperBar";
 import CreatePost from "./Modal/CreatePost";
 
-const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePostOpen, setIsCreatePostOpen }) => {
+const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePostOpen, setIsCreatePostOpen, imageWindowState, setImageWindowState }) => {
 
     const [order, setOrder] = useState(0);
     const [canLoadPosts, setCanLoadPosts] = useState(false);
@@ -14,15 +14,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
     });
     const date = new Date();
 
-    const resetLoadedPosts = () => {
-        setLoadedPosts({
-            lastTimeRefreshed: 0,
-            lastPostId: 99999999,
-            posts: [
-    
-            ]
-        });
-    }
+    const [postImages, setPostImages] = useState([]);
 
     // 0. latest; 1. most liked
     const loadPosts = (_reset) => {
@@ -66,9 +58,19 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
         }
     }
 
+    const resetLoadedPosts = () => {
+        setLoadedPosts({
+            lastTimeRefreshed: 0,
+            lastPostId: 99999999,
+            posts: [
+    
+            ]
+        });
+        loadPosts("reset");
+    }  
+
     useEffect(() => {
         resetLoadedPosts();
-        loadPosts("reset");
 
         const scrollEventListener = window.addEventListener("scroll", (e) => {
             e.preventDefault();
@@ -88,11 +90,12 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
         }
     }, [canLoadPosts]);
 
-    const posts = loadedPosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} profilePictureUrl={e.profilePictureUrl} username={username} grade={e.grade} />);
+    const posts = loadedPosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} images={e.images === null ? [] : JSON.parse(e.images)} profilePictureUrl={e.profilePictureUrl} username={username} grade={e.grade} setImageWindowState={setImageWindowState} />);
 
     return (
         <div className="Mainboard">
-            <CreatePost isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} postData={postData} setPostData={setPostData}/>
+            <CreatePost isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} postData={postData} setPostData={setPostData} postImages={postImages} setPostImages={setPostImages} resetLoadedPosts={resetLoadedPosts} />
+            
             {/* <UpperBar setOrder={setOrder} /> */}
             { isLogged && <button className="Button1" onClick={() => setIsCreatePostOpen(true)}>ADD POST</button> }
             { posts }<br />

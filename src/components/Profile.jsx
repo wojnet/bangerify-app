@@ -7,8 +7,9 @@ import UserSample from "../assets/userSample.png"
 import Bio from "./Bio";
 import BadgeAlpha from "../assets/BadgeAlpha.png";
 import BadgeBeta from "../assets/BadgeBeta.png";
+import ImageWindow from "./Modal/ImageWindow";
 
-const Profile = ({ username }) => {
+const Profile = ({ username, imageWindowState, setImageWindowState }) => {
 
     const navigate = useNavigate();
 
@@ -163,7 +164,7 @@ const Profile = ({ username }) => {
         }
     }, [isChangingProfilePicture]);
 
-    const posts = profilePosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} profilePictureUrl={e.profilePictureUrl} username={username} grade={e.grade} />);
+    const posts = profilePosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} images={e.images === null ? [] : JSON.parse(e.images)} profilePictureUrl={e.profilePictureUrl} username={username} grade={e.grade} setImageWindowState={setImageWindowState} />);
 
     const ProfilePictureInput = () => {
         return(

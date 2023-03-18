@@ -357,6 +357,12 @@ input, textarea {
 	gap: 10px;
 }
 
+.CreatePost--Textarea {
+	width: 80%;
+	min-height: 200px;
+	resize: vertical;
+}
+
 .Authentication {
 	margin-top: 100px;
 	width: 100%;
@@ -611,6 +617,139 @@ input, textarea {
 	height: 10%;
 	background: var(--gray);
 	transition: transform 500ms ease, width 200ms ease;
+}
+
+.ImageInput {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.ImageInput + label {
+    font-weight: 700;
+    color: white;
+    background-color: black;
+    display: inline-block;
+	cursor: pointer;
+	padding: 2px 5px;
+	border-radius: 5px;
+}
+
+.ImagePreview--Wrapper {
+	max-width: 50%;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.ImagePreview {
+	width: 50px;
+	height: 50px;
+	display: flex;
+	flex-direction: column;
+	margin-block: 10px;
+}
+
+.ImagePreview > img {
+	width: 100%;
+	height: 100%;
+}
+
+.ImagePreview > button {
+	width: 20px;
+	height: 20px;
+	border-radius: 10px;
+	position: fixed;
+	background: var(--black);
+	color: var(--white);
+	align-self: flex-end;
+	transform: translate(10px, -10px);
+	font-weight: bold;
+	line-height: 0;
+	cursor: pointer;
+}
+
+.ImageGrid {
+	width: 100%;
+	min-height: 100px;
+}
+
+.ImageGrid img {
+	max-width: 100%;
+	border-radius: 10px;
+	box-shadow: 0 0 10px #0001;
+	margin-block: 5px;
+	cursor: pointer;
+}
+
+.ImageGridOne {
+	width: 100%;
+}
+
+.ImageGridOne > img {
+	width: 100%;
+}
+
+.ImageGridTwo {
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 5px;
+}
+
+.ImageGridTwo > img {
+	width: 100%;
+    height: 100%;
+	object-fit: cover;
+}
+
+.ImageGridThree {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 3fr 2fr;
+	grid-template-rows: repeat(2, 1fr);
+	gap: 5px;
+}
+
+.ImageGridThree > img:nth-child(1) {
+	grid-row: span 2;
+}
+
+.ImageGridThree > img {
+	width: 100%;
+    height: 100%;
+	object-fit: cover;
+}
+
+.ImageGridMore {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 3fr 2fr;
+	grid-template-rows: repeat(2, 1fr);
+	gap: 5px;
+}
+
+.ImageGridMore > img:nth-child(1) {
+	grid-row: span 2;
+}
+
+.ImageGridMore > img:nth-child(3) {
+	filter: brightness(0.5);
+}
+
+.ImageGridMore > img {
+	width: 100%;
+    height: 100%;
+	object-fit: cover;
+}
+
+.ImageGridMore > p {
+	justify-self: center;
+	align-self: center;
 }
 
 @media only screen and (max-width: 600px) {

@@ -5,13 +5,13 @@ import Profile from "./Profile";
 import Credits from "./Credits"
 import BadUrl from "./BadUrl";
 
-const Wrapper = ({ path, setPath, isLogged, loadedPosts, setLoadedPosts, username, isCreatePostOpen, setIsCreatePostOpen }) => {
+const Wrapper = ({ path, setPath, isLogged, loadedPosts, setLoadedPosts, username, isCreatePostOpen, setIsCreatePostOpen, imageWindowState, setImageWindowState }) => {
     return (
         <div className="Wrapper">
             <Routes>
-                <Route path="/" element={<Mainboard isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} />} />
+                <Route path="/" element={<Mainboard isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />} />
                 <Route path="/authenticate" element={<Authentication />} />
-                <Route path="/profile/:usernameParam" element={<Profile username={username} />} />
+                <Route path="/profile/:usernameParam" element={<Profile username={username} imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />} />
                 <Route path="/badUrl/:url" element={<BadUrl />} />
                 <Route path="/credits" element={<Credits />} />
             </Routes>

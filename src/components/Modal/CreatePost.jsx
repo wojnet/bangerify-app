@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import axios from "axios";
 import { axiosJWT } from "../../Helpers";
-import Envelope from "../../assets/envelope.svg"
+import ImagePreview from "../ImagePreview";
 
-const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostData }) => {
+const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostData, postImages, setPostImages, resetLoadedPosts }) => {
 
     const closeModal = () => {
         setIsCreatePostOpen(false);
@@ -13,16 +14,55 @@ const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostDa
         setIsCreatePostOpen(false);
     }
 
-    const createPost = () => {
-        axiosJWT.post(`${process.env.BACKEND_URL}/api/createPost`, { postData: postData })
-            .then(res => {
-                setIsCreatePostOpen(false);
-                setPostData({ 
-                    post: ""
-                });
-            })
-            .then(() => document.location.reload())
-            .catch(err => console.log(err));
+    const createPost = async () => {
+        // /api/s3Url
+
+        if (postImages.length !== 0) {
+            // POST WITH IMAGES
+
+            const getImageUrlArray = async (_images) => {
+                const imageUrlArray = [];
+
+                for (const image of _images) {
+                    const url = await axiosJWT.get(`${process.env.BACKEND_URL}/api/s3Url`).then(res => res.data.url).catch(err => console.error(err));
+
+                    await axios.put(url, image, {
+                        headers: {
+                            "Content-Type": "multipart/form-data"
+                        }
+                    })
+                    
+                    imageUrlArray.push(url.split("?")[0]);
+                }
+
+                return imageUrlArray;
+            }
+
+            const imageUrlArray = await getImageUrlArray(postImages);
+
+            axiosJWT.post(`${process.env.BACKEND_URL}/api/createPost`, { postData: postData, images: [...imageUrlArray] })
+                .then(res => {
+                    setIsCreatePostOpen(false);
+                    setPostData({ 
+                        post: ""
+                    });
+                    setPostImages([]);
+                })
+                .then(() => resetLoadedPosts())
+                .catch(err => console.log(err));
+
+        } else {
+            // SIMPLE POST WITHOUT IMAGES
+            axiosJWT.post(`${process.env.BACKEND_URL}/api/createPost`, { postData: postData, images: [] })
+                .then(res => {
+                    setIsCreatePostOpen(false);
+                    setPostData({ 
+                        post: ""
+                    });
+                })
+                .then(() => resetLoadedPosts())
+                .catch(err => console.log(err));
+        }
     }
 
     const modalStyle = {
@@ -70,6 +110,12 @@ const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostDa
         cursor: "pointer"
     }
 
+    const deleteInputImage = (_index) => {
+        setPostImages(prev => [...prev].filter((e, i) => i !== _index));
+    }
+
+    const images = Array.from(postImages).map((e, i) => <ImagePreview key={i} id={i} imageElement={e} deleteInputImage={deleteInputImage} />);
+
     if (!isCreatePostOpen) return null;
 
     return createPortal(
@@ -78,18 +124,30 @@ const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostDa
             <div className="CreatePost" style={modalStyle}>
                 <button onClick={closeModal} style={closeButtonStyle}>x</button>
                 <h2>What's up?</h2>
+
                 <textarea value={postData.post}
+                    className="CreatePost--Textarea"
                     maxLength="1024"
                     onChange={(e) => setPostData(prev => {
                         return {...prev, post: e.target.value}
                     })}
                 
                 />
+
                 <section style={{ display: "flex" }}>
-                    {/* <button>🖼️</button> */}
+                    <input className="ImageInput" type="file" id="ImageInput" accept="image/*" multiple={true} onChange={(e) => {
+                        setPostImages(prev => {
+                            return [...prev, ...e.target.files];
+                        });
+                    }} />
+                    <label htmlFor="ImageInput">Upload Images</label>
                 </section>
+
+                <section className="ImagePreview--Wrapper">{ images }</section>
+
                 <button onClick={createPost}>Create Post</button>
                 <p style={{ textAlign: "center", fontSize: "10px", color: "var(--gray)", fontStyle: "italic" }}>* you can use markdown to format text</p>
+
             </div>
         </>
         ,
