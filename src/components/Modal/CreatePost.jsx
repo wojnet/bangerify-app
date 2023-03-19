@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import axios from "axios";
 import { axiosJWT } from "../../Helpers";
 import ImagePreview from "../ImagePreview";
+import { AWSUploadFiles } from "../../helpers/AWS";
 
 const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostData, postImages, setPostImages, resetLoadedPosts }) => {
 
@@ -20,25 +21,25 @@ const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostDa
         if (postImages.length !== 0) {
             // POST WITH IMAGES
 
-            const getImageUrlArray = async (_images) => {
-                const imageUrlArray = [];
+            // const AWSUpload = async (_images) => {
+            //     const imageUrlArray = [];
 
-                for (const image of _images) {
-                    const url = await axiosJWT.get(`${process.env.BACKEND_URL}/api/s3Url`).then(res => res.data.url).catch(err => console.error(err));
+            //     for (const image of _images) {
+            //         const url = await axiosJWT.get(`${process.env.BACKEND_URL}/api/s3Url`).then(res => res.data.url).catch(err => console.error(err));
 
-                    await axios.put(url, image, {
-                        headers: {
-                            "Content-Type": "multipart/form-data"
-                        }
-                    })
+            //         await axios.put(url, image, {
+            //             headers: {
+            //                 "Content-Type": "multipart/form-data"
+            //             }
+            //         })
                     
-                    imageUrlArray.push(url.split("?")[0]);
-                }
+            //         imageUrlArray.push(url.split("?")[0]);
+            //     }
 
-                return imageUrlArray;
-            }
+            //     return imageUrlArray;
+            // }
 
-            const imageUrlArray = await getImageUrlArray(postImages);
+            const imageUrlArray = await AWSUploadFiles(postImages);
 
             axiosJWT.post(`${process.env.BACKEND_URL}/api/createPost`, { postData: postData, images: [...imageUrlArray] })
                 .then(res => {

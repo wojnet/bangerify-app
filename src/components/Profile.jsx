@@ -5,9 +5,7 @@ import { axiosJWT } from "../Helpers";
 import Article from "./Article";
 import UserSample from "../assets/userSample.png"
 import Bio from "./Bio";
-import BadgeAlpha from "../assets/BadgeAlpha.png";
-import BadgeBeta from "../assets/BadgeBeta.png";
-import ImageWindow from "./Modal/ImageWindow";
+import { AWSUploadFile } from "../helpers/AWS";
 
 const Profile = ({ username, imageWindowState, setImageWindowState }) => {
 
@@ -31,6 +29,8 @@ const Profile = ({ username, imageWindowState, setImageWindowState }) => {
 
     const [isChangingVisibleName, setIsChangingVisibleName] = useState(false);
     const [changedVisibleName , setChangedVisibleName] = useState("");
+
+    const [loadedProfilePicture, setLoadedProfilePicture] = useState();
     
     const [profilePosts, setProfilePosts] = useState({
         lastPostId: 99999999,
@@ -48,12 +48,19 @@ const Profile = ({ username, imageWindowState, setImageWindowState }) => {
         });
     }
     
-    const changeProfilePicture = () => {
-        if (changedProfilePicture != profilePictureUrl) {
-            axiosJWT.post(`${process.env.BACKEND_URL}/api/changeProfilePictureUrl`, { newURL: changedProfilePicture })
+    const changeProfilePicture = async (_file) => {
+        const url = await AWSUploadFile(_file);
+
+        axiosJWT.post(`${process.env.BACKEND_URL}/api/changeProfilePictureUrl`, { newURL: url })
             .then(() => document.location.reload())
             .catch(err => console.log(err));
-        } else setIsChangingProfilePicture(prev => !prev);
+    }
+
+    const profilePictureInput = document.createElement('input');
+    profilePictureInput.type = 'file';
+
+    profilePictureInput.onchange = (e) => { 
+        changeProfilePicture(e.target.files[0]);
     }
     
     const changeVisibleName = () => {
@@ -166,15 +173,15 @@ const Profile = ({ username, imageWindowState, setImageWindowState }) => {
 
     const posts = profilePosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} images={e.images === null ? [] : JSON.parse(e.images)} profilePictureUrl={e.profilePictureUrl} username={username} grade={e.grade} setImageWindowState={setImageWindowState} />);
 
-    const ProfilePictureInput = () => {
-        return(
-            <section className="ProfilePicture--Input">
-                <input type="text" value={changedProfilePicture} onChange={(e) => setChangedProfilePicture(e.target.value)} />
-                <button className="Button1" onClick={() => setIsChangingProfilePicture(prev => !prev)}>CLOSE</button>
-                <button className="Button1" onClick={changeProfilePicture}>CHANGE PROFILE PICTURE</button>
-            </section>
-        );
-    }
+    // const ProfilePictureInput = () => {
+    //     return(
+    //         <section className="ProfilePicture--Input">
+    //             <input type="text" value={changedProfilePicture} onChange={(e) => setChangedProfilePicture(e.target.value)} />
+    //             <button className="Button1" onClick={() => setIsChangingProfilePicture(prev => !prev)}>CLOSE</button>
+    //             <button className="Button1" onClick={changeProfilePicture}>CHANGE PROFILE PICTURE</button>
+    //         </section>
+    //     );
+    // }
 
     const visibleNameStyles = {
         0: { color: "var(--black)" },
@@ -188,11 +195,10 @@ const Profile = ({ username, imageWindowState, setImageWindowState }) => {
     return (
         <div className="Profile">
             <section className="Profile--Header">
-                <img onClick={() => { if (profileUsername === username) setIsChangingProfilePicture(prev => !prev) }} src={profilePictureUrl ? profilePictureUrl : UserSample} style={
+                <img onClick={() => { if (profileUsername === username) profilePictureInput.click() }} src={profilePictureUrl ? profilePictureUrl : UserSample} style={
                     profileUsername === username ? { cursor: "pointer" } : {}
                 } />
                 <section>
-                    { isChangingProfilePicture && <ProfilePictureInput /> }
                     { visibleName && <h3 style={visibleNameStyles[grade]}>
                         { !isChangingVisibleName && visibleName }
                         { profileUsername === username && <>
