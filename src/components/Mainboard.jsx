@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { axiosJWT } from "../Helpers";
+import { axiosJWT } from "../helpers/Helpers";
 import Article from "./Article";
 // import UpperBar from "./UpperBar";
 import CreatePost from "./Modal/CreatePost";

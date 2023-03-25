@@ -1,26 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { axiosJWT } from "../Helpers";
+import { axiosJWT } from "../helpers/Helpers";
 import Logo from "../assets/bangerifyLogo.svg";
 import LogoWhite from "../assets/bangerifyLogoWhite.svg";
-import Sun from "../assets/Sun.svg";
-import Moon from "../assets/Moon.svg";
+import handleLogout from "../helpers/Logout";
 
 const Navbar = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, username, theme, setTheme, updateTheme }) => {
 
     const location = useLocation();
-
-    const handleLogout = () => {
-        axiosJWT.post(`${process.env.BACKEND_URL}/api/auth/logout`, { token: localStorage.getItem("refreshToken") }, {
-            headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
-        })
-        .then(res => {
-            localStorage.setItem("accessToken", "");
-            localStorage.setItem("refreshToken", "");
-            updateIsLogged();
-        })
-        .catch(err => console.log(err));
-    }
 
     const updatePathState = () => {
         setPath(location.pathname);

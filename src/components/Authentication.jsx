@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { axiosJWT } from "../Helpers";
+import { axiosJWT } from "../helpers/Helpers";
 import ConfirmEmail from "./Modal/ConfirmEmail";
 import ResendEmail from "./Modal/ResendEmail";
 

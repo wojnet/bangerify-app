@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { axiosJWT } from "../Helpers";
+import { axiosJWT } from "../helpers/Helpers";
 import Article from "./Article";
 import UserSample from "../assets/userSample.png"
 import Bio from "./Bio";

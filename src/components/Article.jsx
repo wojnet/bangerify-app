@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { axiosJWT } from "../Helpers";
+import { axiosJWT } from "../helpers/Helpers";
 import HeartIcon from "./HeartIcon";
 import CommentsIcon from "./CommentsIcon";
 import UserSample from "../assets/userSample.png"
@@ -15,14 +15,12 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
     const [areSettingsOpen, setAreSettingsOpen] = useState(false);
     
     const localDate = new Date(utcDate);
-    const lines = text.split("\n");
 
     const [isEditingArticle, setIsEditingArticle] = useState(false);
     const [changedArticle, setChangedArticle] = useState("");
     const [likes, setLikes] = useState(0);
     const [addedLikes, setAddedLikes] = useState(0);
     const [isLiked, setIsLiked] = useState(false);
-    const [canLike, setCanLike] = useState(false);
 
     const [isCommentInputOpen, setIsCommentInputOpen] = useState(false);
     const [commentValue, setCommentValue] = useState("");
@@ -30,7 +28,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
 
     const loadLikes = () => {
 
-        if (localStorage.getItem("accessToken")) { 
+        if (localStorage.getItem("accessToken") && localStorage.getItem("accessToken") !== undefined && localStorage.getItem("accessToken") !== null) { 
             
             //! JEŻELI ZALOGOWANO
             axiosJWT.post(`${process.env.BACKEND_URL}/api/loadLikesAuth`, { postId: id })
@@ -138,6 +136,10 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
         348: { color: "var(--gradeGigachad)" } // GIGACHAD
     }
 
+    const LinkRenderer = (props) => {
+        return <a href={props.href} target="_blank">{props.children}</a>;
+    }
+
     var comments = commentsData.map((e, i) => <Comment key={i} id={e.id} userId={e.userId} text={e.text} date={e.date} profilePictureUrl={e.profilePictureUrl} commentUsername={e.username} visibleName={e.visible_name} username={username} loadComments={loadComments} grade={e.grade} />);
 
     return (
@@ -167,8 +169,11 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
                 </section>
             </section>
 
-            { !isEditingArticle && <ReactMarkdown className="Article--Content">
-                { text.replaceAll("\n", "  \n") }
+            { !isEditingArticle && <ReactMarkdown
+                className="Article--Content"
+                linkTarget="_blank"
+                >
+                    { text.replaceAll("\n", "  \n").replace(/@\w+/g, e => `[${e}](/profile/${e.replace("@", "")})`) }
             </ReactMarkdown> }
 
             { images.length !== 0 && !isEditingArticle && <ImageGrid setImageWindowState={setImageWindowState} images={images}/> }

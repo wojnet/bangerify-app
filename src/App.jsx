@@ -1,30 +1,26 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { refreshToken, axiosJWT } from "./Helpers";
+import { refreshToken, axiosJWT } from "./helpers/Helpers";
 import Navbar from "./components/Navbar";
 import NavbarMobile from "./components/NavbarMobile";
 import Wrapper from "./components/Wrapper";
 import CookieAlert from "./components/Modal/CookieAlert";
 import ImageWindow from "./components/Modal/ImageWindow";
+import Semaphore from "./helpers/Semaphore";
 
 export const App = () => {
 
-	const r = document.querySelector(':root');
+	// MOBILE STYLE CONFIG
 	const navbarThreshold = 800;
-
-	const [path, setPath] = useState();
-	const date = new Date();
-
 	const [isMobile, setIsMobile] = useState(window.innerWidth > navbarThreshold ? false : true);
-	
+
+	// MODALS
 	const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
 	const [imageWindowState, setImageWindowState] = useState({ isOpen: false, images: [], index: 0 });
-	const [theme, setTheme] = useState(false);
-
 	const [isCookiesModalOpen, setIsCookiesModalOpen] = useState(false);
 
+	// POSTS
 	const [isLogged, setIsLogged] = useState(false);
 	const [username, setUsername] = useState("");
 	const [loadedPosts, setLoadedPosts] = useState({
@@ -34,16 +30,20 @@ export const App = () => {
 
 		]
 	});
+
+	// OTHERS
+	const postSemaphore = new Semaphore(5);
+	const date = new Date();
+	const [path, setPath] = useState();
+	const [theme, setTheme] = useState(false);
 	// date.getTime(); ms since 1970
 	
-
 	const checkIfCookiesAllowed = () => {
 		let i = document.cookie.indexOf(`cookiesAllowed=`);
 		return i === -1 ? false : true;
 	}
 
 	const updateIsLogged = () => {
-		// console.log("Update is logged");
 		axiosJWT.get(`${process.env.BACKEND_URL}/api/auth/isLogged`, {
             headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
         })
@@ -54,43 +54,6 @@ export const App = () => {
 		.catch(err => console.log(err));
 	}
 
-	const updateTheme = () => {
-	// 	if (!theme) {
-	// 		r.style.setProperty("--black", "#000");
-	// 		r.style.setProperty("--white", "#FFF");
-	// 		r.style.setProperty("--white05", "#FFF8");
-	// 		r.style.setProperty("--gray", "#888");
-	// 		r.style.setProperty("--hoverGray", "#E0E0E0");
-	// 		r.style.setProperty("--hoverGray05", "#DDD8");
-	// 		r.style.setProperty("--lightGray", "#EEE");
-	// 		r.style.setProperty("--lightGray05", "#EEE8");
-	// 		r.style.setProperty("--gradeMod", "rgb(134, 252, 80)");
-	// 		r.style.setProperty("--gradeAdmin", "rgb(14, 126, 201)");
-	// 		r.style.setProperty("--gradeHeadAdmin", "rgb(66, 148, 255)");
-	// 		r.style.setProperty("--gradeCreator", "rgb(30, 34, 255)");
-	// 		r.style.setProperty("--gradeGigachad", "rgb(255, 178, 78)");
-	// 	} else {
-	// 		r.style.setProperty("--black", "#FFF");
-	// 		r.style.setProperty("--white", "#111");
-	// 		r.style.setProperty("--white05", "#0008");
-	// 		r.style.setProperty("--gray", "#888");
-	// 		r.style.setProperty("--hoverGray", "#2A2A2A");
-	// 		r.style.setProperty("--hoverGray05", "#3338");
-	// 		// r.style.setProperty("--lightGray", "#222");
-	// 		r.style.setProperty("--lightGray", "#1C1D1F");
-	// 		r.style.setProperty("--lightGray05", "#2228");
-	// 		r.style.setProperty("--gradeMod", "rgb(134, 252, 80)");
-	// 		r.style.setProperty("--gradeAdmin", "rgb(14, 126, 201)");
-	// 		r.style.setProperty("--gradeHeadAdmin", "rgb(115, 191, 250)");
-	// 		r.style.setProperty("--gradeCreator", "rgb(66, 148, 255)");
-	// 		r.style.setProperty("--gradeGigachad", "rgb(255, 178, 78)");
-	// 	}
-
-	// 	if (checkIfCookiesAllowed()) {
-	// 		document.cookie = `theme=${theme ? 1 : 0}`;
-	// 	}
-	}
-
 	const allowCookies = () => {
 		console.log("ALLOWED COOKIES");
 		document.cookie = "cookiesAllowed=1";
@@ -98,31 +61,10 @@ export const App = () => {
 	}
 
 	useEffect(() => {
-		// if (!checkIfCookiesAllowed()) {
-		// 	setIsCookiesModalOpen(true);
-		// } else {
-		// 	const a = document.cookie.split(";").filter(e => e.split("=")[0] === " theme" || e.split("=")[0] === "theme");
-		// 	if (a.length > 0) {
-		// 		const value = a[0].split("=")[1];
-		// 		setTheme(value === "0" ? false : true);
-		// 	}
-
-		// 	updateTheme();
-		// }
-		// updateIsLogged();
-		// updateTheme();
-
-		function updateOnResize() {
+		window.addEventListener("resize", () => {
 			setIsMobile(window.innerWidth > navbarThreshold ? false : true);
-		}
-
-		window.addEventListener("resize", updateOnResize);
-
+		});
 	}, []);
-
-	// useEffect(() => {
-	// 	updateTheme();
-	// }, [theme]);
 
 	axiosJWT.interceptors.request.use(async (config) => {
 		if(!localStorage.getItem("accessToken")) {
@@ -145,10 +87,9 @@ export const App = () => {
 				<CookieAlert isModalOpen={isCookiesModalOpen} setIsModalOpen={setIsCookiesModalOpen} allowCookies={allowCookies} />
 				<ImageWindow imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />
 
-				{ !isMobile ? <Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} updateTheme={updateTheme} /> : <NavbarMobile isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} updateTheme={updateTheme} /> }
+				{ !isMobile ? <Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> : <NavbarMobile isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> }
 
 				<Wrapper path={path} setPath={setPath} isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />
-				{ isMobile }
 			</div>
 		</BrowserRouter>
 	);

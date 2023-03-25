@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import axios from "axios";
-import { axiosJWT } from "../../Helpers";
+import { axiosJWT } from "../../helpers/Helpers";
 import ImagePreview from "../ImagePreview";
 import { AWSUploadFiles } from "../../helpers/AWS";
 

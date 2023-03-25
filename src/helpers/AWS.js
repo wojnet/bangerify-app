@@ -1,5 +1,5 @@
 import axios from "axios";
-import { axiosJWT } from "../Helpers";
+import { axiosJWT } from "./Helpers";
 
 export const AWSUploadFiles = async (_files) => {
     const imageUrlArray = [];

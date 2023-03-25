@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { axiosJWT } from "../Helpers";
+import { axiosJWT } from "../helpers/Helpers";
 import ReactMarkdown from "react-markdown";
 
 const Bio = ({ isChangingBio, setIsChangingBio, bio, changedBio, setChangedBio }) => {
@@ -13,7 +13,17 @@ const Bio = ({ isChangingBio, setIsChangingBio, bio, changedBio, setChangedBio }
     const changeBio = () => {
         if (changedBio != bio) {
             axiosJWT.post(`${process.env.BACKEND_URL}/api/changeBio`, { newBio: changedBio })
-                .then(() => document.location.reload())
+                .then((res) => {
+                    if (res.data.message === "banned") {
+                        setIsChangingBio(false);
+                        alert("YOU ARE BANNED!");
+                    } else if (res.data.message === "error") {
+                        setIsChangingBio(false);
+                        alert("ERROR");
+                    } else {
+                        document.location.reload();
+                    }
+                })
                 .catch(err => console.log(err));
         } else setIsChangingBio(prev => !prev);
     }
