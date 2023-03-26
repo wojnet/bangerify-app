@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 import { useState } from "react";
 import { axiosJWT } from "../helpers/Helpers";
 import OptionsList from "./OptionsList";
@@ -58,7 +59,9 @@ const Comment = ({ id, userId, text, date, profilePictureUrl, commentUsername, v
                 }]} />
 
             </section>
-            <p style={{ marginTop: "5px" }}>{text}</p>
+            <ReactMarkdown style={{ marginTop: "5px" }} disallowedElements={[]}>
+                { text.replaceAll("\n", "  \n").replace(/@\w+/g, e => `[${e}](/profile/${e.replace("@", "")})`) }
+            </ReactMarkdown>
         </div>
     );
 }

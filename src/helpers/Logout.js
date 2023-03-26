@@ -1,6 +1,6 @@
 import { axiosJWT } from "./Helpers";
 
-const handleLogout = () => {
+const handleLogout = (updateIsLogged) => {
     axiosJWT.post(`${process.env.BACKEND_URL}/api/auth/logout`, { token: localStorage.getItem("refreshToken") }, {
         headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
     })

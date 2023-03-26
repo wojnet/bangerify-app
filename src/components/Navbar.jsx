@@ -45,7 +45,7 @@ const Navbar = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, username
             </ul>
             <div className="Navbar--Bottom">
                 <Link to="/credits" style={ path === "/credits" ? selectedStyle : {} }>Credits</Link>
-                { isLogged && <Link to="/" onClick={handleLogout} style={{ marginBottom: "20px" }}>Logout</Link> }
+                { isLogged && <Link to="/" onClick={() => handleLogout(updateIsLogged)} style={{ marginBottom: "20px" }}>Logout</Link> }
                 { isLogged && <p>Logged in as {username}</p> }
                 <p>© 2022 Bangerify. All rights reserved.</p>
             </div>

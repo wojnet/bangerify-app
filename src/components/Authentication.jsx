@@ -4,6 +4,7 @@ import axios from "axios";
 import { axiosJWT } from "../helpers/Helpers";
 import ConfirmEmail from "./Modal/ConfirmEmail";
 import ResendEmail from "./Modal/ResendEmail";
+import TinyLogo from "../assets/tinyLogo.png"
 
 const Authentication = () => {
 
@@ -83,7 +84,10 @@ const Authentication = () => {
             <ConfirmEmail isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
             <ResendEmail isModalOpen={isEmailModalOpen} setIsModalOpen={setIsEmailModalOpen} />
             <form onSubmit={submit}>
-                <h2>{authType ? "Register" : "Login"}</h2>
+                <section className="Authentication--Topline">
+                    <img src={TinyLogo} alt="Bangerify logo" />
+                    <p>{authType ? "Register" : "Login"}</p>
+                </section>
                 <input type="text" placeholder={!authType ? "Username or Email" : "Username"} value={username} onChange={(e) => setUsername(e.target.value)} />
                 { authType && <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} /> }
                 <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />

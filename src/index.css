@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 /* THE STANDARD THEME IS WHITE */
@@ -7,6 +6,7 @@
 	--black: #000;
 	--white: #FFF;
 	--white05: #FFF8;
+	--darkGray: #555;
 	--gray: #888;
 	--hoverGray: #E0E0E0;
 	--hoverGray05: #DDD8;
@@ -298,7 +298,7 @@ input, textarea {
 }
 
 .Article--Content a {
-	color: var(--gray);
+	color: var(--darkGray);
 	text-decoration: none;
 	font-style: italic;
 }
@@ -371,6 +371,23 @@ input, textarea {
 	flex-direction: column;
 	align-items: center;
 	gap: 10px;
+}
+
+.Authentication--Topline {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 25px;
+}
+
+.Authentication--Topline > p {
+	letter-spacing: 2px;
+	font-size: 20px;
+}
+
+.Authentication--Topline > img {
+	height: 24px;
 }
 
 .Authentication > form {
@@ -596,6 +613,12 @@ input, textarea {
 
 .Comment--OptionsButton:hover {
 	opacity: 0.7;
+}
+
+.Comment > p a {
+	color: var(--darkGray);
+	text-decoration: none;
+	font-style: italic;
 }
 
 .Burger {
