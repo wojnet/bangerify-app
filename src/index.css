@@ -4,6 +4,7 @@
 /* THE STANDARD THEME IS WHITE */
 :root {
 	--black: #000;
+	--nearBlack: #333;
 	--white: #FFF;
 	--white05: #FFF8;
 	--darkGray: #555;
@@ -281,12 +282,21 @@ input, textarea {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	color: var(--black);
 	margin-top: 10px;
 }
 
 .Article--Content p {
 	text-indent: 0px;
+	color: var(--nearBlack);
+}
+
+.Article h1,
+.Article h2,
+.Article h3,
+.Article h4,
+.Article h5,
+.Article h6 {
+	color: var(--nearBlack);
 }
 
 .Article--Content img {
@@ -564,7 +574,6 @@ input, textarea {
 
 .Comment {
 	background: var(--hoverGray);
-	color: var(--black);
 	width: 100%;
 	padding: 8px;
 	margin-top: 20px;
@@ -615,9 +624,16 @@ input, textarea {
 	opacity: 0.7;
 }
 
+.Comment > p {
+	color: var(--nearBlack);
+}
+
 .Comment > p a {
-	color: var(--darkGray);
-	text-decoration: none;
+	color: var(--nearBlack);
+	text-decoration: underline;
+	text-underline-offset: 5px;
+	text-decoration-color: var(--gray);
+	text-decoration-style: dotted;
 	font-style: italic;
 }
 

@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import axios from "axios";
 import { refreshToken, axiosJWT } from "./helpers/Helpers";
+import Semaphore from "./helpers/Semaphore";
 import Navbar from "./components/Navbar";
 import NavbarMobile from "./components/NavbarMobile";
 import Wrapper from "./components/Wrapper";
 import CookieAlert from "./components/Modal/CookieAlert";
 import ImageWindow from "./components/Modal/ImageWindow";
-import Semaphore from "./helpers/Semaphore";
 
 export const App = () => {
 
@@ -29,6 +30,13 @@ export const App = () => {
 		posts: [
 
 		]
+	});
+
+	// 0 - latest && 1 - most liked
+	const [postOrder, setPostOrder] = useState(0);
+	const [mostLikedPosts, setMostLikedPosts] = useState({
+		posts: [],
+		index: 0
 	});
 
 	// OTHERS
@@ -89,7 +97,7 @@ export const App = () => {
 
 				{ !isMobile ? <Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> : <NavbarMobile isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> }
 
-				<Wrapper path={path} setPath={setPath} isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />
+				<Wrapper path={path} setPath={setPath} isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} postOrder={postOrder} setPostOrder={setPostOrder} mostLikedPosts={mostLikedPosts} setMostLikedPosts={setMostLikedPosts} />
 			</div>
 		</BrowserRouter>
 	);
