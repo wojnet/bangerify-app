@@ -38,7 +38,7 @@ const NavbarMobile = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, us
             </div>
 
             <nav className="NavbarMobile" style={ isOpen ? { left: 0, boxShadow: "0 0 50px #0008" } : { left: -250 }}>
-                <img src={theme ? LogoWhite : Logo} className="NavbarMobile--Logo" />
+                <img src={theme ? LogoWhite : Logo} className="NavbarMobile--Logo" alt="Bangerify logo" />
                 <ul>
                     <Link to="/" style={ path === "/" ? selectedStyle : {} } onClick={() => {
                         if (path === "/") {

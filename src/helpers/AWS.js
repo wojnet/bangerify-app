@@ -5,6 +5,7 @@ export const AWSUploadFiles = async (_files) => {
     const imageUrlArray = [];
 
     for (const image of _files) {
+
         const url = await axiosJWT.get(`${process.env.BACKEND_URL}/api/s3Url`).then(res => res.data.url).catch(err => console.error(err));
 
         await axios.put(url, image, {

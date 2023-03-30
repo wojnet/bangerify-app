@@ -72,7 +72,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
 
     useEffect(() => {
         loadPostData();
-    }, []);
+    }, [username]); //! BIG CHANGE
 
     const editPost = () => {
         setIsEditingArticle(true);

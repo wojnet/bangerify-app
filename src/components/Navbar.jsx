@@ -27,7 +27,7 @@ const Navbar = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, username
 
     return (
         <nav className="Navbar">
-            <img src={theme ? LogoWhite : Logo} className="Navbar--Logo" />
+            <img src={theme ? LogoWhite : Logo} className="Navbar--Logo" alt="Bangerify logo" />
             <ul>
                 <Link to="/" style={ path === "/" ? selectedStyle : {} } onClick={() => {
                     if (path === "/") {

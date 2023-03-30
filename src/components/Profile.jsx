@@ -6,6 +6,7 @@ import Article from "./Article";
 import UserSample from "../assets/userSample.png"
 import Bio from "./Bio";
 import { AWSUploadFile } from "../helpers/AWS";
+import { Helmet } from "react-helmet";
 
 const Profile = ({ username, imageWindowState, setImageWindowState }) => {
 
@@ -194,6 +195,12 @@ const Profile = ({ username, imageWindowState, setImageWindowState }) => {
 
     return (
         <div className="Profile">
+
+            <Helmet>
+                <title>{profileUsername} | Bangerify</title>
+                <meta name="description" content={`${profileUsername}'s profile in Bangerify`} />
+            </Helmet>
+
             <section className="Profile--Header">
                 <img onClick={() => { if (profileUsername === username) profilePictureInput.click() }} src={profilePictureUrl ? profilePictureUrl : UserSample} style={
                     profileUsername === username ? { cursor: "pointer" } : {}

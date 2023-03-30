@@ -9,6 +9,7 @@ import NavbarMobile from "./components/NavbarMobile";
 import Wrapper from "./components/Wrapper";
 import CookieAlert from "./components/Modal/CookieAlert";
 import ImageWindow from "./components/Modal/ImageWindow";
+import { Helmet } from "react-helmet";
 
 export const App = () => {
 
@@ -92,6 +93,12 @@ export const App = () => {
 	return (
 		<BrowserRouter>
 			<div className="App">
+
+				<Helmet>
+					<title>Bangerify</title>
+					<meta name="description" content="React application" />
+				</Helmet>
+
 				<CookieAlert isModalOpen={isCookiesModalOpen} setIsModalOpen={setIsCookiesModalOpen} allowCookies={allowCookies} />
 				<ImageWindow imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />
 
