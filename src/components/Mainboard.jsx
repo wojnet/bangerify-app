@@ -96,14 +96,9 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
         loadPosts("reset");
     }
 
-	useEffect(() => {
-		resetLoadedPosts();
-	}, [postOrder]);
-
     const handlePostLoading = () => {
         return function() {
             if (window.innerHeight + document.documentElement.scrollTop >= document.scrollingElement.scrollHeight - 100) {
-                console.log("Ended?", mostLikedPostsEnded);
                 if (!mostLikedPostsEnded) {
                     setCanLoadPosts(true);
                 }
@@ -111,7 +106,13 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
         }
     }
 
+	useEffect(() => {
+		resetLoadedPosts();
+	}, [postOrder]);
+
+
     useEffect(() => {
+        console.log("M A I N B O A R D");
         const scrollEventListener = window.addEventListener("scroll", (e) => {
             e.preventDefault();
             handlePostLoading()();
@@ -128,7 +129,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
         }
     }, [canLoadPosts]);
 
-    const posts = loadedPosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} images={e.images === null ? [] : JSON.parse(e.images)} profilePictureUrl={e.profilePictureUrl} username={username} grade={e.grade} setImageWindowState={setImageWindowState} />);
+    const posts = loadedPosts.posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} images={e.images === null ? [] : JSON.parse(e.images)} profilePictureUrl={e.profilePictureUrl} username={username} grade={e.grade} setImageWindowState={setImageWindowState} isLogged={isLogged} />);
 
     return (
         <div className="Mainboard">
@@ -140,8 +141,7 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
                 <option value={0}>latest</option>
                 <option value={1}>most liked</option>
             </select>
-
-            {/* <UpperBar setOrder={setOrder} /> */}
+            
             { isLogged && <button className="Button1" onClick={() => setIsCreatePostOpen(true)}>ADD POST</button> }
             { posts }<br />
         </div>

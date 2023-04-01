@@ -53,13 +53,13 @@ input, textarea {
 	width: 100%;
 	min-height: 100vh;
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: stretch;
 }
 
 .Navbar {
 	height: 100vh;
-	width: 250px;
+	width: clamp(150px, 20%, 300px);
 	background: var(--white);
 	display: flex;
 	flex-direction: column;
@@ -72,7 +72,7 @@ input, textarea {
 }
 
 .Navbar > img {
-	width: 100%;
+	width: 200px;
 }
 
 .Navbar > ul {
@@ -172,12 +172,24 @@ input, textarea {
 
 .Wrapper {
 	width: 100%;
-	max-width: 750px; /* OPTIONAL */
+	max-width: 1000px; /* OPTIONAL */
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
+	align-items: center;
 	flex-grow: 1;
+}
+
+.RightPanel {
+	height: 100vh;
+	width: clamp(150px, 20%, 300px);
+	background: var(--white);
+	flex-grow: 0;
+	flex-shrink: 0;
+	padding: 40px 30px;
+	position: sticky;
+	top: 0;
 }
 
 .UpperBar {
@@ -719,6 +731,8 @@ input, textarea {
 
 .ImageGrid img {
 	max-width: 100%;
+	max-height: 700px;
+	object-fit: cover;
 	border-radius: 10px;
 	box-shadow: 0 0 10px #0001;
 	margin-block: 5px;
@@ -799,4 +813,10 @@ input, textarea {
 	.Article--DateMobile {
 		display: inline;
 	}
+}
+
+@media only screen and (max-width: 1200px) {
+	.Navbar > img {
+		width: clamp(160px, 140%, 200px);
+	}	
 }

@@ -4,8 +4,14 @@ import Authentication from "./Authentication";
 import Profile from "./Profile";
 import Credits from "./Credits"
 import BadUrl from "./BadUrl";
+import { useEffect } from "react";
 
 const Wrapper = ({ path, setPath, isLogged, loadedPosts, setLoadedPosts, username, isCreatePostOpen, setIsCreatePostOpen, imageWindowState, setImageWindowState, postOrder, setPostOrder, mostLikedPosts, setMostLikedPosts }) => {
+
+    useEffect(() => {
+        console.log("W R A P P E R");
+    }, []);
+
     return (
         <div className="Wrapper">
             <Routes>

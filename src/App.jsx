@@ -7,9 +7,10 @@ import Semaphore from "./helpers/Semaphore";
 import Navbar from "./components/Navbar";
 import NavbarMobile from "./components/NavbarMobile";
 import Wrapper from "./components/Wrapper";
+import RightPanel from "./components/RightPanel"
+import { Helmet } from "react-helmet";
 import CookieAlert from "./components/Modal/CookieAlert";
 import ImageWindow from "./components/Modal/ImageWindow";
-import { Helmet } from "react-helmet";
 
 export const App = () => {
 
@@ -53,14 +54,22 @@ export const App = () => {
 	}
 
 	const updateIsLogged = () => {
-		axiosJWT.get(`${process.env.BACKEND_URL}/api/auth/isLogged`, {
-            headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
-        })
-		.then(res => {
-			setIsLogged(res.data.isLogged);
-			setUsername(res.data.username);
-		})
-		.catch(err => console.log(err));
+		if (localStorage.getItem("accessToken")) {
+			axiosJWT.get(`${process.env.BACKEND_URL}/api/auth/isLogged`, {
+				headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
+			})
+			.then(res => {
+				setIsLogged(res.data.isLogged);
+				setUsername(res.data.username);
+				console.log(1);
+			})
+			.catch(err => console.log(err));
+		} else {
+			localStorage.setItem("accessToken", "");
+			localStorage.setItem("refreshToken", "");
+			setIsLogged(false);
+			setUsername("");
+		}	
 	}
 
 	const allowCookies = () => {
@@ -70,15 +79,19 @@ export const App = () => {
 	}
 
 	useEffect(() => {
+		updateIsLogged();
 		window.addEventListener("resize", () => {
 			setIsMobile(window.innerWidth > navbarThreshold ? false : true);
 		});
+		console.log("A P P");
 	}, []);
 
 	axiosJWT.interceptors.request.use(async (config) => {
-		if(!localStorage.getItem("accessToken")) {
+		if(!localStorage.getItem("accessToken") || !localStorage.getItem("refreshToken")) {
 			localStorage.setItem("accessToken", "");
 			localStorage.setItem("refreshToken", "");
+			setIsLogged(false);
+			setUsername("");
 		} else {
 			let currentDate = new Date();
 			const decodedToken = jwtDecode(localStorage.getItem("accessToken"));
@@ -105,6 +118,8 @@ export const App = () => {
 				{ !isMobile ? <Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> : <NavbarMobile isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> }
 
 				<Wrapper path={path} setPath={setPath} isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} postOrder={postOrder} setPostOrder={setPostOrder} mostLikedPosts={mostLikedPosts} setMostLikedPosts={setMostLikedPosts} />
+
+				{ !isMobile && <RightPanel /> }
 			</div>
 		</BrowserRouter>
 	);

@@ -10,7 +10,7 @@ import Comment from "./Comment";
 import OptionsList from "./OptionsList";
 import ImageGrid from "./ImageGrid";
 
-const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, profilePictureUrl, username, isMobile, grade, setImageWindowState }) => {
+const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, profilePictureUrl, username, isMobile, grade, setImageWindowState, isLogged }) => {
 
     const [areSettingsOpen, setAreSettingsOpen] = useState(false);
     
@@ -28,25 +28,19 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
 
     const loadLikes = () => {
 
-        if (localStorage.getItem("accessToken") && localStorage.getItem("accessToken") !== undefined && localStorage.getItem("accessToken") !== null) { 
-            
-            //! JEŻELI ZALOGOWANO
+        if (isLogged/* localStorage.getItem("accessToken") && localStorage.getItem("accessToken") !== undefined && localStorage.getItem("accessToken") !== null */) { 
             axiosJWT.post(`${process.env.BACKEND_URL}/api/loadLikesAuth`, { postId: id })
                 .then(res => {
-                    setLikes(res.data.likes);                           //? USTAWIENIE LICZBY LAJKÓW 
-                    setIsLiked(res.data.liked === 0 ? false : true);    //? USTAWIENIE "CZY ZALOGOWANY JUŻ POLUBIŁ POST"
+                    setLikes(res.data.likes);                           //? SET THE LIKE AMOUNT
+                    setIsLiked(res.data.liked === 0 ? false : true);    //? SET "IF YOU LIKED THE POST ALREADY"
                 })
                 .catch(err => console.error(err));
-
         } else {
-
-            //! JEŻELI NIEZALOGOWANO
             axios.post(`${process.env.BACKEND_URL}/api/loadLikes`, { postId: id })
             .then(res => {
-                setLikes(res.data.likes);   //? USTAWIENIE LICZBY LAJKÓW
+                setLikes(res.data.likes);   //? SET THE LIKE AMOUNT
             })
             .catch(err => console.error(err));
-
         }
     }
 
@@ -58,7 +52,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
             .catch(err => console.error(err));
     }
 
-    const loadPostData = () => {
+    const loadPostData = async () => {
         //load likes and comments
         loadLikes();
         loadComments();
@@ -92,7 +86,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
     }
 
     const like = () => {
-        if (localStorage.getItem("accessToken")) {
+        if (isLogged/* localStorage.getItem("accessToken") */) {
 
             //! JEŻELI ZALOGOWANO
             if(!isLiked) {

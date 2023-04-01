@@ -5,3 +5,7 @@
 # 26-03-2023.2
 - markdown and profile links (@) in comments
 - can login using email
+
+# 01-04-2023
+- fixed request
+- changed layout
