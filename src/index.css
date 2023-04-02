@@ -444,12 +444,14 @@ input, textarea {
 }
 
 .Profile {
+	height: 100%;
 	width: 100%;
-	min-height: 100%;
+	max-width: 750px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
+	padding: 0 50px;
 }
 
 .Profile--Header {
@@ -486,6 +488,10 @@ input, textarea {
 	color: var(--gray);
 	text-decoration: none;
 	font-style: italic;
+}
+
+.Bio img {
+	max-width: 100%;
 }
 
 .Bio--Change {
