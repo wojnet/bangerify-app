@@ -17,10 +17,10 @@ const Authentication = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const submit = (e) => {
-
-        e.preventDefault();
+        if (e) e.preventDefault();
 
         if(!authType) {
             //* LOGIN
@@ -75,7 +75,13 @@ const Authentication = () => {
                     }
                 })
                 .catch(err => console.log(err));
+        }
+    }
 
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            submit();
         }
     }
 
@@ -83,14 +89,19 @@ const Authentication = () => {
         <div className="Authentication">
             <ConfirmEmail isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
             <ResendEmail isModalOpen={isEmailModalOpen} setIsModalOpen={setIsEmailModalOpen} />
-            <form onSubmit={submit}>
+            <form>
                 <section className="Authentication--Topline">
                     <img src={TinyLogo} alt="Bangerify logo" />
                     <p>{authType ? "Register" : "Login"}</p>
                 </section>
-                <input type="text" placeholder={!authType ? "Username or Email" : "Username"} value={username} onChange={(e) => setUsername(e.target.value)} />
-                { authType && <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} /> }
-                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input type="text" onKeyDown={(e) => handleKeyDown(e)} placeholder={!authType ? "Username or Email" : "Username"} value={username} onChange={(e) => setUsername(e.target.value)} />
+                { authType && <input type="text" onKeyDown={(e) => handleKeyDown(e)} placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} /> }
+                <section className="Authentication--Password">
+                    <input type={isPasswordVisible ? "text" : "password"} onKeyDown={(e) => handleKeyDown(e)} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <p style={ isPasswordVisible ? {} : { opacity: 0.6 } } onClick={() => {
+                        setIsPasswordVisible(prev => !prev);
+                    }}>👀</p>
+                </section>
                 <button onClick={submit}>{authType ? "Register" : "Login"}</button><br />
             </form>
 

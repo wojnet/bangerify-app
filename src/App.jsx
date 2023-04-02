@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 import { refreshToken, axiosJWT } from "./helpers/Helpers";
-import Semaphore from "./helpers/Semaphore";
+// import Semaphore from "./helpers/Semaphore";
 import Navbar from "./components/Navbar";
 import NavbarMobile from "./components/NavbarMobile";
 import Wrapper from "./components/Wrapper";
@@ -42,7 +42,7 @@ export const App = () => {
 	});
 
 	// OTHERS
-	const postSemaphore = new Semaphore(5);
+	// const postSemaphore = new Semaphore(5);
 	const date = new Date();
 	const [path, setPath] = useState();
 	const [theme, setTheme] = useState(false);
@@ -55,7 +55,7 @@ export const App = () => {
 
 	const updateIsLogged = () => {
 		if (localStorage.getItem("accessToken")) {
-			axiosJWT.get(`${process.env.BACKEND_URL}/api/auth/isLogged`, {
+			axios.get(`${process.env.BACKEND_URL}/api/auth/isLogged`, { //! IT WAS AXIOSJWT PREVIOUSLY
 				headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
 			})
 			.then(res => {
@@ -83,7 +83,6 @@ export const App = () => {
 		window.addEventListener("resize", () => {
 			setIsMobile(window.innerWidth > navbarThreshold ? false : true);
 		});
-		console.log("A P P");
 	}, []);
 
 	axiosJWT.interceptors.request.use(async (config) => {

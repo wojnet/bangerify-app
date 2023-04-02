@@ -82,16 +82,16 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
     }
 
     const resetLoadedPosts = () => {
+        setMostLikedPosts({
+            posts: [],
+            index: 0
+        });
         setLoadedPosts({
             lastTimeRefreshed: 0,
             lastPostId: 99999999,
             posts: [
     
             ]
-        });
-        setMostLikedPosts({
-            posts: [],
-            index: 0
         });
         loadPosts("reset");
     }

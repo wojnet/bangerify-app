@@ -13,6 +13,7 @@
 	--hoverGray05: #DDD8;
 	--lightGray: #EEE;
 	--lightGray05: #EEE8;
+	--heartColor: #f24952;
 
 	--gradeMod: rgb(134, 252, 80);
 	--gradeAdmin: rgb(14, 126, 201);
@@ -404,7 +405,7 @@ input, textarea {
 }
 
 .Authentication--Topline > p {
-	letter-spacing: 2px;
+	/* letter-spacing: 0px; */
 	font-size: 20px;
 }
 
@@ -417,6 +418,29 @@ input, textarea {
 	flex-direction: column;
 	align-items: center;
 	gap: 5px;
+}
+
+.Authentication > form input {
+	height: 25px;
+	padding-inline: 5px;
+}
+
+.Authentication--Password {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.Authentication--Password > p {
+	width: 25px;
+	height: 25px;
+	position: fixed;
+	transform: translateX(40px);
+	cursor: pointer;
+	user-select: none;
+}
+
+.Authentication--Password > p:hover {
+	opacity: 0.6;
 }
 
 .Profile {

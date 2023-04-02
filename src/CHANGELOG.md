@@ -9,3 +9,6 @@
 # 01-04-2023
 - fixed request
 - changed layout
+
+# 02-04-2023
+- little things for comfort

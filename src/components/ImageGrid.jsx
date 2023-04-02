@@ -19,7 +19,7 @@ const ImageGrid = ({ images, setImageWindowState }) => {
 
     const imageElements = images.map((e, i) => {
         if (i < 3) {
-            return (<img src={e} alt={e} onClick={() => {
+            return (<img key={i} src={e} alt={e} onClick={() => {
                 setImageWindowState(prev => {
                     return {
                         ...prev,
