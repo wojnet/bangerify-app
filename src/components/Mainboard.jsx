@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { axiosJWT } from "../helpers/Helpers";
 import Article from "./Article";
+import Semaphore from "../helpers/Semaphore";
 // import UpperBar from "./UpperBar";
 import CreatePost from "./Modal/CreatePost";
 import Cat from "../assets/cat.png";
@@ -13,6 +14,8 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
     const [postData, setPostData] = useState({ 
         post: ""
     });
+
+    const semaphore = new Semaphore(2);
     const date = new Date();
 
     const [postImages, setPostImages] = useState([]);
@@ -106,6 +109,13 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
         }
     }
 
+    const wait = async (ms) => {
+		const message = await axios.get(`${process.env.BACKEND_URL}/api/test/wait/${ms}`)
+            .then(res => res.data)
+            .catch(err => console.error(err));
+        console.log(message);
+	}
+
 	useEffect(() => {
 		resetLoadedPosts();
 	}, [postOrder]);
@@ -117,6 +127,11 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
             e.preventDefault();
             handlePostLoading()();
         });
+
+        semaphore.executeIfPossible(wait, 1000);
+        semaphore.executeIfPossible(wait, 1000);
+        semaphore.executeIfPossible(wait, 1000);
+        semaphore.executeIfPossible(wait, 1000);
 
         return () => {
             window.removeEventListener("scroll", scrollEventListener);

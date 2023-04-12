@@ -3,7 +3,8 @@ import { BrowserRouter } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 import { refreshToken, axiosJWT } from "./helpers/Helpers";
-// import Semaphore from "./helpers/Semaphore";
+import store from "./store";
+import { Provider } from "react-redux";
 import Navbar from "./components/Navbar";
 import NavbarMobile from "./components/NavbarMobile";
 import Wrapper from "./components/Wrapper";
@@ -42,7 +43,6 @@ export const App = () => {
 	});
 
 	// OTHERS
-	// const postSemaphore = new Semaphore(5);
 	const date = new Date();
 	const [path, setPath] = useState();
 	const [theme, setTheme] = useState(false);
@@ -55,13 +55,12 @@ export const App = () => {
 
 	const updateIsLogged = () => {
 		if (localStorage.getItem("accessToken")) {
-			axios.get(`${process.env.BACKEND_URL}/api/auth/isLogged`, { //! IT WAS AXIOSJWT PREVIOUSLY
+			axios.get(`${process.env.BACKEND_URL}/api/auth/isLogged`, { //! IT WAS AXIOSJWT PREVIOUSLY THEN AXIOS AND NOW AXIOSJWT AGAIN
 				headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
 			})
 			.then(res => {
 				setIsLogged(res.data.isLogged);
 				setUsername(res.data.username);
-				console.log(1);
 			})
 			.catch(err => console.log(err));
 		} else {
@@ -103,23 +102,25 @@ export const App = () => {
 	}, err => Promise.reject(err));
 
 	return (
-		<BrowserRouter>
-			<div className="App">
+		<Provider store={store}>
+			<BrowserRouter>
+				<div className="App">
 
-				<Helmet>
-					<title>Bangerify</title>
-					<meta name="description" content="React application" />
-				</Helmet>
+					<Helmet>
+						<title>Bangerify</title>
+						<meta name="description" content="React application" />
+					</Helmet>
 
-				<CookieAlert isModalOpen={isCookiesModalOpen} setIsModalOpen={setIsCookiesModalOpen} allowCookies={allowCookies} />
-				<ImageWindow imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />
+					<CookieAlert isModalOpen={isCookiesModalOpen} setIsModalOpen={setIsCookiesModalOpen} allowCookies={allowCookies} />
+					<ImageWindow imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />
 
-				{ !isMobile ? <Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> : <NavbarMobile isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> }
+					{ !isMobile ? <Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> : <NavbarMobile isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> }
 
-				<Wrapper path={path} setPath={setPath} isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} postOrder={postOrder} setPostOrder={setPostOrder} mostLikedPosts={mostLikedPosts} setMostLikedPosts={setMostLikedPosts} />
+					<Wrapper path={path} setPath={setPath} isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} postOrder={postOrder} setPostOrder={setPostOrder} mostLikedPosts={mostLikedPosts} setMostLikedPosts={setMostLikedPosts} />
 
-				{ !isMobile && <RightPanel /> }
-			</div>
-		</BrowserRouter>
+					{ !isMobile && <RightPanel /> }
+				</div>
+			</BrowserRouter>
+		</Provider>
 	);
 }

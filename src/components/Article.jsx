@@ -27,21 +27,12 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
     const [commentsData, setCommentsData] = useState([]);
 
     const loadLikes = () => {
-
-        if (isLogged/* localStorage.getItem("accessToken") && localStorage.getItem("accessToken") !== undefined && localStorage.getItem("accessToken") !== null */) { 
-            axiosJWT.post(`${process.env.BACKEND_URL}/api/loadLikesAuth`, { postId: id })
-                .then(res => {
-                    setLikes(res.data.likes);                           //? SET THE LIKE AMOUNT
-                    setIsLiked(res.data.liked === 0 ? false : true);    //? SET "IF YOU LIKED THE POST ALREADY"
-                })
-                .catch(err => console.error(err));
-        } else {
-            axios.post(`${process.env.BACKEND_URL}/api/loadLikes`, { postId: id })
+        axios.post(`${process.env.BACKEND_URL}/api/loadLikes`, { postId: id, token: localStorage.getItem("accessToken") })
             .then(res => {
-                setLikes(res.data.likes);   //? SET THE LIKE AMOUNT
+                setLikes(res.data.likes);                       //? SET THE LIKE AMOUNT
+                if (res.data?.liked === 1) setIsLiked(true);    //? SET "IF YOU LIKED THE POST ALREADY"
             })
             .catch(err => console.error(err));
-        }
     }
 
     const loadComments = () => {
@@ -110,9 +101,12 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
     const sendComment = () => {
         if (commentValue !== "") {
             axiosJWT.post(`${process.env.BACKEND_URL}/api/commentPost`, { postId: id, text: commentValue })
-            .then(() => {
+            .then((res) => {
                 setIsCommentInputOpen(false);
                 setCommentValue("");
+                if (res.data === "adding comments blocked") {
+                    alert("author blocked adding comments to this post");
+                }
             })
             .then(() => loadComments())
             .catch(err => console.error(err));

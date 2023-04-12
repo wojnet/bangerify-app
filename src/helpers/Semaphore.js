@@ -6,6 +6,10 @@ class Semaphore {
         this.list = [];
     }
 
+    getList() {
+        return this.list;
+    }
+
     execute(fn, ...args) {
         return new Promise((resolve, reject) => {
             this.list.push({
@@ -18,10 +22,14 @@ class Semaphore {
         });
     }
 
+    executeIfPossible(fn, ...args) {
+        if (this.count < this.maxCount) {
+            this.execute(fn, ...args);
+        }
+    }
+
     try() {
-        if (!this.list.length) {
-            return;
-        } else if (this.count < this.maxCount) {
+        if (this.list.length && this.count < this.maxCount) {
             let { fn, args, resolve, reject } = this.list.shift();
             this.count++;
             let req = fn(...args);
@@ -30,7 +38,7 @@ class Semaphore {
                 .finally(() => {
                     this.count--;
                     this.try()
-                });
+                })
         }
     }
 };
