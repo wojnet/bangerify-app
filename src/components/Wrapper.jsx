@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Mainboard from "./Mainboard";
 import Authentication from "./Authentication";
-import Profile from "./Profile";
+import Profile from "./Profile/Profile";
 import Credits from "./Credits"
 import BadUrl from "./BadUrl";
 import { useEffect } from "react";

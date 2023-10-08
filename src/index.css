@@ -835,6 +835,20 @@ input, textarea {
 	align-self: center;
 }
 
+.FunnyGif {
+	animation: FunnyGif 3s ease infinite;
+}
+
+@keyframes FunnyGif {
+	0% {
+		transform: scale(0.8);
+	} 50% {
+		transform: scale(1);
+	} 100% {
+		transform: scale(0.8);
+	}
+}
+
 @media only screen and (max-width: 600px) {
 	.Article--Date {
 		display: none;

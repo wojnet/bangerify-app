@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { axiosJWT } from "../helpers/Helpers";
-import Article from "./Article";
+import Article from "./Article/Article";
 import Semaphore from "../helpers/Semaphore";
 // import UpperBar from "./UpperBar";
 import CreatePost from "./Modal/CreatePost";

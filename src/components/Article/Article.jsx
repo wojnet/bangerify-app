@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { axiosJWT } from "../helpers/Helpers";
-import HeartIcon from "./HeartIcon";
+import { axiosJWT } from "../../helpers/Helpers";
+import HeartIcon from "../HeartIcon";
 import CommentsIcon from "./CommentsIcon";
-import UserSample from "../assets/userSample.png"
+import UserSample from "../../assets/userSample.png"
 import Comment from "./Comment";
 import OptionsList from "./OptionsList";
-import ImageGrid from "./ImageGrid";
+import ImageGrid from "../ImageGrid";
 
 const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, profilePictureUrl, username, isMobile, grade, setImageWindowState, isLogged }) => {
 
