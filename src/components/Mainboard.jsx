@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { axiosJWT } from "../helpers/Helpers";
-import Article from "./Article";
+import Article from "./Article/Article";
 import Semaphore from "../helpers/Semaphore";
 // import UpperBar from "./UpperBar";
-import CreatePost from "./Modal/CreatePost";
+import CreatePost from "./Modals/CreatePost";
 import Cat from "../assets/cat.png";
 
 const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePostOpen, setIsCreatePostOpen, imageWindowState, setImageWindowState, postOrder, setPostOrder, mostLikedPosts, setMostLikedPosts }) => {
@@ -53,9 +53,6 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
                 } else {
                     result = mostLikedPosts.posts;
                 }
-
-                // console.log(mostLikedPosts.index);
-                // console.log(result.slice(mostLikedPosts.index, mostLikedPosts.index + 20 < result.length ? mostLikedPosts.index + 20 : result.length - 1));
 
                 await axios.post(`${process.env.BACKEND_URL}/api/getPostsById`, { list: result.slice(mostLikedPosts.index, mostLikedPosts.index + 20 < result.length ? mostLikedPosts.index + 20 : result.length - 1) })
                     .then(res => {
@@ -109,29 +106,16 @@ const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePo
         }
     }
 
-    const wait = async (ms) => {
-		const message = await axios.get(`${process.env.BACKEND_URL}/api/test/wait/${ms}`)
-            .then(res => res.data)
-            .catch(err => console.error(err));
-        console.log(message);
-	}
-
 	useEffect(() => {
 		resetLoadedPosts();
 	}, [postOrder]);
 
 
     useEffect(() => {
-        console.log("M A I N B O A R D");
         const scrollEventListener = window.addEventListener("scroll", (e) => {
             e.preventDefault();
             handlePostLoading()();
         });
-
-        semaphore.executeIfPossible(wait, 1000);
-        semaphore.executeIfPossible(wait, 1000);
-        semaphore.executeIfPossible(wait, 1000);
-        semaphore.executeIfPossible(wait, 1000);
 
         return () => {
             window.removeEventListener("scroll", scrollEventListener);

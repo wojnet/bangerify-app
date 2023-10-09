@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { refreshToken, axiosJWT } from "./helpers/Helpers";
-import store from "./store";
-import { Provider } from "react-redux";
 import Navbar from "./components/Navbar";
 import NavbarMobile from "./components/NavbarMobile";
 import Wrapper from "./components/Wrapper";
 import RightPanel from "./components/RightPanel"
 import { Helmet } from "react-helmet";
-import CookieAlert from "./components/Modal/CookieAlert";
-import ImageWindow from "./components/Modal/ImageWindow";
+import CookieAlert from "./components/Modals/CookieAlert";
+import ImageWindow from "./components/Modals/ImageWindow";
+import { addDebugLine } from "./features/debugWindow/debugWindowSlice";
 
 export const App = () => {
+	const dispatch = useDispatch();
 
 	// MOBILE STYLE CONFIG
 	const navbarThreshold = 800;
@@ -23,6 +24,7 @@ export const App = () => {
 	const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
 	const [imageWindowState, setImageWindowState] = useState({ isOpen: false, images: [], index: 0 });
 	const [isCookiesModalOpen, setIsCookiesModalOpen] = useState(false);
+	
 
 	// POSTS
 	const [isLogged, setIsLogged] = useState(false);
@@ -54,34 +56,42 @@ export const App = () => {
 	}
 
 	const updateIsLogged = () => {
-		if (localStorage.getItem("accessToken")) {
+		dispatch(addDebugLine({ name: "- updateIsLogged()" }));
+		if (localStorage.getItem("accessToken") && !isLogged) {
 			axios.get(`${process.env.BACKEND_URL}/api/auth/isLogged`, { //! IT WAS AXIOSJWT PREVIOUSLY THEN AXIOS AND NOW AXIOSJWT AGAIN
 				headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
 			})
 			.then(res => {
 				setIsLogged(res.data.isLogged);
 				setUsername(res.data.username);
+				dispatch(addDebugLine({ name: `Logged in as ${res.data.username}` }));
 			})
 			.catch(err => console.log(err));
-		} else {
+		} else if (isLogged) {
 			localStorage.setItem("accessToken", "");
 			localStorage.setItem("refreshToken", "");
 			setIsLogged(false);
 			setUsername("");
+			dispatch(addDebugLine({ name: "Logged out" }));
 		}	
 	}
 
 	const allowCookies = () => {
-		console.log("ALLOWED COOKIES");
 		document.cookie = "cookiesAllowed=1";
         document.cookie = "theme=0";
 	}
 
+	const onWindowResize = () => {
+		setIsMobile(window.innerWidth > navbarThreshold ? false : true);
+	}
+
 	useEffect(() => {
 		updateIsLogged();
-		window.addEventListener("resize", () => {
-			setIsMobile(window.innerWidth > navbarThreshold ? false : true);
-		});
+		window.addEventListener("resize", onWindowResize);
+
+		return () => {
+			window.removeEventListener("resize", onWindowResize);
+		}
 	}, []);
 
 	axiosJWT.interceptors.request.use(async (config) => {
@@ -102,25 +112,23 @@ export const App = () => {
 	}, err => Promise.reject(err));
 
 	return (
-		<Provider store={store}>
-			<BrowserRouter>
-				<div className="App">
+		<BrowserRouter>
+			<div className="App">
 
-					<Helmet>
-						<title>Bangerify</title>
-						<meta name="description" content="React application" />
-					</Helmet>
+				<Helmet>
+					<title>Bangerify</title>
+					<meta name="description" content="React application" />
+				</Helmet>
 
-					<CookieAlert isModalOpen={isCookiesModalOpen} setIsModalOpen={setIsCookiesModalOpen} allowCookies={allowCookies} />
-					<ImageWindow imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />
+				<CookieAlert isModalOpen={isCookiesModalOpen} setIsModalOpen={setIsCookiesModalOpen} allowCookies={allowCookies} />
+				<ImageWindow imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />
 
-					{ !isMobile ? <Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> : <NavbarMobile isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> }
+				{ !isMobile ? <Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> : <NavbarMobile isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} username={username} theme={theme} setTheme={setTheme} /> }
 
-					<Wrapper path={path} setPath={setPath} isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} postOrder={postOrder} setPostOrder={setPostOrder} mostLikedPosts={mostLikedPosts} setMostLikedPosts={setMostLikedPosts} />
+				<Wrapper path={path} setPath={setPath} isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} username={username} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} postOrder={postOrder} setPostOrder={setPostOrder} mostLikedPosts={mostLikedPosts} setMostLikedPosts={setMostLikedPosts} />
 
-					{ !isMobile && <RightPanel /> }
-				</div>
-			</BrowserRouter>
-		</Provider>
+				{ !isMobile && <RightPanel /> }
+			</div>
+		</BrowserRouter>
 	);
 }

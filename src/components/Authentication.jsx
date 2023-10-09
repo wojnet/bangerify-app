@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { axiosJWT } from "../helpers/Helpers";
-import ConfirmEmail from "./Modal/ConfirmEmail";
-import ResendEmail from "./Modal/ResendEmail";
+import ConfirmEmail from "./Modals/ConfirmEmail";
+import ResendEmail from "./Modals/ResendEmail";
 import TinyLogo from "../assets/tinyLogo.png"
 
 const Authentication = () => {
@@ -31,7 +30,8 @@ const Authentication = () => {
                         const refreshToken = res.data.refreshToken;
                         localStorage.setItem("accessToken", accessToken);
                         localStorage.setItem("refreshToken", refreshToken);;
-                        navigate("/");
+                        // navigate("/"); PREVIOUS
+                        navigate(-1);
                     } else {
                         switch(res.data.type) {
                             case "wrong username":

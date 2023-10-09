@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { useState } from "react";
-import { axiosJWT } from "../helpers/Helpers";
+import { axiosJWT } from "../../helpers/Helpers";
 import OptionsList from "./OptionsList";
 
 const Comment = ({ id, userId, text, date, profilePictureUrl, commentUsername, visibleName, username, loadComments, grade }) => {

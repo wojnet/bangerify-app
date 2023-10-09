@@ -579,7 +579,7 @@ input, textarea {
     vertical-align: middle;
 }
 
-.HeartIcon {
+.ArticleHeartIcon {
 	margin-top: 15px;
 	display: flex;
 	gap: 10px;
@@ -689,8 +689,13 @@ input, textarea {
 	justify-content: center;
 	gap: 7px;
 	padding: 10px;
-	transition: left 500ms ease;
 	z-index: 1000;
+	cursor: pointer;
+	transition: left 500ms ease, opacity 300ms ease;
+}
+
+.Burger:hover {
+	opacity: 0.6;
 }
 
 .Burger > div {
@@ -833,6 +838,20 @@ input, textarea {
 .ImageGridMore > p {
 	justify-self: center;
 	align-self: center;
+}
+
+.FunnyGif {
+	animation: FunnyGif 3s ease infinite;
+}
+
+@keyframes FunnyGif {
+	0% {
+		transform: scale(0.8);
+	} 50% {
+		transform: scale(1);
+	} 100% {
+		transform: scale(0.8);
+	}
 }
 
 @media only screen and (max-width: 600px) {

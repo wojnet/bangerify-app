@@ -59,7 +59,7 @@ const NavbarMobile = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, us
                     <Link to="/credits" style={ path === "/credits" ? selectedStyle : {} }>Credits</Link>
                     { isLogged && <Link to="/" onClick={() => handleLogout(updateIsLogged)} style={{ marginBottom: "20px" }}>Logout</Link> }
                     { isLogged && <p>Logged in as {username}</p> }
-                    <p>© 2022 Bangerify. All rights reserved.</p>
+                    <p>© 2023 Bangerify. All rights reserved.</p>
                 </div>
             </nav>
         </>

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { axiosJWT } from "../helpers/Helpers";
+import { axiosJWT } from "../../helpers/Helpers";
 import ReactMarkdown from "react-markdown";
 
 const Bio = ({ isChangingBio, setIsChangingBio, bio, changedBio, setChangedBio }) => {
