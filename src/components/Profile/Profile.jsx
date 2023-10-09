@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { axiosJWT } from "../../helpers/Helpers";
 import Article from "../Article/Article";
@@ -8,9 +9,11 @@ import Bio from "./Bio";
 import { AWSUploadFile } from "../../helpers/AWS";
 import { Helmet } from "react-helmet";
 
-const Profile = ({ username, imageWindowState, setImageWindowState }) => {
+const Profile = ({ imageWindowState, setImageWindowState }) => {
 
     const navigate = useNavigate();
+
+    const username = useSelector((state) => state.global.username);
 
     const { usernameParam } = useParams();
     const [profileUsername, setProfileUsername] = useState(usernameParam);

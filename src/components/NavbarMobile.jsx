@@ -1,15 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { axiosJWT } from "../helpers/Helpers";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleDebugWindow } from "../settings/globalSettingsSlice";
 import Logo from "../assets/bangerifyLogo.svg";
 import LogoWhite from "../assets/bangerifyLogoWhite.svg";
 import handleLogout from "../helpers/Logout";
 
-const NavbarMobile = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, username, theme, setTheme, updateTheme }) => {
-
+const NavbarMobile = ({ updateIsLogged, path, setPath, setTheme, updateTheme }) => {
     const location = useLocation();
+    const dispatch = useDispatch();
 
-    const [isOpen, setIsOpen] = useState(false);
+    const isLogged = useSelector((state) => state.global.isLogged);
+    const theme = useSelector((state) => state.global.theme);
+    const username = useSelector((state) => state.global.username);
+
+    const [isOpen, setIsOpen] = useState(false); // IS MOBILE NAVBAR OPEN
 
     const updatePathState = () => {
         setPath(location.pathname);
@@ -38,7 +43,7 @@ const NavbarMobile = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, us
             </div>
 
             <nav className="NavbarMobile" style={ isOpen ? { left: 0, boxShadow: "0 0 50px #0008" } : { left: -250 }}>
-                <img src={theme ? LogoWhite : Logo} className="NavbarMobile--Logo" alt="Bangerify logo" />
+                <img src={theme === "light" ? Logo : LogoWhite} className="NavbarMobile--Logo" alt="Bangerify logo" />
                 <ul>
                     <Link to="/" style={ path === "/" ? selectedStyle : {} } onClick={() => {
                         if (path === "/") {
@@ -59,7 +64,7 @@ const NavbarMobile = ({ isLogged, setIsLogged, updateIsLogged, path, setPath, us
                     <Link to="/credits" style={ path === "/credits" ? selectedStyle : {} }>Credits</Link>
                     { isLogged && <Link to="/" onClick={() => handleLogout(updateIsLogged)} style={{ marginBottom: "20px" }}>Logout</Link> }
                     { isLogged && <p>Logged in as {username}</p> }
-                    <p>© 2023 Bangerify. All rights reserved.</p>
+                    <p style={{ userSelect: "none", cursor: "pointer" }} onClick={() => dispatch(toggleDebugWindow())}>© 2023 Bangerify. All rights reserved.</p>
                 </div>
             </nav>
         </>

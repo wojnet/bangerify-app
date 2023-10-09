@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     isLogged: false,
-    username: ""
+    username: "",
+    theme: "light"
 }
 
 const globalSlice = createSlice({

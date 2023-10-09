@@ -1,6 +1,9 @@
+import { useSelector } from "react-redux";
 import GIF from "../assets/27715574_MotionElements_subscribe-like-share_converted_667376-256x144-3s-q3.gif"
 
-const Credits = ({ username }) => {
+const Credits = () => {
+    const username = useSelector((state) => state.global.username);
+
     const TextStyle = {
         maxWidth: "400px",
         textAlign: "center"

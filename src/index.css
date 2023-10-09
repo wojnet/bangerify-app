@@ -60,7 +60,7 @@ input, textarea {
 
 .Navbar {
 	height: 100vh;
-	width: clamp(150px, 20%, 300px);
+	width: clamp(200px, 20%, 300px);
 	background: var(--white);
 	display: flex;
 	flex-direction: column;
@@ -184,7 +184,7 @@ input, textarea {
 
 .RightPanel {
 	height: 100vh;
-	width: clamp(150px, 20%, 300px);
+	width: clamp(50px, 10%, 300px);
 	background: var(--white);
 	flex-grow: 0;
 	flex-shrink: 0;
@@ -254,6 +254,7 @@ input, textarea {
 	align-items: center;
 	gap: 25px;
 	margin-top: 50px;
+	padding: 0 10px;
 }
 
 .Article {
@@ -451,7 +452,7 @@ input, textarea {
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
-	padding: 0 50px;
+	padding: 0 10px;
 }
 
 .Profile--Header {
@@ -504,7 +505,7 @@ input, textarea {
 
 .Profile--Posts {
 	width: 100%;
-	padding: 0 50px;
+	/* padding: 0 50px; */
 	margin-top: 20px;
 }
 
@@ -866,6 +867,6 @@ input, textarea {
 
 @media only screen and (max-width: 1200px) {
 	.Navbar > img {
-		width: clamp(160px, 140%, 200px);
+		width: clamp(160px, 100%, 200px);
 	}	
 }

@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { axiosJWT } from "../helpers/Helpers";
+import { useSelector } from "react-redux";
 import Article from "./Article/Article";
 import Semaphore from "../helpers/Semaphore";
 // import UpperBar from "./UpperBar";
 import CreatePost from "./Modals/CreatePost";
 import Cat from "../assets/cat.png";
 
-const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, username, isCreatePostOpen, setIsCreatePostOpen, imageWindowState, setImageWindowState, postOrder, setPostOrder, mostLikedPosts, setMostLikedPosts }) => {
-
+const Mainboard = ({ isLogged, loadedPosts, setLoadedPosts, isCreatePostOpen, setIsCreatePostOpen, imageWindowState, setImageWindowState, postOrder, setPostOrder, mostLikedPosts, setMostLikedPosts }) => {
+    const username = useSelector((state) => state.global.username);
     const [canLoadPosts, setCanLoadPosts] = useState(false);
     const [mostLikedPostsEnded, setMostLikedPostsEnded] = useState(false);
     const [postData, setPostData] = useState({ 
