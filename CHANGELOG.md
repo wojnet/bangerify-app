@@ -15,3 +15,8 @@
 
 ## 02-04-2023#2
 - fixed bio images
+
+## 08-10-2023
+- fixed redirection after login
+- did first github actions yay
+- changed folder structure

@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { axiosJWT } from "../../helpers/Helpers";
-import HeartIcon from "../HeartIcon";
+import ArticleHeartIcon from "./ArticleHeartIcon";
 import CommentsIcon from "./CommentsIcon";
 import UserSample from "../../assets/userSample.png"
 import Comment from "./Comment";
@@ -174,7 +174,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
 
 
             <section className="Article--Numbers">
-                <HeartIcon number={likes + addedLikes} click={like} isLiked={isLiked} />
+                <ArticleHeartIcon number={likes + addedLikes} click={like} isLiked={isLiked} />
                 <CommentsIcon number={commentsData.length} click={() => setIsCommentInputOpen(true)} />
             </section>
 
@@ -185,7 +185,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
             </section> }
 
             { comments }
-            {/* { commentsData.map((e, i) => <HeartIcon />) } */}
+            {/* { commentsData.map((e, i) => <ArticleHeartIcon />) } */}
 
         </article>
     );
