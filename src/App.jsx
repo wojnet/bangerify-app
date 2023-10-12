@@ -18,7 +18,7 @@ import NavbarMobile from "./components/NavbarMobile";
 import Wrapper from "./components/Wrapper";
 import RightPanel from "./components/RightPanel"
 import CookieAlert from "./components/Modals/CookieAlert";
-import ImageWindow from "./components/Modals/ImageWindow";
+import ImageWindow from "./features/modals/imageWindow/ImageWindow";
 
 export const App = () => {
 	const dispatch = useDispatch();
@@ -29,21 +29,12 @@ export const App = () => {
 
 	// MODALS
 	const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
-	const [imageWindowState, setImageWindowState] = useState({ isOpen: false, images: [], index: 0 });
 	const [isCookiesModalOpen, setIsCookiesModalOpen] = useState(false);
 	const isDebugWindowOpen = useSelector((state) => state.globalSettings.isDebugWindowOpen);
 
 	// POSTS
 	const isLogged = useSelector((state) => state.global.isLogged);
 	const username = useSelector((state) => state.global.username);
-
-	const [loadedPosts, setLoadedPosts] = useState({
-		lastTimeRefreshed: 0,
-		lastPostId: 99999999,
-		posts: [
-
-		]
-	});
 
 	// 0 - latest && 1 - most liked
 	const [postOrder, setPostOrder] = useState(0);
@@ -130,11 +121,11 @@ export const App = () => {
 
 				{ isDebugWindowOpen && <DebugWindow /> }
 				<CookieAlert isModalOpen={isCookiesModalOpen} setIsModalOpen={setIsCookiesModalOpen} allowCookies={allowCookies} />
-				<ImageWindow imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} />
+				<ImageWindow />
 
 				{ !isMobile ? <Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} theme={theme} setTheme={setTheme} /> : <NavbarMobile isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} theme={theme} setTheme={setTheme} /> }
 
-				<Wrapper path={path} setPath={setPath} isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} imageWindowState={imageWindowState} setImageWindowState={setImageWindowState} postOrder={postOrder} setPostOrder={setPostOrder} mostLikedPosts={mostLikedPosts} setMostLikedPosts={setMostLikedPosts} />
+				<Wrapper path={path} setPath={setPath} isLogged={isLogged} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} postOrder={postOrder} setPostOrder={setPostOrder} mostLikedPosts={mostLikedPosts} setMostLikedPosts={setMostLikedPosts} />
 
 				{ !isMobile && <RightPanel /> }
 			</div>

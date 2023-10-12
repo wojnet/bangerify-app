@@ -1,67 +1,47 @@
-import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import axios from "axios";
 import { axiosJWT } from "../../helpers/Helpers";
 import ImagePreview from "../ImagePreview";
 import { AWSUploadFiles } from "../../helpers/AWS";
+import { loadPosts, resetPosts } from "../../features/posts/postsSlice";
+import { useDispatch } from "react-redux";
 
-const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostData, postImages, setPostImages, resetLoadedPosts }) => {
-
-    const closeModal = () => {
-        setIsCreatePostOpen(false);
-    }
-
-    const handleClick = (e) => {
-        setIsCreatePostOpen(false);
-    }
+const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, newPostData, setNewPostData, newPostImages, setNewPostImages }) => {
+    const dispatch = useDispatch();
+    const closeModal = () => setIsCreatePostOpen(false);
+    
+    const handleClick = (e) => setIsCreatePostOpen(false);
 
     const createPost = async () => {
-        // /api/s3Url
+        if (newPostImages.length !== 0) {
+            const imageUrlArray = await AWSUploadFiles(newPostImages);
 
-        if (postImages.length !== 0) {
-            // POST WITH IMAGES
-
-            // const AWSUpload = async (_images) => {
-            //     const imageUrlArray = [];
-
-            //     for (const image of _images) {
-            //         const url = await axiosJWT.get(`${process.env.BACKEND_URL}/api/s3Url`).then(res => res.data.url).catch(err => console.error(err));
-
-            //         await axios.put(url, image, {
-            //             headers: {
-            //                 "Content-Type": "multipart/form-data"
-            //             }
-            //         })
-                    
-            //         imageUrlArray.push(url.split("?")[0]);
-            //     }
-
-            //     return imageUrlArray;
-            // }
-
-            const imageUrlArray = await AWSUploadFiles(postImages);
-
-            axiosJWT.post(`${process.env.BACKEND_URL}/api/createPost`, { postData: postData, images: [...imageUrlArray] })
+            axiosJWT.post(`${process.env.BACKEND_URL}/api/createPost`, { newPostData: newPostData, images: [...imageUrlArray] })
                 .then(res => {
                     setIsCreatePostOpen(false);
-                    setPostData({ 
+                    setNewPostData({ 
                         post: ""
                     });
-                    setPostImages([]);
+                    setNewPostImages([]);
                 })
-                .then(() => resetLoadedPosts())
+                .then(() => {
+                    dispatch(resetPosts());
+                    dispatch(loadPosts());
+                })
                 .catch(err => console.log(err));
 
         } else {
             // SIMPLE POST WITHOUT IMAGES
-            axiosJWT.post(`${process.env.BACKEND_URL}/api/createPost`, { postData: postData, images: [] })
+            axiosJWT.post(`${process.env.BACKEND_URL}/api/createPost`, { newPostData: newPostData, images: [] })
                 .then(res => {
                     setIsCreatePostOpen(false);
-                    setPostData({ 
+                    setNewPostData({ 
                         post: ""
                     });
                 })
-                .then(() => resetLoadedPosts())
+                .then(() => {
+                    dispatch(resetPosts());
+                    dispatch(loadPosts());
+                })
                 .catch(err => console.log(err));
         }
     }
@@ -112,10 +92,10 @@ const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostDa
     }
 
     const deleteInputImage = (_index) => {
-        setPostImages(prev => [...prev].filter((e, i) => i !== _index));
+        setNewPostImages(prev => [...prev].filter((e, i) => i !== _index));
     }
 
-    const images = Array.from(postImages).map((e, i) => <ImagePreview key={i} id={i} imageElement={e} deleteInputImage={deleteInputImage} />);
+    const images = Array.from(newPostImages).map((e, i) => <ImagePreview key={i} id={i} imageElement={e} deleteInputImage={deleteInputImage} />);
 
     if (!isCreatePostOpen) return null;
 
@@ -126,10 +106,10 @@ const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostDa
                 <button onClick={closeModal} style={closeButtonStyle}>x</button>
                 <h2>What's up?</h2>
 
-                <textarea value={postData.post}
+                <textarea value={newPostData.post}
                     className="CreatePost--Textarea"
                     maxLength="1024"
-                    onChange={(e) => setPostData(prev => {
+                    onChange={(e) => setNewPostData(prev => {
                         return {...prev, post: e.target.value}
                     })}
                 
@@ -137,7 +117,7 @@ const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, postData, setPostDa
 
                 <section style={{ display: "flex" }}>
                     <input className="ImageInput" type="file" id="ImageInput" accept="image/*" multiple={true} onChange={(e) => {
-                        setPostImages(prev => {
+                        setNewPostImages(prev => {
                             return [...prev, ...e.target.files];
                         });
                     }} />

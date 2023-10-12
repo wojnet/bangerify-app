@@ -1,34 +1,21 @@
-import { useState } from "react";
 import { createPortal } from "react-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { closeImageWindow, changeImageWindowIndex } from "./imageWindowSlice";
+import { useEffect } from "react";
 
-const ImageWindow = ({ imageWindowState, setImageWindowState }) => {
+const ImageWindow = () => {
+    const dispatch = useDispatch();
+
+    const isOpen = useSelector((state) => state.imageWindow.isOpen);
+    const imageWindowIndex = useSelector((state) => state.imageWindow.index);
+    const images = useSelector((state) => state.imageWindow.images);
 
     const closeModal = () => {
-        setImageWindowState(prev => {
-            return {
-                ...prev,
-                isOpen: false
-            }
-        });
-    }
-
-    const handleClick = (e) => {
-        setImageWindowState(prev => {
-            return {
-                ...prev,
-                isOpen: false
-            }
-        });
+        dispatch(closeImageWindow())
     }
 
     const changeIndex = (amount) => {
-        setImageWindowState(prev => {
-            prev.index;
-            return {
-                ...prev,
-                index: prev.index + amount
-            }
-        });
+        dispatch(changeImageWindowIndex(amount))
     }
 
     const modalStyle = {
@@ -80,14 +67,18 @@ const ImageWindow = ({ imageWindowState, setImageWindowState }) => {
 	    boxShadow: "0 0 10px #0001"
     }
 
-    if (!imageWindowState.isOpen) return null;
+    useEffect(() => {
+        console.log(images);
+    }, []);
+
+    if (!isOpen) return null;
 
     return createPortal(
         <>
-            <div onClick={handleClick} style={overlayStyle}></div>
+            <div onClick={closeModal} style={overlayStyle}></div>
             <div style={modalStyle}>
                 <button onClick={closeModal} style={closeButtonStyle}>x</button>
-                <img style={imageStyle} src={imageWindowState.images[imageWindowState.index]} alt={imageWindowState.url} />
+                <img style={imageStyle} src={images[imageWindowIndex]} alt="image" />
                 <section style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
                     <button className="Button1" onClick={() => changeIndex(-1)}>LEFT</button>
                     <button className="Button1" onClick={() => changeIndex(1)}>RIGHT</button>
