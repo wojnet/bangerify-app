@@ -1,39 +1,24 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import Cookie from "../../../assets/cookie.png"
 
-const ImageWindow = ({ imageWindowState, setImageWindowState }) => {
+const CookieAlert = ({ isModalOpen, setIsModalOpen, allowCookies }) => {
 
     const closeModal = () => {
-        setImageWindowState(prev => {
-            return {
-                ...prev,
-                isOpen: false
-            }
-        });
+        setIsModalOpen(false);
     }
 
     const handleClick = (e) => {
-        setImageWindowState(prev => {
-            return {
-                ...prev,
-                isOpen: false
-            }
-        });
+        setIsModalOpen(false);
     }
 
-    const changeIndex = (amount) => {
-        setImageWindowState(prev => {
-            prev.index;
-            return {
-                ...prev,
-                index: prev.index + amount
-            }
-        });
+    const allow = () => {
+        allowCookies();
     }
 
     const modalStyle = {
-        minWidth: "50px",
-        minHeight: "50px",
+        width: "480px",
+        height: "300px",
         position: "fixed",
         top: "50%",
         left: "50%",
@@ -74,23 +59,22 @@ const ImageWindow = ({ imageWindowState, setImageWindowState }) => {
         cursor: "pointer"
     }
 
-    const imageStyle = {
-        height: "50vh",
-        borderRadius: "10px",
-	    boxShadow: "0 0 10px #0001"
-    }
-
-    if (!imageWindowState.isOpen) return null;
+    if (!isModalOpen) return null;
 
     return createPortal(
         <>
             <div onClick={handleClick} style={overlayStyle}></div>
             <div style={modalStyle}>
                 <button onClick={closeModal} style={closeButtonStyle}>x</button>
-                <img style={imageStyle} src={imageWindowState.images[imageWindowState.index]} alt={imageWindowState.url} />
+                <img src={Cookie} alt="cookie" style={{ width: "110px", marginBottom: "15px" }} />
+                <h3>Cookies confirmation</h3>
+                <p style={{ color: "var(--gray)" }}>Bangerify uses cookies to store your preferences.</p>
                 <section style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
-                    <button className="Button1" onClick={() => changeIndex(-1)}>LEFT</button>
-                    <button className="Button1" onClick={() => changeIndex(1)}>RIGHT</button>
+                    <button className="Button1" onClick={() => {
+                        allow();
+                        closeModal();
+                    }}>Confirm</button>
+                    <button className="Button1" onClick={closeModal}>Decline</button>
                 </section>
             </div>
         </>
@@ -99,4 +83,4 @@ const ImageWindow = ({ imageWindowState, setImageWindowState }) => {
     );
 }
 
-export default ImageWindow;
+export default CookieAlert;

@@ -8,32 +8,22 @@ import CommentsIcon from "./CommentsIcon";
 import UserSample from "../../assets/userSample.png"
 import Comment from "./Comment";
 import OptionsList from "./OptionsList";
-import ImageGrid from "../ImageGrid";
+import ImageGrid from "../../components/ImageGrid";
 
-const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, profilePictureUrl, username, isMobile, grade, setImageWindowState, isLogged }) => {
-
+const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, profilePictureUrl, username, grade, isLogged, likes, isLiked, addedLikes, setAddedLikes }) => {
     const [areSettingsOpen, setAreSettingsOpen] = useState(false);
     
     const localDate = new Date(utcDate);
 
     const [isEditingArticle, setIsEditingArticle] = useState(false);
     const [changedArticle, setChangedArticle] = useState("");
-    const [likes, setLikes] = useState(0);
-    const [addedLikes, setAddedLikes] = useState(0);
-    const [isLiked, setIsLiked] = useState(false);
+
+    // FAKE LIKES LMAO
+    const [hasChangedLikes, setHasChangedLikes] = useState(false);
 
     const [isCommentInputOpen, setIsCommentInputOpen] = useState(false);
     const [commentValue, setCommentValue] = useState("");
     const [commentsData, setCommentsData] = useState([]);
-
-    const loadLikes = () => {
-        axios.post(`${process.env.BACKEND_URL}/api/loadLikes`, { postId: id, token: localStorage.getItem("accessToken") })
-            .then(res => {
-                setLikes(res.data.likes);                       //? SET THE LIKE AMOUNT
-                if (res.data?.liked === 1) setIsLiked(true);    //? SET "IF YOU LIKED THE POST ALREADY"
-            })
-            .catch(err => console.error(err));
-    }
 
     const loadComments = () => {
         axios.post(`${process.env.BACKEND_URL}/api/loadComments`, { postId: id })
@@ -45,19 +35,9 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
 
     const loadPostData = async () => {
         //load likes and comments
-        loadLikes();
+        // loadLikes();
         loadComments();
     }
-
-    useEffect(() => {
-        if (isEditingArticle) {
-            setChangedArticle(text);
-        }
-    }, [isEditingArticle]);
-
-    useEffect(() => {
-        loadPostData();
-    }, [username]); //! BIG CHANGE
 
     const editPost = () => {
         setIsEditingArticle(true);
@@ -77,17 +57,9 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
     }
 
     const like = () => {
-        if (isLogged/* localStorage.getItem("accessToken") */) {
+        if (isLogged) {
+            setHasChangedLikes(prev => !prev);
 
-            //! JEŻELI ZALOGOWANO
-            if(!isLiked) {
-                setIsLiked(true);
-                setAddedLikes(prev => prev + 1); //? POWIĘKSZENIE ADDED LIKES O 1
-            } else {
-                setIsLiked(false);
-                setAddedLikes(prev => prev - 1); //? POMNIEJSZENIE ADDED LIKES O 1
-            }
-    
             //? USTAWIENIE LICZBY LAJKÓW W BAZIE DANYCH
             axiosJWT.post(`${process.env.BACKEND_URL}/api/setLike`, { postId: id })
                 .catch(err=> console.error(err));
@@ -128,6 +100,28 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
         return <a href={props.href} target="_blank">{props.children}</a>;
     }
 
+    useEffect(() => {
+        if (isEditingArticle) {
+            setChangedArticle(text);
+        }
+    }, [isEditingArticle]);
+
+    useEffect(() => {
+        if (hasChangedLikes) {
+            if (isLiked) {
+                setAddedLikes(id, -1);
+            } else {
+                setAddedLikes(id, 1);
+            }
+        } else {
+            setAddedLikes(id, 0);
+        }
+    }, [hasChangedLikes]);
+
+    useEffect(() => {
+        loadPostData();
+    }, [username]); //! BIG CHANGE
+
     var comments = commentsData.map((e, i) => <Comment key={i} id={e.id} userId={e.userId} text={e.text} date={e.date} profilePictureUrl={e.profilePictureUrl} commentUsername={e.username} visibleName={e.visible_name} username={username} loadComments={loadComments} grade={e.grade} />);
 
     return (
@@ -164,7 +158,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
                     { text.replaceAll("\n", "  \n").replace(/@\w+/g, e => `[${e}](/profile/${e.replace("@", "")})`) }
             </ReactMarkdown> }
 
-            { images.length !== 0 && !isEditingArticle && <ImageGrid setImageWindowState={setImageWindowState} images={images}/> }
+            { [...JSON.parse(images)].length !== 0 && !isEditingArticle && <ImageGrid images={images}/> }
 
             { isEditingArticle && <>
                 <textarea className="Article--TextArea" value={changedArticle} onChange={(e) => setChangedArticle(e.target.value)} />
@@ -174,7 +168,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
 
 
             <section className="Article--Numbers">
-                <ArticleHeartIcon number={likes + addedLikes} click={like} isLiked={isLiked} />
+                <ArticleHeartIcon number={likes} addedLikes={addedLikes} click={like} isLiked={isLiked} hasChangedLikes={hasChangedLikes} />
                 <CommentsIcon number={commentsData.length} click={() => setIsCommentInputOpen(true)} />
             </section>
 

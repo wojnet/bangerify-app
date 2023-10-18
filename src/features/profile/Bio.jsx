@@ -42,7 +42,7 @@ const Bio = ({ isChangingBio, setIsChangingBio, bio, changedBio, setChangedBio }
                 <a style={{ fontSize: "12px", color: "#AAA", cursor: "pointer", textDecoration: "none" }} href="" target="_blank" rel="noopener noreferrer">HOW TO FORMAT?</a>
             </section>
             <textarea type="text" className="Bio--Change" value={changedBio} onChange={(e) => setChangedBio(e.target.value)} />
-            <button className="Button1" style={{ marginTop: "10px", marginLeft: "50px", alignSelf: "flex-start" }} onClick={changeBio} >SAVE BIO</button>
+            <button className="Button1" style={{ marginTop: "10px", marginLeft: "20px", alignSelf: "flex-start" }} onClick={changeBio} >SAVE BIO</button>
         </>
     );
 }

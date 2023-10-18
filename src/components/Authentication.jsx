@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import ConfirmEmail from "./Modals/ConfirmEmail";
-import ResendEmail from "./Modals/ResendEmail";
+import ConfirmEmail from "../features/modals/confirmEmail/ConfirmEmail";
+import ResendEmail from "../features/modals/resendEmail/ResendEmail";
 import TinyLogo from "../assets/tinyLogo.png"
 
 const Authentication = () => {

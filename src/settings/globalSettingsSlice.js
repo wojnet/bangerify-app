@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    isDebugWindowOpen: false
+    isDebugWindowOpen: false,
+    loadPostsBottomMargin: 50
 }
 
 const globalSettingsSlice = createSlice({

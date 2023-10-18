@@ -14,6 +14,18 @@
 	--lightGray: #EEE;
 	--lightGray05: #EEE8;
 	--heartColor: #f24952;
+/* 
+	--black: #ffffff;
+	--nearBlack: #cfcfcf;
+	--white: #131313;
+	--white05: rgba(0, 0, 0, 0.533);
+	--darkGray: #b3b3b3;
+	--gray: #737373;
+	--hoverGray: #1f1f1f;
+	--hoverGray05: rgba(36, 36, 36, 0.533);
+	--lightGray: #1e1e1e;
+	--lightGray05: rgba(29, 29, 29, 0.533);
+	--heartColor: #f24952; */
 
 	--gradeMod: rgb(134, 252, 80);
 	--gradeAdmin: rgb(14, 126, 201);
@@ -60,7 +72,7 @@ input, textarea {
 
 .Navbar {
 	height: 100vh;
-	width: clamp(150px, 20%, 300px);
+	width: clamp(200px, 20%, 300px);
 	background: var(--white);
 	display: flex;
 	flex-direction: column;
@@ -184,7 +196,7 @@ input, textarea {
 
 .RightPanel {
 	height: 100vh;
-	width: clamp(150px, 20%, 300px);
+	width: clamp(50px, 10%, 300px);
 	background: var(--white);
 	flex-grow: 0;
 	flex-shrink: 0;
@@ -254,6 +266,7 @@ input, textarea {
 	align-items: center;
 	gap: 25px;
 	margin-top: 50px;
+	padding: 0 50px;
 }
 
 .Article {
@@ -459,7 +472,7 @@ input, textarea {
 	height: 100px;
 	display: flex;
 	justify-content: flex-start;
-	padding-left: 50px;
+	padding-left: 20px;
 	margin-block: 100px 20px;
 	align-items: center;
 	gap: 10px;
@@ -479,7 +492,7 @@ input, textarea {
 
 .Bio {
 	color: var(--black);
-	padding-inline: 50px 100px;
+	padding-inline: 20px 100px;
 	width: 100%;
 	margin-bottom: 10px;
 }
@@ -495,7 +508,7 @@ input, textarea {
 }
 
 .Bio--Change {
-	margin-left: 50px;
+	margin-left: 20px;
 	width: 80%;
 	height: 100px;
 	margin-bottom: 10px;
@@ -504,7 +517,7 @@ input, textarea {
 
 .Profile--Posts {
 	width: 100%;
-	padding: 0 50px;
+	padding: 0 20px;
 	margin-top: 20px;
 }
 
@@ -866,6 +879,6 @@ input, textarea {
 
 @media only screen and (max-width: 1200px) {
 	.Navbar > img {
-		width: clamp(160px, 140%, 200px);
+		width: clamp(160px, 100%, 200px);
 	}	
 }

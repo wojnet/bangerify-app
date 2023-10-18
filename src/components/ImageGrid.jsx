@@ -1,8 +1,12 @@
-const ImageGrid = ({ images, setImageWindowState }) => {
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { openImageWindow, setImages, setImageIndex } from "../features/modals/imageWindow/imageWindowSlice";
 
+const ImageGrid = ({ images }) => {
+    const dispatch = useDispatch();
     var gridType;
 
-    switch(images.length) {
+    switch(JSON.parse(images).length) {
         case 1:
             gridType = "One";
             break;
@@ -17,20 +21,17 @@ const ImageGrid = ({ images, setImageWindowState }) => {
             break;
     }
 
-    const imageElements = images.map((e, i) => {
+    const imageElements = [...JSON.parse(images)].map((e, i) => {
         if (i < 3) {
             return (<img key={i} src={e} alt={e} onClick={() => {
-                setImageWindowState(prev => {
-                    return {
-                        ...prev,
-                        isOpen: true,
-                        images: images,
-                        index: i
-                    }
-                });
+                dispatch(openImageWindow());
+                dispatch(setImages(JSON.parse(images)));
+                dispatch(setImageIndex(i));
             }} />)
         }
     });
+
+    if (!JSON.parse(images)) return null;
 
     return (
         <section className={`ImageGrid ImageGrid${gridType}`}>
