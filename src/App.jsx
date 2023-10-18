@@ -2,62 +2,43 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import jwtDecode from "jwt-decode";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { refreshToken, axiosJWT } from "./helpers/Helpers";
 import { Helmet } from "react-helmet";
 import DebugWindow from "./features/debugWindow/DebugWindow";
+import updateIsLogged from "./helpers/updateIsLogged";
 
 // ACTION IMPORTS
+import { setIsLogged, setUsername, setIsMobile } from "./globalSlice";
 import { addDebugLine } from "./features/debugWindow/debugWindowSlice";
-import { setIsLogged, setUsername } from "./globalSlice";
 
 // COMPONENT IMPORTS
 import Navbar from "./components/Navbar";
 import NavbarMobile from "./components/NavbarMobile";
 import Wrapper from "./components/Wrapper";
 import RightPanel from "./components/RightPanel"
-import CookieAlert from "./components/Modals/CookieAlert";
+import CookieAlert from "./features/modals/cookieAlert/CookieAlert";
 import ImageWindow from "./features/modals/imageWindow/ImageWindow";
 
 export const App = () => {
 	const dispatch = useDispatch();
 
-	// MOBILE STYLE CONFIG
-	const navbarThreshold = 800;
-	const [isMobile, setIsMobile] = useState(window.innerWidth > navbarThreshold ? false : true);
+	const isMobile = useSelector(state => state.global.isMobile);
+	const navbarThreshold = useSelector(state => state.global.navbarThreshold);
+	const isLogged = useSelector(state => state.global.isLogged)
 
 	// MODALS
 	const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
 	const [isCookiesModalOpen, setIsCookiesModalOpen] = useState(false);
 	const isDebugWindowOpen = useSelector((state) => state.globalSettings.isDebugWindowOpen);
 
-	// POSTS
-	const isLogged = useSelector((state) => state.global.isLogged);
-	const username = useSelector((state) => state.global.username);
-
-	// 0 - latest && 1 - most liked
-	const [postOrder, setPostOrder] = useState(0);
-	const [mostLikedPosts, setMostLikedPosts] = useState({
-		posts: [],
-		index: 0
-	});
-
-	// OTHERS
-	const date = new Date();
-	const [path, setPath] = useState();
-	const [theme, setTheme] = useState(false);
 	// date.getTime(); ms since 1970
 	
-	const checkIfCookiesAllowed = () => {
-		let i = document.cookie.indexOf(`cookiesAllowed=`);
-		return i === -1 ? false : true;
-	}
-
 	const updateIsLogged = () => {
 		dispatch(addDebugLine({ name: "- updateIsLogged()" }));
 		if (localStorage.getItem("accessToken") && !isLogged) {
-			axios.get(`${process.env.BACKEND_URL}/api/auth/isLogged`, { //! IT WAS AXIOSJWT PREVIOUSLY THEN AXIOS AND NOW AXIOSJWT AGAIN
+			axios.get(`${process.env.BACKEND_URL}/api/auth/isLogged`, {
 				headers: { authorization: "Bearer " + localStorage.getItem("accessToken") }
 			})
 			.then(res => {
@@ -65,7 +46,7 @@ export const App = () => {
 				dispatch(setUsername(res.data.username));
 				dispatch(addDebugLine({ name: `Logged in as ${res.data.username}` }));
 			})
-			.catch(err => console.log(err));
+			
 		} else if (!localStorage.getItem("accessToken") && isLogged) {
 			localStorage.setItem("accessToken", "");
 			localStorage.setItem("refreshToken", "");
@@ -75,18 +56,23 @@ export const App = () => {
 		}	
 	}
 
+	const checkIfCookiesAllowed = () => {
+		let i = document.cookie.indexOf(`cookiesAllowed=`);
+		return i === -1 ? false : true;
+	}
+
 	const allowCookies = () => {
 		document.cookie = "cookiesAllowed=1";
         document.cookie = "theme=0";
 	}
 
-	const onWindowResize = () => {
-		setIsMobile(window.innerWidth > navbarThreshold ? false : true);
-	}
+	const onWindowResize = () => dispatch(setIsMobile(window.innerWidth > navbarThreshold ? false : true));
 
 	useEffect(() => {
 		updateIsLogged();
 		window.addEventListener("resize", onWindowResize);
+
+		dispatch(setIsMobile(window.innerWidth > navbarThreshold ? false : true));
 
 		return () => {
 			window.removeEventListener("resize", onWindowResize);
@@ -123,9 +109,9 @@ export const App = () => {
 				<CookieAlert isModalOpen={isCookiesModalOpen} setIsModalOpen={setIsCookiesModalOpen} allowCookies={allowCookies} />
 				<ImageWindow />
 
-				{ !isMobile ? <Navbar isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} theme={theme} setTheme={setTheme} /> : <NavbarMobile isLogged={isLogged} setIsLogged={setIsLogged} updateIsLogged={updateIsLogged} path={path} setPath={setPath} theme={theme} setTheme={setTheme} /> }
+				{ !isMobile ? <Navbar updateIsLogged={updateIsLogged} /> : <NavbarMobile updateIsLogged={updateIsLogged} /> }
 
-				<Wrapper path={path} setPath={setPath} isLogged={isLogged} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} postOrder={postOrder} setPostOrder={setPostOrder} mostLikedPosts={mostLikedPosts} setMostLikedPosts={setMostLikedPosts} />
+				<Wrapper isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} />
 
 				{ !isMobile && <RightPanel /> }
 			</div>

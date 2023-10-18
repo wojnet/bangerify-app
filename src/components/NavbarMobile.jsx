@@ -2,22 +2,24 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDebugWindow } from "../settings/globalSettingsSlice";
+import { setPath } from "../globalSlice";
 import Logo from "../assets/bangerifyLogo.svg";
 import LogoWhite from "../assets/bangerifyLogoWhite.svg";
 import handleLogout from "../helpers/Logout";
 
-const NavbarMobile = ({ updateIsLogged, path, setPath, setTheme, updateTheme }) => {
+const NavbarMobile = ({ updateIsLogged }) => {
     const location = useLocation();
     const dispatch = useDispatch();
 
     const isLogged = useSelector((state) => state.global.isLogged);
     const theme = useSelector((state) => state.global.theme);
     const username = useSelector((state) => state.global.username);
+    const path = useSelector(state => state.global.path);
 
     const [isOpen, setIsOpen] = useState(false); // IS MOBILE NAVBAR OPEN
 
     const updatePathState = () => {
-        setPath(location.pathname);
+        dispatch(setPath(location.pathname));
     }
 
     useEffect(updatePathState, []);

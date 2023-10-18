@@ -1,8 +1,8 @@
 import { createPortal } from "react-dom";
-import { axiosJWT } from "../../helpers/Helpers";
-import ImagePreview from "../ImagePreview";
-import { AWSUploadFiles } from "../../helpers/AWS";
-import { loadPosts, resetPosts } from "../../features/posts/postsSlice";
+import { axiosJWT } from "../../../helpers/Helpers";
+import ImagePreview from "./ImagePreview";
+import { AWSUploadFiles } from "../../../helpers/AWS";
+import { loadPosts, resetPosts } from "../../posts/postsSlice";
 import { useDispatch } from "react-redux";
 
 const CreatePost = ({ isCreatePostOpen, setIsCreatePostOpen, newPostData, setNewPostData, newPostImages, setNewPostImages }) => {

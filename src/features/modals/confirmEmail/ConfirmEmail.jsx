@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import Cookie from "../../assets/cookie.png"
+import Envelope from "../../../assets/envelope.svg"
 
-const CookieAlert = ({ isModalOpen, setIsModalOpen, allowCookies }) => {
+const ConfirmEmail = ({ isModalOpen, setIsModalOpen }) => {
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -10,10 +10,6 @@ const CookieAlert = ({ isModalOpen, setIsModalOpen, allowCookies }) => {
 
     const handleClick = (e) => {
         setIsModalOpen(false);
-    }
-
-    const allow = () => {
-        allowCookies();
     }
 
     const modalStyle = {
@@ -63,19 +59,12 @@ const CookieAlert = ({ isModalOpen, setIsModalOpen, allowCookies }) => {
 
     return createPortal(
         <>
-            <div onClick={handleClick} style={overlayStyle}></div>
-            <div style={modalStyle}>
+            <div className="ConfirmEmail--Overlay" onClick={handleClick} style={overlayStyle}></div>
+            <div className="ConfirmEmail" style={modalStyle}>
                 <button onClick={closeModal} style={closeButtonStyle}>x</button>
-                <img src={Cookie} alt="cookie" style={{ width: "110px", marginBottom: "15px" }} />
-                <h3>Cookies confirmation</h3>
-                <p style={{ color: "var(--gray)" }}>Bangerify uses cookies to store your preferences.</p>
-                <section style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
-                    <button className="Button1" onClick={() => {
-                        allow();
-                        closeModal();
-                    }}>Confirm</button>
-                    <button className="Button1" onClick={closeModal}>Decline</button>
-                </section>
+                <img src={Envelope} alt="envelope icon" style={{ width: "110px", marginBottom: "15px" }} />
+                <h3>Email Confirmation</h3>
+                <p style={{ color: "var(--gray)" }}>We have sent you email to confirm the validity of your email address. If you cannot see your mail, check spam folder.</p>
             </div>
         </>
         ,
@@ -83,4 +72,4 @@ const CookieAlert = ({ isModalOpen, setIsModalOpen, allowCookies }) => {
     );
 }
 
-export default CookieAlert;
+export default ConfirmEmail;

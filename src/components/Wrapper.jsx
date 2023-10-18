@@ -4,13 +4,12 @@ import Authentication from "./Authentication";
 import Profile from "../features/profile/Profile";
 import Credits from "./Credits"
 import BadUrl from "./BadUrl";
-import { useEffect } from "react";
 
-const Wrapper = ({ path, isLogged, loadedPosts, setLoadedPosts, isCreatePostOpen, setIsCreatePostOpen, postOrder, setPostOrder, mostLikedPosts, setMostLikedPosts }) => {
+const Wrapper = ({ isCreatePostOpen, setIsCreatePostOpen }) => {
     return (
         <div className="Wrapper">
             <Routes>
-                <Route path="/" element={<Mainboard isLogged={isLogged} loadedPosts={loadedPosts} setLoadedPosts={setLoadedPosts} isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} postOrder={postOrder} setPostOrder={setPostOrder} mostLikedPosts={mostLikedPosts} setMostLikedPosts={setMostLikedPosts} />} />
+                <Route path="/" element={<Mainboard isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} />} />
                 <Route path="/authenticate" element={<Authentication />} />
                 <Route path="/profile/:usernameParam" element={<Profile />} />
                 <Route path="/badUrl/:url" element={<BadUrl />} />

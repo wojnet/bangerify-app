@@ -8,30 +8,22 @@ import CommentsIcon from "./CommentsIcon";
 import UserSample from "../../assets/userSample.png"
 import Comment from "./Comment";
 import OptionsList from "./OptionsList";
-import ImageGrid from "../ImageGrid";
+import ImageGrid from "../../components/ImageGrid";
 
-const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, profilePictureUrl, username, isMobile, grade, isLogged, likes, isLiked }) => {
-
+const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, profilePictureUrl, username, grade, isLogged, likes, isLiked, addedLikes, setAddedLikes }) => {
     const [areSettingsOpen, setAreSettingsOpen] = useState(false);
     
     const localDate = new Date(utcDate);
 
     const [isEditingArticle, setIsEditingArticle] = useState(false);
     const [changedArticle, setChangedArticle] = useState("");
-    const [addedLikes, setAddedLikes] = useState(0);
+
+    // FAKE LIKES LMAO
+    const [hasChangedLikes, setHasChangedLikes] = useState(false);
 
     const [isCommentInputOpen, setIsCommentInputOpen] = useState(false);
     const [commentValue, setCommentValue] = useState("");
     const [commentsData, setCommentsData] = useState([]);
-
-    const loadLikes = () => {
-        // axios.post(`${process.env.BACKEND_URL}/api/loadLikes`, { postId: id, token: localStorage.getItem("accessToken") })
-        //     .then(res => {
-        //         setLikes(res.data.likes);                       //? SET THE LIKE AMOUNT
-        //         if (res.data?.liked === 1) setIsLiked(true);    //? SET "IF YOU LIKED THE POST ALREADY"
-        //     })
-        //     .catch(err => console.error(err));
-    }
 
     const loadComments = () => {
         axios.post(`${process.env.BACKEND_URL}/api/loadComments`, { postId: id })
@@ -65,17 +57,9 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
     }
 
     const like = () => {
-        if (isLogged/* localStorage.getItem("accessToken") */) {
+        if (isLogged) {
+            setHasChangedLikes(prev => !prev);
 
-            //! JEŻELI ZALOGOWANO
-            if(!isLiked) {
-                // setIsLiked(true);
-                setAddedLikes(prev => prev + 1); //? POWIĘKSZENIE ADDED LIKES O 1
-            } else {
-                // setIsLiked(false);
-                setAddedLikes(prev => prev - 1); //? POMNIEJSZENIE ADDED LIKES O 1
-            }
-    
             //? USTAWIENIE LICZBY LAJKÓW W BAZIE DANYCH
             axiosJWT.post(`${process.env.BACKEND_URL}/api/setLike`, { postId: id })
                 .catch(err=> console.error(err));
@@ -121,6 +105,18 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
             setChangedArticle(text);
         }
     }, [isEditingArticle]);
+
+    useEffect(() => {
+        if (hasChangedLikes) {
+            if (isLiked) {
+                setAddedLikes(id, -1);
+            } else {
+                setAddedLikes(id, 1);
+            }
+        } else {
+            setAddedLikes(id, 0);
+        }
+    }, [hasChangedLikes]);
 
     useEffect(() => {
         loadPostData();
@@ -172,7 +168,7 @@ const Article = ({ id, postVisibleName, utcDate, text, postUsername, images, pro
 
 
             <section className="Article--Numbers">
-                <ArticleHeartIcon number={likes + addedLikes} click={like} isLiked={isLiked} />
+                <ArticleHeartIcon number={likes} addedLikes={addedLikes} click={like} isLiked={isLiked} hasChangedLikes={hasChangedLikes} />
                 <CommentsIcon number={commentsData.length} click={() => setIsCommentInputOpen(true)} />
             </section>
 

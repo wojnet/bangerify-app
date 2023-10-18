@@ -3,7 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     isLogged: false,
     username: "",
-    theme: "light"
+    theme: "light",
+    isMobile: false,
+    navbarThreshold: 800,
+    path: "/",
 }
 
 const globalSlice = createSlice({
@@ -15,9 +18,15 @@ const globalSlice = createSlice({
         },
         setUsername: (state, action) => {
             state.username = action.payload;
+        },
+        setIsMobile: (state, action) => {
+            state.isMobile = action.payload;
+        },
+        setPath: (state, action) => {
+            state.path = action.payload;
         }
     }
 });
 
-export const { setIsLogged, setUsername } = globalSlice.actions;
+export const { setIsLogged, setUsername, setIsMobile, setPath } = globalSlice.actions;
 export default globalSlice.reducer;

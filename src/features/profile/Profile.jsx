@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import { throttle } from "underscore";
 import { axiosJWT } from "../../helpers/Helpers";
-import Article from "../../components/Article/Article";
+import Article from "../posts/Article";
 import UserSample from "../../assets/userSample.png"
 import Bio from "./Bio";
 import { AWSUploadFile } from "../../helpers/AWS";
 import { Helmet } from "react-helmet";
-import { loadProfilePosts, loadProfileInfo, resetProfilePosts, resetProfileInfo } from "./profileSlice";
+import { loadProfilePosts, loadProfileInfo, resetProfilePosts, resetProfileInfo, setAddedLikes } from "./profileSlice";
 import { loadPostGateway } from "../../helpers/Gateway";
 
 const Profile = () => {
@@ -131,7 +131,8 @@ const Profile = () => {
     //         .catch(err => console.log(err));
     // }
 
-    const handlePostLoading = () => {
+    const handlePostLoading = (e) => {
+        e.preventDefault();
         if (window.innerHeight + document.documentElement.scrollTop >= document.scrollingElement.scrollHeight - loadPostsBottomMargin) {
             if (canLoad) {
                 loadPostGateway.execute(
@@ -141,19 +142,22 @@ const Profile = () => {
         }
     }
 
+    const handlePostLoadingThrottled = throttle(handlePostLoading, 500);
+
+    const handleSetAddedLikes = (id, number) => {
+        dispatch(setAddedLikes({id, number}));
+    }
+
     useEffect(() => {
         dispatch(resetProfilePosts());
         dispatch(resetProfileInfo());
-        const scrollEventListener = window.addEventListener("scroll", (e) => {
-            e.preventDefault();
-            handlePostLoading();
-        });
+        window.addEventListener("scroll", handlePostLoadingThrottled);
 
         dispatch(loadProfilePosts(usernameParam));
         dispatch(loadProfileInfo(usernameParam));
 
         return () => {
-            window.removeEventListener("scroll", scrollEventListener);
+            window.removeEventListener("scroll", handlePostLoadingThrottled);
             dispatch(resetProfilePosts());
             dispatch(resetProfileInfo());
         }
@@ -165,7 +169,7 @@ const Profile = () => {
         }
     }, [isChangingProfilePicture]);
 
-    const postElements = posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} images={e.images} profilePictureUrl={e.profilePictureUrl} username={username} grade={e.grade} isLogged={isLogged} likes={e.likes} isLiked={e.isLiked} />);
+    const postElements = posts.map(e => <Article key={e.id} id={e.id} postVisibleName={e.visible_name} utcDate={e.date} text={e.text} postUsername={e.username} images={e.images} profilePictureUrl={e.profilePictureUrl} username={username} grade={e.grade} isLogged={isLogged} likes={e.likes} isLiked={e.isLiked} addedLikes={e.addedLikes} setAddedLikes={handleSetAddedLikes} />);
 
     const ProfilePictureInput = () => {
         return(

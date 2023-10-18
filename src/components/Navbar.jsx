@@ -5,18 +5,19 @@ import { toggleDebugWindow } from "../settings/globalSettingsSlice";
 import Logo from "../assets/bangerifyLogo.svg";
 import LogoWhite from "../assets/bangerifyLogoWhite.svg";
 import handleLogout from "../helpers/Logout";
+import { setPath } from "../globalSlice";
 
-const Navbar = ({ updateIsLogged, path, setPath, setTheme, updateTheme }) => {
-
+const Navbar = ({ updateIsLogged }) => {
     const location = useLocation();
     const dispatch = useDispatch();
 
     const isLogged = useSelector((state) => state.global.isLogged);
     const theme = useSelector((state) => state.global.theme);
     const username = useSelector((state) => state.global.username);
+    const path = useSelector(state => state.global.path);
 
     const updatePathState = () => {
-        setPath(location.pathname);
+        dispatch(setPath(location.pathname));
     }
 
     useEffect(updatePathState, []);

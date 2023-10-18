@@ -23,7 +23,7 @@ const initialState = {
 }
 
 export const loadProfilePosts = createAsyncThunk("profile/loadProfilePosts", async (username, { getState }) => {
-    return axios.post(`${process.env.BACKEND_URL}/api/getUserPosts`, { 
+    let posts = await axios.post(`${process.env.BACKEND_URL}/api/getUserPosts`, { 
         lastPostId: getState().profile.lastPostId,
         author: username
     })
@@ -31,9 +31,26 @@ export const loadProfilePosts = createAsyncThunk("profile/loadProfilePosts", asy
         return res.data;
     })
     .catch(error => {
-        console.log(1);
         return error ? error : "";
     });
+
+    const likes = await axios.post(`${process.env.BACKEND_URL}/api/loadLikesFromArray`, {
+        token: localStorage.getItem("accessToken") || "",
+        postIdArray: Object.values(posts.posts).map(e => e.id)
+    })
+    .then(res => res.data);
+
+    posts.posts = Object.values(posts.posts).map(postData => {
+        const likesData = likes.data.filter(likesData => likesData.postId === postData.id)[0];
+        return {
+            ...postData,
+            likes: likesData.likes,
+            isLiked: likesData.liked,
+            addedLikes: 0
+        }
+    });
+
+    return posts;
 });
 
 export const loadProfileInfo = createAsyncThunk("profile/loadProfileInfo", async (username) => {
@@ -74,6 +91,17 @@ const profileSlice = createSlice({
                 creationDate: "",
                 profilePictureUrl: ""
             }
+        },
+        setAddedLikes: (state, action) => {
+            let tempPosts = [
+                ...state.posts
+            ];
+
+            const postIndex = tempPosts.findIndex(e => e.id === action.payload.id);
+           
+            tempPosts[postIndex].addedLikes = action.payload.number;
+
+            state.posts = tempPosts;
         }
     },
     extraReducers(builder) {
@@ -85,7 +113,9 @@ const profileSlice = createSlice({
             })
             .addCase(loadProfilePosts.fulfilled, (state, action) => {
                 if (action.payload.posts && !state.postsEnded) {
-                    let lastPostId = [...action.payload.posts].slice(-1)[0]?.id;
+                    let posts = action.payload.posts;
+                    let lastPostId = posts[posts.length-1]?.id;
+
                     return {
                         ...state,
                         lastLoadDate: new Date().getTime(),
@@ -94,7 +124,7 @@ const profileSlice = createSlice({
                         canLoad: true,
                         loadingPosts: false,
                         postsError: "",
-                        posts: [...state.posts, ...action.payload.posts]
+                        posts: [...state.posts, ...posts]
                     }
                 } else {
                     return state;
@@ -143,5 +173,5 @@ const profileSlice = createSlice({
     }
 });
 
-export const { resetProfilePosts, resetProfileInfo } = profileSlice.actions;
+export const { resetProfilePosts, resetProfileInfo, setAddedLikes } = profileSlice.actions;
 export default profileSlice.reducer;

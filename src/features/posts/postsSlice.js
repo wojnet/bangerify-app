@@ -11,8 +11,9 @@ const initialState = {
     posts: []
 }
 
+// LOAD POSTS WITH LIKES
 export const loadPosts = createAsyncThunk("posts/loadPosts", async (payload, { getState }) => {
-    return axios.post(`${process.env.BACKEND_URL}/api/getPosts`, { 
+    let posts = await axios.post(`${process.env.BACKEND_URL}/api/getPosts`, { 
         lastPostId: getState().posts.lastPostId
     })
     .then(res => {
@@ -21,6 +22,24 @@ export const loadPosts = createAsyncThunk("posts/loadPosts", async (payload, { g
     .catch(error => {
         return error ? error : "";
     });
+
+    const likes = await axios.post(`${process.env.BACKEND_URL}/api/loadLikesFromArray`, {
+        token: localStorage.getItem("accessToken") || "",
+        postIdArray: Object.values(posts.posts).map(e => e.id)
+    })
+    .then(res => res.data);
+
+    posts.posts = Object.values(posts.posts).map(postData => {
+        const likesData = likes.data.filter(likesData => likesData.postId === postData.id)[0];
+        return {
+            ...postData,
+            likes: likesData.likes,
+            isLiked: likesData.liked,
+            addedLikes: 0
+        }
+    });
+
+    return posts;
 });
 
 const postsSlice = createSlice({
@@ -29,6 +48,19 @@ const postsSlice = createSlice({
     reducers: {
         resetPosts: () => {
             return initialState;
+        },
+        setAddedLikes: (state, action) => {
+            let tempPosts = [
+                ...state.posts
+            ];
+
+            const postIndex = tempPosts.findIndex(e => e.id === action.payload.id);
+           
+            if (tempPosts[postIndex].addedLikes === action.payload.number) return state;
+
+            tempPosts[postIndex].addedLikes = action.payload.number;
+
+            state.posts = tempPosts;
         }
     },
     extraReducers(builder) {
@@ -40,7 +72,9 @@ const postsSlice = createSlice({
             })
             .addCase(loadPosts.fulfilled, (state, action) => {
                 if (action.payload.posts && !state.postsEnded) {
-                    let lastPostId = [...action.payload.posts].slice(-1)[0].id;
+                    let posts = action.payload.posts;
+                    let lastPostId = posts[posts.length-1]?.id;
+
                     return {
                         ...state,
                         lastLoadDate: new Date().getTime(),
@@ -49,7 +83,7 @@ const postsSlice = createSlice({
                         canLoad: true,
                         loading: false,
                         error: "",
-                        posts: [...state.posts, ...action.payload.posts]
+                        posts: [...state.posts, ...posts]
                     }
                 } else {
                     return state;
@@ -63,5 +97,5 @@ const postsSlice = createSlice({
     }
 });
 
-export const { resetPosts } = postsSlice.actions;
+export const { resetPosts, setAddedLikes } = postsSlice.actions;
 export default postsSlice.reducer;
