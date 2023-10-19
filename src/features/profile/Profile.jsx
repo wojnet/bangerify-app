@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { throttle } from "underscore";
@@ -17,6 +17,8 @@ const Profile = () => {
 
     const username = useSelector((state) => state.global.username);
     const isLogged = useSelector((state) => state.global.isLogged);
+
+    const visibleNameInputElement = useRef(null);
 
     const { usernameParam } = useParams();
     const [profileUsername, setProfileUsername] = useState(usernameParam);
@@ -67,11 +69,18 @@ const Profile = () => {
         if (changedVisibleName !== visibleName && changedVisibleName !== "") {
             axiosJWT.post(`${process.env.BACKEND_URL}/api/changeVisibleName`, { newVisibleName: changedVisibleName })
             .then(() => {
+                setIsChangingVisibleName(false);
                 dispatch(resetProfileInfo());
-                dispatch(loadProfileInfo());
+                dispatch(loadProfileInfo(usernameParam));
             })
             .catch(err => console.log(err));
         } else setIsChangingVisibleName(prev => !prev);
+    }
+
+    const handleVisibleNameKeyDown = (event) => {
+        if (event.key === "Enter") {
+            changeVisibleName();
+        }
     }
 
     const getGradeIcon = () => {
@@ -90,46 +99,6 @@ const Profile = () => {
                 return <span className="GIGACHAD">GIGACHAD</span>;
         }
     }
-
-    // // 0. latest; 1. most liked
-    // function loadPosts(_reset) {
-    //     axios.post(`${process.env.BACKEND_URL}/api/getUserPosts`, { lastPostId: _reset === "reset" ? 99999999 : profilePosts.lastPostId, order: 0, author: profileUsername })
-    //         .then(res => {
-    //             let postsArray = res.data;
-
-    //             setProfilePosts(prev => {
-    //                 let newObj = { ...prev };
-    //                 let ids = Array.from(postsArray ? postsArray : []).map(e => e.id);
-    //                 newObj.lastPostId = ids.at(-1);
-    //                 newObj.posts = [...newObj.posts, ...Array.from(postsArray ? postsArray : [])];
-    //                 return newObj;
-    //             });
-    //         })
-    //         .catch(err => console.log(err));
-    // }
-
-    // const setProfileInfo = () => {
-    //     axios.post(`${process.env.BACKEND_URL}/api/userData/${usernameParam}`)
-    //         .then(res => {
-    //             if(res.data.length != 0) {
-    //                 return res.data[0];
-    //             } else {
-    //                 console.log(`No user named ${profileUsername}`);
-    //                 // return navigate(`/badUrl/${profileUsername}`);
-    //             }
-    //         })
-    //         .then(res => {
-    //             setVisibleName(res.visible_name);
-    //             setBio(res.bio);
-    //             setGrade(res.grade);
-    //             setCreationDate(() => {
-    //                 let localDate = new Date(res.creationDate);
-    //                 return localDate.toLocaleDateString();
-    //             });
-    //             setProfilePictureUrl(res.profilePictureUrl);
-    //         })
-    //         .catch(err => console.log(err));
-    // }
 
     const handlePostLoading = (e) => {
         e.preventDefault();
@@ -206,14 +175,35 @@ const Profile = () => {
                 { loadingUserInfo && <p>Loading user info...</p> }
                 { !loadingUserInfo && <section>
                     <h3 style={visibleNameStyles[grade]}>
+
                         { !isChangingVisibleName && visibleName }
                         { profileUsername === username && <>
                             { isChangingVisibleName && <>
-                                <input type="text" value={changedVisibleName} required="required" onChange={(e) => setChangedVisibleName(e.target.value)} />
-                                <button onClick={changeVisibleName} style={{ border: "none", background: "none", cursor: "pointer" }}>✔️</button>
+                                <input 
+                                    type="text"
+                                    value={changedVisibleName}
+                                    ref={visibleNameInputElement}
+                                    required="required"
+                                    onKeyDown={handleVisibleNameKeyDown}
+                                    onChange={(e) => setChangedVisibleName(e.target.value)}
+                                    autoFocus={true}
+                                />
+                                <button
+                                    disabled={!changedVisibleName}
+                                    onClick={changeVisibleName}
+                                    style={{ border: "none", background: "none", cursor: "pointer" }}
+                                >✔️</button>
                             </> }
 
-                            <button style={{ border: "none", background: "none", cursor: "pointer" }} onClick={() => setIsChangingVisibleName(prev => !prev)}>{ isChangingVisibleName ? "❌" : "🖊️" }</button>
+                            <button
+                                style={{ border: "none", background: "none", cursor: "pointer" }}
+                                onClick={() => {
+                                    // if (!isChangingVisibleName) {
+                                    //     visibleNameInputElement.current.;
+                                    // }
+                                    setIsChangingVisibleName(prev => !prev);
+                                }}
+                            >{ isChangingVisibleName ? "❌" : "🖊️" }</button>
                         </> }
                         {getGradeIcon(grade)}
                     </h3>
@@ -222,7 +212,7 @@ const Profile = () => {
 
             </section>
 
-            <Bio isChangingBio={isChangingBio} setIsChangingBio={setIsChangingBio} bio={bio} changedBio={changedBio} setChangedBio={setChangedBio} />
+            <Bio isChangingBio={isChangingBio} setIsChangingBio={setIsChangingBio} bio={bio} changedBio={changedBio} setChangedBio={setChangedBio} usernameParam={usernameParam} />
 
             { profileUsername === username && <button className="Button1" style={{ marginBlock: "15px 50px", marginLeft: "20px", alignSelf: "flex-start" }} onClick={() => {
                 setIsChangingBio(prev => !prev);

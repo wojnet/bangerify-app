@@ -57,14 +57,16 @@ const Mainboard = ({ isCreatePostOpen, setIsCreatePostOpen }) => {
     return (
         <div className="Mainboard">
             <CreatePost isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} newPostData={newPostData} setNewPostData={setNewPostData} newPostImages={newPostImages} setNewPostImages={setNewPostImages} />
-            { username && <><img src={Cat} alt="cat" style={{ width: "100px" }} /><p style={{ textAlign: "center", width: "60%", color: "var(--gray)" }}>Thanks for using Bangerify! If you see any bugs / have any ideas you can send the message to ADMIN (can be found in credits tab)</p></> }
-
-            {/* <select value={postOrder} onChange={(e) => setPostOrder(parseInt(e.target.value))}>
-                <option value={0}>latest</option>
-                <option value={1}>most liked</option>
-            </select> */}
+            { isLogged && <>
+                <img src={Cat} alt="cat" style={{ width: "100px" }} />
+                <h2 style={{ margin: 0 }}>Hello {username}! 👋</h2>
+                <p style={{ textAlign: "center", width: "60%", color: "var(--gray)" }}>Thanks for using Bangerify! You can send your feedback by credits tab on navbar.</p>
+            </> }
             
-            { isLogged && <button className="Button1" onClick={() => setIsCreatePostOpen(true)}>ADD POST</button> }
+            { isLogged && <button 
+                className="Button1"
+                onClick={() => setIsCreatePostOpen(true)}
+            >ADD POST 📰</button> }
 
             { posts.error && <p>{ posts.error }</p> }
             { postElements }<br />

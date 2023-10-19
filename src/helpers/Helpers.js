@@ -1,14 +1,13 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import store from "../store/store";
 import { addDebugLine } from "../features/debugWindow/debugWindowSlice";
 
 export async function refreshToken(config) {
     try {
-        const dispatch = useDispatch();
         const res = await axios.post(`${process.env.BACKEND_URL}/api/token/refresh`, { token: localStorage.getItem("refreshToken") });
         localStorage.setItem("accessToken", res.data.accessToken);
         localStorage.setItem("refreshToken", res.data.refreshToken);
-        dispatch(addDebugLine({ name: "refreshed token?????" }));
+        store.dispatch(addDebugLine({ name: "refreshed token?????" }));
         config.headers["authorization"] = "Bearer " + res.data.accessToken;
         // return res.data;
 
@@ -18,15 +17,9 @@ export async function refreshToken(config) {
 }
 
 export const axiosJWT = axios.create({
-    headers: {
-        
-    }
+    headers: {}
 });
 
 export const axiosSwitch = axios.create({
-    headers: {
-        
-    }
+    headers: {}
 });
-
-// export { axiosJWT };

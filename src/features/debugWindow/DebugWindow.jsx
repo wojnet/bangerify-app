@@ -55,6 +55,7 @@ const DebugWindow = () => {
                 height: "100%",
                 overflow: "hidden",
                 background: "#FFFC",
+                fontSize: 10
             }}
         >
             <ul ref={listElement} style={listStyle}>
