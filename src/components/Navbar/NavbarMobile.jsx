@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleDebugWindow } from "../settings/globalSettingsSlice";
-import { setPath } from "../globalSlice";
-import Logo from "../assets/bangerifyLogo.svg";
-import LogoWhite from "../assets/bangerifyLogoWhite.svg";
-import handleLogout from "../helpers/Logout";
+import { toggleDebugWindow } from "../../settings/globalSettingsSlice";
+import { setPath } from "../../globalSlice";
+import ChangeTheme from "./ChangeTheme";
+import Logo from "../../assets/bangerifyLogo.svg";
+import LogoWhite from "../../assets/bangerifyLogoWhite.svg";
+import handleLogout from "../../helpers/Logout";
 
 const NavbarMobile = ({ updateIsLogged }) => {
     const location = useLocation();
@@ -55,11 +56,7 @@ const NavbarMobile = ({ updateIsLogged }) => {
                     { isLogged && <a href={`/profile/${username}`} style={ path === "/profile/"+username ? selectedStyle : {} }>Profile</a> }
                     { !isLogged && <Link to="/authenticate" style={ path === "/authenticate" ? selectedStyle : {} }>Login</Link> }
 
-                    {/* <img style={{ width: "25px", marginTop: "20px", cursor: "pointer" }} src={theme ? Moon : Sun} alt="Theme change button" onClick={() => {
-                        setTheme(prev => !prev);
-                        updateTheme();
-                        document.cookie = `theme=${theme ? 1 : 0}`;
-                    }} /> */}
+                    <ChangeTheme />
 
                 </ul>
                 <div className="NavbarMobile--Bottom">

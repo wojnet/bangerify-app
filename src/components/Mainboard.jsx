@@ -59,7 +59,7 @@ const Mainboard = ({ isCreatePostOpen, setIsCreatePostOpen }) => {
             <CreatePost isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} newPostData={newPostData} setNewPostData={setNewPostData} newPostImages={newPostImages} setNewPostImages={setNewPostImages} />
             { isLogged && <>
                 <img src={Cat} alt="cat" style={{ width: "100px" }} />
-                <h2 style={{ margin: 0 }}>Hello {username}! 👋</h2>
+                <h2 style={{ margin: 0, textAlign: "center" }}>Hello {username}! 👋</h2>
                 <p style={{ textAlign: "center", width: "60%", color: "var(--gray)" }}>Thanks for using Bangerify! You can send your feedback by credits tab on navbar.</p>
             </> }
             

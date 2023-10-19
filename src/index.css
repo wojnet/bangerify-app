@@ -14,25 +14,20 @@
 	--lightGray: #EEE;
 	--lightGray05: #EEE8;
 	--heartColor: #f24952;
-/* 
-	--black: #ffffff;
-	--nearBlack: #cfcfcf;
-	--white: #131313;
-	--white05: rgba(0, 0, 0, 0.533);
-	--darkGray: #b3b3b3;
-	--gray: #737373;
-	--hoverGray: #1f1f1f;
-	--hoverGray05: rgba(36, 36, 36, 0.533);
-	--lightGray: #1e1e1e;
-	--lightGray05: rgba(29, 29, 29, 0.533);
-	--heartColor: #f24952; */
-
 	--gradeMod: rgb(134, 252, 80);
 	--gradeAdmin: rgb(14, 126, 201);
 	--gradeHeadAdmin: rgb(66, 148, 255);
 	--gradeCreator: rgb(30, 34, 255);
 	--gradeGigachad: rgb(255, 178, 78);
 }
+
+[data-color-scheme="dark"] {
+	color-scheme: dark;
+  }
+  
+  [data-color-scheme="light"] {
+	color-scheme: light;
+  }
 
 * {
 	/* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
@@ -851,6 +846,18 @@ input, textarea {
 .ImageGridMore > p {
 	justify-self: center;
 	align-self: center;
+}
+
+.ChangeTheme--Button {
+	width: 30px;
+	height: 30px;
+	font-size: 24px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: none;
+	border: none;
+	cursor: pointer;
 }
 
 .FunnyGif {
