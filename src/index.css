@@ -530,7 +530,8 @@ input, textarea {
 	font-size: 12px;
 	padding: 2px 5px;
 	border-radius: 5px;
-	background: #EEE;
+	background: var(--lightGray);
+	color: var(--nearBlack);
 }
 
 .Button1:hover {
