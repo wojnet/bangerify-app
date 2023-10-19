@@ -10,16 +10,18 @@ import DebugWindow from "./features/debugWindow/DebugWindow";
 import updateIsLogged from "./helpers/updateIsLogged";
 
 // ACTION IMPORTS
-import { setIsLogged, setUsername, setIsMobile } from "./globalSlice";
+import { setIsLogged, setUsername, setIsMobile, setTheme } from "./globalSlice";
 import { addDebugLine } from "./features/debugWindow/debugWindowSlice";
 
 // COMPONENT IMPORTS
-import Navbar from "./components/Navbar";
-import NavbarMobile from "./components/NavbarMobile";
+import Navbar from "./components/Navbar/Navbar";
+import NavbarMobile from "./components/Navbar/NavbarMobile";
 import Wrapper from "./components/Wrapper";
 import RightPanel from "./components/RightPanel"
 import CookieAlert from "./features/modals/cookieAlert/CookieAlert";
 import ImageWindow from "./features/modals/imageWindow/ImageWindow";
+
+import { useCookies } from "react-cookie";
 
 export const App = () => {
 	const dispatch = useDispatch();
@@ -32,6 +34,8 @@ export const App = () => {
 	const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
 	const [isCookiesModalOpen, setIsCookiesModalOpen] = useState(false);
 	const isDebugWindowOpen = useSelector((state) => state.globalSettings.isDebugWindowOpen);
+
+	const [cookies, setCookie] = useCookies(["theme"]);
 
 	// date.getTime(); ms since 1970
 	
@@ -68,11 +72,27 @@ export const App = () => {
 
 	const onWindowResize = () => dispatch(setIsMobile(window.innerWidth > navbarThreshold ? false : true));
 
+	const configureTheme = () => {
+		if (!cookies.theme) {
+			if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+				setCookie("theme", "dark", { path: "/" });
+				dispatch(setTheme("dark"));
+			} else {
+				setCookie("theme", "light", { path: "/" });
+				dispatch(setTheme("light"));
+			}
+		} else {
+			dispatch(setTheme(cookies.theme));
+		}
+	}
+
 	useEffect(() => {
 		updateIsLogged();
 		window.addEventListener("resize", onWindowResize);
 
 		dispatch(setIsMobile(window.innerWidth > navbarThreshold ? false : true));
+	
+		configureTheme();
 
 		return () => {
 			window.removeEventListener("resize", onWindowResize);

@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleDebugWindow } from "../settings/globalSettingsSlice";
-import Logo from "../assets/bangerifyLogo.svg";
-import LogoWhite from "../assets/bangerifyLogoWhite.svg";
-import handleLogout from "../helpers/Logout";
-import { setPath } from "../globalSlice";
+import { toggleDebugWindow } from "../../settings/globalSettingsSlice";
+import ChangeTheme from "./ChangeTheme";
+import Logo from "../../assets/bangerifyLogo.svg";
+import LogoWhite from "../../assets/bangerifyLogoWhite.svg";
+import handleLogout from "../../helpers/Logout";
+import { setPath } from "../../globalSlice";
 
 const Navbar = ({ updateIsLogged }) => {
     const location = useLocation();
@@ -40,12 +41,13 @@ const Navbar = ({ updateIsLogged }) => {
                 <Link to="/" style={ path === "/" ? selectedStyle : {} }>Mainboard</Link>
                 { isLogged && <a href={`/profile/${username}`} style={ path === "/profile/"+username ? selectedStyle : {} }>Profile</a> }
                 { !isLogged && <Link to="/authenticate" style={ path === "/authenticate" ? selectedStyle : {} }>Login</Link> }
-
+                <ChangeTheme />
             </ul>
             <div className="Navbar--Bottom">
                 <Link to="/credits" style={ path === "/credits" ? selectedStyle : {} }>Credits</Link>
                 { isLogged && <Link to="/" onClick={() => handleLogout(updateIsLogged)} style={{ marginBottom: "20px" }}>Logout</Link> }
                 { isLogged && <p>Logged in as {username}</p> }
+                <p style={{ userSelect: "none", cursor: "pointer" }}>Theme: {theme}</p>
                 <p style={{ userSelect: "none", cursor: "pointer" }} onClick={() => dispatch(toggleDebugWindow())}>© 2023 Bangerify. All rights reserved.</p>
             </div>
         </nav>

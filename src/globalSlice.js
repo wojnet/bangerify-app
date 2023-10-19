@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { applyTheme } from "./helpers/Theme";
 
 const initialState = {
     isLogged: false,
@@ -24,9 +25,13 @@ const globalSlice = createSlice({
         },
         setPath: (state, action) => {
             state.path = action.payload;
+        },
+        setTheme: (state, action) => {
+            applyTheme(action.payload);
+            state.theme = action.payload;
         }
     }
 });
 
-export const { setIsLogged, setUsername, setIsMobile, setPath } = globalSlice.actions;
+export const { setIsLogged, setUsername, setIsMobile, setPath, setTheme } = globalSlice.actions;
 export default globalSlice.reducer;
