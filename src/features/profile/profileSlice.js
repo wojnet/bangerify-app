@@ -102,6 +102,9 @@ const profileSlice = createSlice({
             tempPosts[postIndex].addedLikes = action.payload.number;
 
             state.posts = tempPosts;
+        },
+        unlikePosts: (state) => {
+            
         }
     },
     extraReducers(builder) {

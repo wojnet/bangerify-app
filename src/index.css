@@ -596,12 +596,20 @@ input, textarea {
 	padding: 1px 5px;
 	border-radius: 5px;
 	cursor: pointer;
+	align-items: center;
+}
+
+.ArticleHeartIcon > img {
+	height: 14px;
+	opacity: 0.6;
+	/* mix-blend-mode: color-dodge; */
 }
 
 .CommentsIcon {
 	color: var(--black);
 	margin-top: 15px;
 	display: flex;
+	align-items: center;
 	gap: 10px;
 	/* background: var(--lightGray); */
 	padding: 1px 5px;
